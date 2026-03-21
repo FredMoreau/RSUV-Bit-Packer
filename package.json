@@ -1,0 +1,33 @@
+{
+    "name": "com.unity.rsuv-bit-packer",
+    "displayName": "RSUV Bit Packer",
+    "version": "0.0.1",
+    "unity": "6000.3",
+    "description": "Components and tools to facilitate the packing of RSUV (Renderer Shader User Value).",
+    "author": {
+        "name": "Fred Moreau",
+        "email": "frederic.moreau@unity3d.com",
+        "url": "https://www.unity3d.com"
+    },
+    "keywords": [
+        "unity",
+        "rsuv"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:UserName/Repository.git"
+    },
+    "samples": [
+        {
+            "displayName": "More Renderer Properties",
+            "description": "More Renderer Properties",
+            "path": "Samples~/More Renderer Properties"
+        },
+        {
+            "displayName": "Examples",
+            "description": "Examples",
+            "path": "Samples~/Examples"
+        }
+    ],
+    "hideInEditor": false
+}
