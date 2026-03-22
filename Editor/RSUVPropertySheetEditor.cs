@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using UnityEngine;
 using UnityEngine.RSUVBitPacker;
@@ -19,7 +17,6 @@ namespace UnityEditor.RSUVBitPacker
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
             rendererPropertyListView.OnChangeCallback += () =>
             {
-                Debug.Log((target as RSUVPropertySheet).rendererProperties.Count);
                 UpdateShaderInclude();
             };
             shaderIncludeProp = serializedObject.FindProperty("shaderInclude");

@@ -22,11 +22,13 @@ namespace UnityEditor.RSUVBitPacker
         public OnChangeDelegate OnChangeCallback;
 
         static List<Type> rendererValueTypes = new();
-        static List<string> addMenuOptions = new();
+        static List<string> dropDownLabels = new();
+        static List<string> rendererValueNames = new();
+        static Dictionary<string, uint> rendererValueLengths = new();
         [InitializeOnLoadMethod]
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
-            addMenuOptions.Clear();
+            dropDownLabels.Clear();
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes().Where(x => typeof(RendererPropertyBase).IsAssignableFrom(x))).ToList();
             foreach (var type in types)
             {
@@ -34,11 +36,15 @@ namespace UnityEditor.RSUVBitPacker
                     continue;
 
                 rendererValueTypes.Add(type);
+
                 var nameAttr = type.GetCustomAttributes(typeof(RendererValueTypeNameAttribute), false).FirstOrDefault() as RendererValueTypeNameAttribute;
-                if (nameAttr != null)
-                    addMenuOptions.Add($"Add {nameAttr.Name}");
-                else
-                    addMenuOptions.Add($"Add {type.Name}");
+
+                var name = nameAttr != null ? nameAttr.Name : type.Name;
+                rendererValueNames.Add(name);
+                dropDownLabels.Add($"Add {name}");
+
+                var sizeAttr = type.GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
+                rendererValueLengths.Add(name, sizeAttr != null ? sizeAttr.Length : 0);
             }
         }
 
@@ -85,13 +91,11 @@ namespace UnityEditor.RSUVBitPacker
             var sum = target.RendererProperties.Sum(p => p.Length);
 
             var menu = new GenericMenu();
-            for (int optionIndex = 0; optionIndex < addMenuOptions.Count; optionIndex++)
+            for (int optionIndex = 0; optionIndex < dropDownLabels.Count; optionIndex++)
             {
-                string optionText = addMenuOptions[optionIndex];
-
+                string optionText = dropDownLabels[optionIndex];
                 int index = optionIndex;
-                var lengthAttr = rendererValueTypes[index].GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
-                bool optionEnabled = lengthAttr == null || sum + lengthAttr.Length <= 32;
+                bool optionEnabled = sum + rendererValueLengths[rendererValueNames[index]] <= 32;
 
                 if (optionEnabled)
                 {
