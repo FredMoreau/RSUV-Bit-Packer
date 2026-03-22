@@ -37,7 +37,6 @@ namespace UnityEditor.RSUVBitPacker
             EditorGUILayout.EndHorizontal();
 
             serializedObject.ApplyModifiedProperties();
-            // TODO : propagate to RSUV Property Packers using this
         }
 
         void CreateShaderInclude()

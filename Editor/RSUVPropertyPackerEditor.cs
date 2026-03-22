@@ -17,6 +17,11 @@ namespace UnityEditor.RSUVBitPacker
             propertySheetProp = serializedObject.FindProperty("_propertySheet");
             rendererPropertiesProp = serializedObject.FindProperty("rendererProperties");
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
+
+            var ps = propertySheetProp.objectReferenceValue as RSUVPropertySheet;
+            var pp = target as RSUVPropertyPacker;
+            if (!pp.Match(ps) && EditorUtility.DisplayDialog("Renderer Property Sheet", "The list of Renderer Properties is out of sync.\nDo you want to update it?", "Yes", "No"))
+                pp.UpdadePropertyList();
         }
 
         bool showProp = true;
@@ -28,8 +33,8 @@ namespace UnityEditor.RSUVBitPacker
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedProperties();
-                (target as RSUVPropertyPacker).UpdadePropertyList();
-                //serializedObject.Update();
+                if (propertySheetProp.objectReferenceValue != null)
+                    (target as RSUVPropertyPacker).UpdadePropertyList();
             }
 
             if (propertySheetProp.objectReferenceValue == null)

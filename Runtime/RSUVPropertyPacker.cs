@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using UnityEditor;
+using static UnityEngine.GraphicsBuffer;
 
 namespace UnityEngine.RSUVBitPacker
 {
@@ -7,7 +9,7 @@ namespace UnityEngine.RSUVBitPacker
     public class RSUVPropertyPacker : MonoBehaviour, IRendererProperties
     {
         [SerializeField]
-        RSUVPropertySheet _propertySheet;
+        internal RSUVPropertySheet _propertySheet;
 
         [SerializeField]
         Renderer _renderer;
@@ -63,15 +65,52 @@ namespace UnityEngine.RSUVBitPacker
             _isDirty = true;
         }
 
-        private void OnDestroy()
-        {
-            
-        }
-
-        private void OnValidate()
+#if UNITY_EDITOR
+        internal void OnValidate()
         {
             Apply();
         }
+
+        internal bool Match(RSUVPropertySheet propertySheet)
+        {
+            bool match = true;
+            if (propertySheet != null)
+            {
+                if (rendererProperties.Count == propertySheet.rendererProperties.Count)
+                {
+                    for (int i = 0; i < propertySheet.rendererProperties.Count; i++)
+                    {
+                        if (this.rendererProperties[i].ValueType != propertySheet.rendererProperties[i].ValueType ||
+                            rendererProperties[i].Name != propertySheet.rendererProperties[i].Name)
+                        {
+                            match = false;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    match = false;
+                }
+            }
+            return match;
+        }
+
+        internal void UpdadePropertyList()
+        {
+            if (_propertySheet != null)
+            {
+                Undo.RecordObject(this, "Update Renderer Properties");
+                rendererProperties.Clear();
+                foreach (RendererPropertyBase property in _propertySheet.rendererProperties)
+                {
+                    var clone = property.Clone();
+                    rendererProperties.Add(clone);
+                }
+                Apply();
+            }
+        }
+#endif
 
         private void OnDidApplyAnimationProperties()
         {
@@ -81,19 +120,6 @@ namespace UnityEngine.RSUVBitPacker
         private void LateUpdate()
         {
             ApplyPropertiesIfDirty();
-        }
-
-        internal void UpdadePropertyList()
-        {
-            rendererProperties.Clear();
-            if (_propertySheet != null)
-            {
-                foreach (RendererPropertyBase property in _propertySheet.rendererProperties)
-                {
-                    var clone = property.Clone();
-                    rendererProperties.Add(clone);
-                }
-            }
         }
 
         private void ApplyPropertiesIfDirty()
