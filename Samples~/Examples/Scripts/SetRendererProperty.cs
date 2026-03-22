@@ -10,7 +10,7 @@ public class SetRendererProperty : MonoBehaviour
     private void Awake()
     {
         propertyPacker = GetComponent<RSUVPropertyPacker>();
-        propertyId = propertyPacker.GetPropertyId("Override Color");
+        propertyId = propertyPacker.GetPropertyIndex("Override Color");
     }
 
     private void OnMouseEnter()

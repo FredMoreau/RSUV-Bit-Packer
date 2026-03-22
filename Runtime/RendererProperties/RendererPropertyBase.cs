@@ -12,8 +12,6 @@ namespace UnityEngine.RSUVBitPacker
         public abstract void SetValue(object value);
         public abstract object GetValue();
 
-        public abstract event Action<object> ValueChanged;
-
         public abstract uint Length { get; }
         public abstract uint Data { get; }
         public abstract string hlslType { get; }
@@ -31,15 +29,12 @@ namespace UnityEngine.RSUVBitPacker
         public override void SetValue(object value)
         {
             Value = (T)value;
-            ValueChanged?.Invoke(Value);
         }
 
         public override object GetValue()
         {
             return Value;
         }
-
-        public override event Action<object> ValueChanged;
 
         public override string hlslType { get => ""; }
         public override string hlslDecoder(string paramName, uint bitIndex) => "";

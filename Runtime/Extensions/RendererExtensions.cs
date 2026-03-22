@@ -29,5 +29,15 @@ namespace UnityEngine.RSUVBitPacker
                     throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value");
             }
         }
+
+        public static uint GetShaderUserValue(this Renderer renderer) => renderer switch
+        {
+            MeshRenderer meshRenderer => meshRenderer.GetShaderUserValue(),
+            SkinnedMeshRenderer skinnedMeshRenderer => skinnedMeshRenderer.GetShaderUserValue(),
+            SpriteRenderer spriteRenderer => spriteRenderer.GetShaderUserValue(),
+            SpriteShapeRenderer spriteShapeRenderer => spriteShapeRenderer.GetShaderUserValue(),
+            TilemapRenderer tilemapRenderer => tilemapRenderer.GetShaderUserValue(),
+            _ => throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value")
+        };
     }
 }

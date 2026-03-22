@@ -17,20 +17,23 @@ namespace UnityEngine.RSUVBitPacker
 
         public List<RendererPropertyBase> RendererProperties => rendererProperties;
 
+        List<RendererPropertyBase> dirtyProperties = new();
+
         public void Add(RendererPropertyBase property)
         {
             rendererProperties.Add(property);
         }
 
+        bool _isDirty;
+
         public void TrySetValue<T>(string propertyName, T value) where T : struct
         {
-            var prop = rendererProperties.Find(x => x.Name == propertyName);
-            if (prop == null || prop.ValueType != typeof(T))
-                return;
-            prop.SetValue(value);
+            int index = GetPropertyIndex(propertyName);
+            if (index >= 0)
+                TrySetValue(index, value);
         }
 
-        public int GetPropertyId(string propertyName)
+        public int GetPropertyIndex(string propertyName)
         {
             var prop = rendererProperties.Find(x => x.Name == propertyName);
             if (prop == null)
@@ -39,24 +42,19 @@ namespace UnityEngine.RSUVBitPacker
                 return rendererProperties.IndexOf(prop);
         }
 
-        public void TrySetValue<T>(int propertyId, T value) where T : struct
+        public void TrySetValue<T>(int propertyIndex, T value) where T : struct
         {
-            var prop = rendererProperties[propertyId];
+            var prop = rendererProperties[propertyIndex];
             if (prop == null || prop.ValueType != typeof(T))
                 return;
             prop.SetValue(value);
+            dirtyProperties.Add(prop);
+            _isDirty = true;
         }
 
-        private void Awake()
-        {
-            foreach (var property in rendererProperties)
-            {
-                property.ValueChanged += (x) =>
-                {
-                    Apply();
-                };
-            }
-        }
+        //private void Awake()
+        //{
+        //}
 
         private void OnDestroy()
         {
@@ -68,8 +66,6 @@ namespace UnityEngine.RSUVBitPacker
 
         //}
 
-        // TODO : events and accessors
-
         private void OnValidate()
         {
             Apply();
@@ -78,6 +74,11 @@ namespace UnityEngine.RSUVBitPacker
         private void OnDidApplyAnimationProperties()
         {
             Apply();
+        }
+
+        private void LateUpdate()
+        {
+            ApplyPropertiesIfDirty();
         }
 
         internal void UpdadePropertyList()
@@ -90,6 +91,28 @@ namespace UnityEngine.RSUVBitPacker
                     var clone = property.Clone();
                     rendererProperties.Add(clone);
                 }
+            }
+        }
+
+        void ApplyPropertiesIfDirty()
+        {
+            if (_isDirty)
+            {
+                uint rsuv = _renderer.GetShaderUserValue();
+                int offset = 0;
+                foreach (RendererPropertyBase prop in rendererProperties)
+                {
+                    if (dirtyProperties.Contains(prop))
+                    {
+                        uint mask = ((1u << (int)prop.Length) - 1u) << offset;
+                        rsuv &= ~mask;
+                        rsuv |= prop.Data << offset;
+                        dirtyProperties.Remove(prop);
+                    }
+                    offset += (int)prop.Length;
+                }
+                _renderer.SetShaderUserValue(rsuv);
+                _isDirty = false;
             }
         }
 
