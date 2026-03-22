@@ -108,6 +108,7 @@ namespace UnityEditor.RSUVBitPacker
                 {
                     menu.AddItem(new GUIContent(optionText), false, () =>
                     {
+                        Undo.RecordObject(target as UnityEngine.Object, optionText);
                         var t = rendererValueTypes[index];
                         var o = Activator.CreateInstance(t) as RendererPropertyBase;
                         target.Add(o);
