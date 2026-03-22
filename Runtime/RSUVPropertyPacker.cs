@@ -22,9 +22,50 @@ namespace UnityEngine.RSUVBitPacker
             rendererProperties.Add(property);
         }
 
+        public void TrySetValue<T>(string propertyName, T value) where T : struct
+        {
+            var prop = rendererProperties.Find(x => x.Name == propertyName);
+            if (prop == null || prop.ValueType != typeof(T))
+                return;
+            prop.SetValue(value);
+        }
+
+        public int GetPropertyId(string propertyName)
+        {
+            var prop = rendererProperties.Find(x => x.Name == propertyName);
+            if (prop == null)
+                return -1;
+            else
+                return rendererProperties.IndexOf(prop);
+        }
+
+        public void TrySetValue<T>(int propertyId, T value) where T : struct
+        {
+            var prop = rendererProperties[propertyId];
+            if (prop == null || prop.ValueType != typeof(T))
+                return;
+            prop.SetValue(value);
+        }
+
+        private void Awake()
+        {
+            foreach (var property in rendererProperties)
+            {
+                property.ValueChanged += (x) =>
+                {
+                    Apply();
+                };
+            }
+        }
+
+        private void OnDestroy()
+        {
+            
+        }
+
         //public void UpdateProperties()
         //{
-            
+
         //}
 
         // TODO : events and accessors

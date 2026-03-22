@@ -39,7 +39,7 @@ namespace UnityEditor.RSUVBitPacker
         void CreateShaderInclude()
         {
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
-            AssetDatabase.CreateAsset(new TextAsset(), assetPath);
+            //AssetDatabase.CreateAsset(new TextAsset(), assetPath);
             using (StreamWriter sw = File.CreateText(assetPath))
             {
                 
