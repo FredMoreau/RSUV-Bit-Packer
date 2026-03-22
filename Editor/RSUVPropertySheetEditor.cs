@@ -12,6 +12,7 @@ namespace UnityEditor.RSUVBitPacker
         RendererPropertyListView rendererPropertyListView;
 
         SerializedProperty shaderIncludeProp;
+        [SerializeField] bool splitFunctions; // TODO store in meta
 
         private void OnEnable()
         {
@@ -28,21 +29,30 @@ namespace UnityEditor.RSUVBitPacker
         {
             serializedObject.Update();
             rendererPropertyListView.DoLayoutList();
-            EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(shaderIncludeProp);
-            if (GUILayout.Button(new GUIContent("NEW")))
+
+            EditorGUILayout.BeginHorizontal();
+            splitFunctions = GUILayout.Toggle(splitFunctions, new GUIContent("Split Functions", "Shall Properties be split in individual functions."));
+            if (shaderIncludeProp.objectReferenceValue == null && GUILayout.Button(new GUIContent("NEW")))
                 CreateShaderInclude();
+            else if (GUILayout.Button(new GUIContent("Update")))
+                UpdateShaderInclude();
             EditorGUILayout.EndHorizontal();
+
             serializedObject.ApplyModifiedProperties();
+            // TODO : propagate to RSUV Property Packers using this
         }
 
         void CreateShaderInclude()
         {
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
-            //AssetDatabase.CreateAsset(new TextAsset(), assetPath);
+            var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
+
             using (StreamWriter sw = File.CreateText(assetPath))
             {
-                
+                sw.NewLine = "\n";
+                string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctions);
+                sw.Write(include);
             }
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             ShaderInclude incl = AssetDatabase.LoadAssetAtPath<ShaderInclude>(assetPath);
@@ -51,8 +61,6 @@ namespace UnityEditor.RSUVBitPacker
 
         void UpdateShaderInclude()
         {
-            //serializedObject.ApplyModifiedProperties();
-            //serializedObject.Update();
             ShaderInclude shaderInclude = (ShaderInclude)shaderIncludeProp.objectReferenceValue;
             if (shaderInclude != null)
             {
@@ -60,49 +68,12 @@ namespace UnityEditor.RSUVBitPacker
                 var name = shaderInclude.name;
 
                 var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
-                //Debug.Log(rendererProperties.Count);
-
-                TextInfo info = CultureInfo.CurrentCulture.TextInfo;
-                List<(string type, string name)> parameters = new();
-                foreach (RendererPropertyBase prop in rendererProperties)
-                {
-                    string paramName;
-                    if (string.IsNullOrWhiteSpace(prop.Name))
-                        paramName = $"Empty{rendererProperties.IndexOf(prop)}";
-                    else
-                        paramName = info.ToTitleCase(prop.Name).Replace(" ", "");
-                    parameters.Add(new(prop.hlslType, paramName));
-                }
-
-                string parametersStr = "\n";
-                for (int p = 0; p < parameters.Count; p++)
-                {
-                    parametersStr += $"out {parameters[p].type} {parameters[p].name}";
-                    if (p < parameters.Count - 1)
-                        parametersStr += ",\n";
-                }
 
                 using (StreamWriter sw = new StreamWriter(path))
                 {
-                    sw.WriteLine("#include \"ShaderApiReflectionSupport.hlsl\"\n");
-                    string functionHints = @$"/// <funchints>
-///     <sg:ProviderKey>{name}</sg:ProviderKey>
-/// </funchints>
-";
-                    sw.Write(functionHints);
-                    sw.WriteLine("UNITY_EXPORT_REFLECTION");
-                    string functionSignature = $"void {name}({parametersStr})";
-                    sw.WriteLine(functionSignature);
-                    sw.WriteLine("{");
-                    sw.WriteLine("    uint rsuv = unity_RendererUserValue;");
-                    uint offset = 0;
-                    for (int i = 0; i < rendererProperties.Count; i++)
-                    {
-                        var prop = rendererProperties[i];
-                        sw.WriteLine($"    {prop.hlslDecoder(parameters[i].name, offset)}");
-                        offset += prop.Length;
-                    }
-                    sw.WriteLine("}");
+                    sw.NewLine = "\n";
+                    string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctions);
+                    sw.Write(include);
                 }
 
                 AssetDatabase.Refresh();

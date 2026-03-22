@@ -29,9 +29,9 @@ namespace UnityEngine.RSUVBitPacker
 
         public override string hlslType => "half3";
         public override string hlslDecoder(string paramName, uint bitIndex) => @$"{paramName} = half3(
-    (rsuv >> {bitIndex}) & 0xFF,
-    (rsuv >> {bitIndex}+8) & 0xFF,
-    (rsuv >> {bitIndex}+16) & 0xFF
-) / 255.0;";
+        (rsuv >> {bitIndex}) & 0xFF,
+        (rsuv >> {bitIndex}+8) & 0xFF,
+        (rsuv >> {bitIndex}+16) & 0xFF
+    ) / 255.0;";
     }
 }
