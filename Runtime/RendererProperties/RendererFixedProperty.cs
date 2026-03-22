@@ -2,7 +2,7 @@ using System;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [Serializable, RendererValueTypeName("Fixed Value"), RendererValueTypeLength(8)]
+    [Serializable, RendererValueTypeName("Float8"), RendererValueTypeLength(8)]
     public class RendererFixedProperty : RendererProperty<float>
     {
         [SerializeField, Range(0f, 1f)]

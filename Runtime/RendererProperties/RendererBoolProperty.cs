@@ -2,7 +2,7 @@ using System;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [Serializable, RendererValueTypeName("Bool"), RendererValueTypeLength(1)]
+    [Serializable, RendererValueTypeName("Boolean"), RendererValueTypeLength(1)]
     public class RendererBoolProperty : RendererProperty<bool>
     {
         [SerializeField] public bool _value;

@@ -2,7 +2,7 @@ using System;
 
 namespace UnityEngine.RSUVBitPacker.Samples
 {
-    [Serializable, RendererValueTypeName("Fixed HS"), RendererValueTypeLength(16)]
+    [Serializable, RendererValueTypeName("Color16 (HS)"), RendererValueTypeLength(16)]
     public class RendererFixedHSProperty : RendererProperty<Color>
     {
         [SerializeField] public Color _value;

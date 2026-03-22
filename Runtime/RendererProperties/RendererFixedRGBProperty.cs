@@ -2,7 +2,7 @@ using System;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [Serializable, RendererValueTypeName("Fixed RGB"), RendererValueTypeLength(24)]
+    [Serializable, RendererValueTypeName("Color24 (RGB)"), RendererValueTypeLength(24)]
     public class RendererFixedRGBProperty : RendererProperty<Color>
     {
         [SerializeField] public Color _value;
