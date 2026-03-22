@@ -12,6 +12,8 @@ namespace UnityEngine.RSUVBitPacker
 
         [SerializeField]
         ShaderInclude shaderInclude;
+        [SerializeField]
+        bool splitFunctions;
 
         void IRendererProperties.Add(RendererPropertyBase property)
         {

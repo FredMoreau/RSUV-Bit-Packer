@@ -28,9 +28,9 @@ namespace UnityEditor.RSUVBitPacker
             return indent;
         }
 
-        static string ParameterDeclaration(string type, string name)
+        static string ParameterDeclaration(string type, string name, int indent = 1)
         {
-            return $"{Indent(1)}out {type} {name}";
+            return $"{Indent(indent)}out {type} {name}";
         }
 
         static string ParameterBlockDeclaration(List<(string type, string name)> parameters)
@@ -38,7 +38,7 @@ namespace UnityEditor.RSUVBitPacker
             string paramBlock = parameters.Count > 1 ? "(\n" : "(";
             for(int i = 0; i < parameters.Count; i++)
             {
-                paramBlock += $"{ParameterDeclaration(parameters[i].type, parameters[i].name)}";
+                paramBlock += $"{ParameterDeclaration(parameters[i].type, parameters[i].name, parameters.Count > 1 ? 1 : 0)}";
                 paramBlock += i < parameters.Count - 1 ? ",\n" : ")\n";
             }
             return paramBlock;

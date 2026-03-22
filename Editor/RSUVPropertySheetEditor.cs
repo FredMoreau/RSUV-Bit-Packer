@@ -10,7 +10,7 @@ namespace UnityEditor.RSUVBitPacker
         RendererPropertyListView rendererPropertyListView;
 
         SerializedProperty shaderIncludeProp;
-        [SerializeField] bool splitFunctions; // TODO store in meta
+        SerializedProperty splitFunctionsProp;
 
         private void OnEnable()
         {
@@ -20,16 +20,25 @@ namespace UnityEditor.RSUVBitPacker
                 UpdateShaderInclude();
             };
             shaderIncludeProp = serializedObject.FindProperty("shaderInclude");
+            splitFunctionsProp = serializedObject.FindProperty("splitFunctions");
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
+
+            // TODO: live update
+            //EditorGUI.BeginChangeCheck();
             rendererPropertyListView.DoLayoutList();
+            //if (EditorGUI.EndChangeCheck())
+            //{
+            //    serializedObject.ApplyModifiedProperties();
+            //    UpdateShaderInclude();
+            //}
             EditorGUILayout.PropertyField(shaderIncludeProp);
 
             EditorGUILayout.BeginHorizontal();
-            splitFunctions = GUILayout.Toggle(splitFunctions, new GUIContent("Split Functions", "Shall Properties be split in individual functions."));
+            EditorGUILayout.PropertyField(splitFunctionsProp, new GUIContent("Split Functions", "Shall Properties be split in individual functions."));
             if (shaderIncludeProp.objectReferenceValue == null && GUILayout.Button(new GUIContent("NEW")))
                 CreateShaderInclude();
             else if (GUILayout.Button(new GUIContent("Update")))
@@ -47,7 +56,7 @@ namespace UnityEditor.RSUVBitPacker
             using (StreamWriter sw = File.CreateText(assetPath))
             {
                 sw.NewLine = "\n";
-                string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctions);
+                string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctionsProp.boolValue);
                 sw.Write(include);
             }
             AssetDatabase.Refresh(ImportAssetOptions.Default);
@@ -68,7 +77,7 @@ namespace UnityEditor.RSUVBitPacker
                 using (StreamWriter sw = new StreamWriter(path))
                 {
                     sw.NewLine = "\n";
-                    string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctions);
+                    string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctionsProp.boolValue);
                     sw.Write(include);
                 }
 
