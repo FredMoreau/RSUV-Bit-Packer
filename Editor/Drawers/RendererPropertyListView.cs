@@ -22,16 +22,23 @@ namespace UnityEditor.RSUVBitPacker
         public OnChangeDelegate OnChangeCallback;
 
         static List<Type> rendererValueTypes = new();
+        static List<string> addMenuOptions = new();
         [InitializeOnLoadMethod]
-        static void GetMatchTypes()
+        static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
-            rendererValueTypes.Clear();
+            addMenuOptions.Clear();
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes().Where(x => typeof(RendererPropertyBase).IsAssignableFrom(x))).ToList();
             foreach (var type in types)
             {
                 if (type == typeof(RendererPropertyBase) || type == typeof(RendererProperty<>))
                     continue;
+
                 rendererValueTypes.Add(type);
+                var nameAttr = type.GetCustomAttributes(typeof(RendererValueTypeNameAttribute), false).FirstOrDefault() as RendererValueTypeNameAttribute;
+                if (nameAttr != null)
+                    addMenuOptions.Add($"Add {nameAttr.Name}");
+                else
+                    addMenuOptions.Add($"Add {type.Name}");
             }
         }
 
@@ -75,16 +82,6 @@ namespace UnityEditor.RSUVBitPacker
 
         void AddDropdown(Rect buttonRect, ReorderableList list)
         {
-            List<string> addMenuOptions = new();
-            foreach (Type type in rendererValueTypes)
-            {
-                var nameAttr = type.GetCustomAttributes(typeof(RendererValueTypeNameAttribute), false).FirstOrDefault() as RendererValueTypeNameAttribute;
-                if (nameAttr != null)
-                    addMenuOptions.Add($"Add {nameAttr.Name}");
-                else
-                    addMenuOptions.Add($"Add {type.Name}");
-            }
-
             var sum = target.RendererProperties.Sum(p => p.Length);
 
             var menu = new GenericMenu();
