@@ -27,6 +27,11 @@
             "displayName": "Examples",
             "description": "Examples",
             "path": "Samples~/Examples"
+        },
+        {
+            "displayName": "Visual Scripting",
+            "description": "Visual Scripting",
+            "path": "Samples~/Visual Scripting"
         }
     ],
     "hideInEditor": false

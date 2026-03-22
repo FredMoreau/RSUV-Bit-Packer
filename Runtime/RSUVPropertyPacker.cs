@@ -15,16 +15,27 @@ namespace UnityEngine.RSUVBitPacker
         [SerializeReference]
         internal List<RendererPropertyBase> rendererProperties = new();
 
-        public List<RendererPropertyBase> RendererProperties => rendererProperties;
+        List<RendererPropertyBase> IRendererProperties.RendererProperties => rendererProperties;
 
         List<RendererPropertyBase> dirtyProperties = new();
 
-        public void Add(RendererPropertyBase property)
+        void IRendererProperties.Add(RendererPropertyBase property)
         {
             rendererProperties.Add(property);
         }
 
         bool _isDirty;
+
+        // For Visual Scripting only!
+        public void TrySetValue(int propertyIndex, object value)
+        {
+            var prop = rendererProperties[propertyIndex];
+            if (prop == null || !prop.ValueType.IsAssignableFrom(value.GetType()))
+                return;
+            prop.SetValue(value);
+            dirtyProperties.Add(prop);
+            _isDirty = true;
+        }
 
         public void TrySetValue<T>(string propertyName, T value) where T : struct
         {
@@ -52,19 +63,10 @@ namespace UnityEngine.RSUVBitPacker
             _isDirty = true;
         }
 
-        //private void Awake()
-        //{
-        //}
-
         private void OnDestroy()
         {
             
         }
-
-        //public void UpdateProperties()
-        //{
-
-        //}
 
         private void OnValidate()
         {
@@ -86,7 +88,7 @@ namespace UnityEngine.RSUVBitPacker
             rendererProperties.Clear();
             if (_propertySheet != null)
             {
-                foreach (RendererPropertyBase property in _propertySheet.RendererProperties)
+                foreach (RendererPropertyBase property in _propertySheet.rendererProperties)
                 {
                     var clone = property.Clone();
                     rendererProperties.Add(clone);
@@ -94,7 +96,7 @@ namespace UnityEngine.RSUVBitPacker
             }
         }
 
-        void ApplyPropertiesIfDirty()
+        private void ApplyPropertiesIfDirty()
         {
             if (_isDirty)
             {
@@ -116,7 +118,7 @@ namespace UnityEngine.RSUVBitPacker
             }
         }
 
-        public void Apply()
+        private void Apply()
         {
             if (_renderer == null)
                 return;

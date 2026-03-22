@@ -8,19 +8,14 @@ namespace UnityEngine.RSUVBitPacker
     {
         [SerializeReference]
         internal List<RendererPropertyBase> rendererProperties = new();
-        public List<RendererPropertyBase> RendererProperties => rendererProperties;
+        List<RendererPropertyBase> IRendererProperties.RendererProperties => rendererProperties;
 
         [SerializeField]
         ShaderInclude shaderInclude;
 
-        public void Add(RendererPropertyBase property)
+        void IRendererProperties.Add(RendererPropertyBase property)
         {
             rendererProperties.Add(property);
         }
-
-        //public void UpdateProperties()
-        //{
-            
-        //}
     }
 }

@@ -6,6 +6,9 @@ namespace UnityEngine.RSUVBitPacker
     {
         List<RendererPropertyBase> RendererProperties { get; }
         void Add(RendererPropertyBase property);
-        //void UpdateProperties();
+
+        // Could use a Remove and Indexer?
+        //void Remove(RendererPropertyBase property);
+        //RendererPropertyBase this[int i] { get; set; }
     }
 }

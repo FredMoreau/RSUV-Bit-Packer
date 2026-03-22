@@ -23,7 +23,7 @@ namespace UnityEditor.RSUVBitPacker
 
         static List<Type> rendererValueTypes = new();
         static List<string> dropDownLabels = new();
-        static List<string> rendererValueNames = new();
+        static List<string> rendererValueTypeNames = new();
         static Dictionary<string, uint> rendererValueLengths = new();
         [InitializeOnLoadMethod]
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
@@ -36,15 +36,14 @@ namespace UnityEditor.RSUVBitPacker
                     continue;
 
                 rendererValueTypes.Add(type);
+                rendererValueTypeNames.Add(type.Name);
 
                 var nameAttr = type.GetCustomAttributes(typeof(RendererValueTypeNameAttribute), false).FirstOrDefault() as RendererValueTypeNameAttribute;
-
                 var name = nameAttr != null ? nameAttr.Name : type.Name;
-                rendererValueNames.Add(name);
                 dropDownLabels.Add($"Add {name}");
 
                 var sizeAttr = type.GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
-                rendererValueLengths.Add(name, sizeAttr != null ? sizeAttr.Length : 0);
+                rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 0);
             }
         }
 
@@ -88,6 +87,14 @@ namespace UnityEditor.RSUVBitPacker
 
         void AddDropdown(Rect buttonRect, ReorderableList list)
         {
+            // This is ugly!
+            //uint sum = 0;
+            //for (int i = 0; i < rendererPropertiesProp.arraySize; i++)
+            //{
+            //    var prop = serializedObject.FindProperty($"rendererProperties.Array.data[{i}]").managedReferenceValue as RendererPropertyBase;
+            //    if (prop != null)
+            //        sum += prop.Length;
+            //}
             var sum = target.RendererProperties.Sum(p => p.Length);
 
             var menu = new GenericMenu();
@@ -95,7 +102,7 @@ namespace UnityEditor.RSUVBitPacker
             {
                 string optionText = dropDownLabels[optionIndex];
                 int index = optionIndex;
-                bool optionEnabled = sum + rendererValueLengths[rendererValueNames[index]] <= 32;
+                bool optionEnabled = sum + rendererValueLengths[rendererValueTypeNames[index]] <= 32;
 
                 if (optionEnabled)
                 {
@@ -104,7 +111,6 @@ namespace UnityEditor.RSUVBitPacker
                         var t = rendererValueTypes[index];
                         var o = Activator.CreateInstance(t) as RendererPropertyBase;
                         target.Add(o);
-                        //target.UpdateProperties();
                     });
                 }
                 else
@@ -128,7 +134,6 @@ namespace UnityEditor.RSUVBitPacker
         void OnChange(ReorderableList list)
         {
             serializedObject.ApplyModifiedProperties();
-            //target.UpdateProperties();
             OnChangeCallback?.Invoke();
         }
     }
