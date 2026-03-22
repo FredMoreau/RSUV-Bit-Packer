@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Android;
 using UnityEngine.RSUVBitPacker;
 
 [RequireComponent(typeof(RSUVPropertyPacker))]
@@ -13,14 +12,15 @@ public class RandomiizeProperty : MonoBehaviour
     private void Awake()
     {
         propertyPacker = GetComponent<RSUVPropertyPacker>();
-        colorId = propertyPacker.GetPropertyIndex("Color");
+        colorId = propertyPacker.GetPropertyIndex("Color Gradient");
         emissionId = propertyPacker.GetPropertyIndex("Emission");
     }
 
     private void Start()
     {
-        var color = Color.HSVToRGB(Random.Range(0f, 1f), Random.Range(.5f, 1f), Random.Range(.8f, 1f));
-        propertyPacker.TrySetValue(colorId, color);
+        //var color = Color.HSVToRGB(Random.Range(0f, 1f), Random.Range(.5f, 1f), Random.Range(.8f, 1f));
+        //propertyPacker.TrySetValue(colorId, color);
+        propertyPacker.TrySetValue(colorId, Random.Range(0f, 1f));
     }
 
     private void OnCollisionEnter(Collision collision)
