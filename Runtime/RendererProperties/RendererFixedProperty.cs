@@ -12,7 +12,7 @@ namespace UnityEngine.RSUVBitPacker
 
         public override uint Length => 8;
 
-        public override uint Data => (uint)Math.Round(Math.Clamp(_value, 0f, 1f) * 255f);
+        public override uint Data => (uint)Mathf.Round(Math.Clamp(_value, 0f, 1f) * 255f);
 
         public override string hlslType => "half";
 
