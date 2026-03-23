@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine.Serialization;
-using static UnityEngine.GraphicsBuffer;
 
 namespace UnityEngine.RSUVBitPacker
 {

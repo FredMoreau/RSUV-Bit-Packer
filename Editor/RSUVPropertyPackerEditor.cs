@@ -33,12 +33,34 @@ namespace UnityEditor.RSUVBitPacker
             {
                 serializedObject.ApplyModifiedProperties();
                 if (propertySheetProp.objectReferenceValue != null)
-                    (target as RSUVPropertyPacker).UpdadePropertyList();
+                    pp.UpdadePropertyList();
             }
 
             if (propertySheetProp.objectReferenceValue == null)
             {
                 rendererPropertyListView.DoLayoutList();
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("Save as Property Sheet", EditorStyles.miniButton, GUILayout.Width(180)))
+                {
+                    var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", pp.name, "asset", "Save Renderer Property Sheet");
+                    if (path != null)
+                    {
+                        pp.UpdadePropertyList();
+                        var propertySheet = CreateInstance<RSUVPropertySheet>();
+                        propertySheet.rendererProperties.Clear();
+                        foreach (RendererPropertyBase property in pp.rendererProperties)
+                        {
+                            var clone = property.Clone();
+                            propertySheet.rendererProperties.Add(clone);
+                        }
+                        AssetDatabase.CreateAsset(propertySheet, path);
+                        Undo.RecordObject(target, "Set Property Sheet.");
+                        propertySheetProp.objectReferenceValue = propertySheet;
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
             }
             else
             {
