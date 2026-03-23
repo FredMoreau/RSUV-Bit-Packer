@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEditor;
+using UnityEngine.Serialization;
 using static UnityEngine.GraphicsBuffer;
 
 namespace UnityEngine.RSUVBitPacker
@@ -11,8 +12,8 @@ namespace UnityEngine.RSUVBitPacker
         [SerializeField]
         internal RSUVPropertySheet _propertySheet;
 
-        [SerializeField]
-        Renderer _renderer;
+        [SerializeField, FormerlySerializedAs("_renderer")]
+        Renderer[] _renderers;
 
         [SerializeReference]
         internal List<RendererPropertyBase> rendererProperties = new();
@@ -20,6 +21,7 @@ namespace UnityEngine.RSUVBitPacker
         List<RendererPropertyBase> IRendererProperties.RendererProperties => rendererProperties;
 
         List<RendererPropertyBase> dirtyProperties = new();
+        uint RendererUserValue {  get; set; }
 
         void IRendererProperties.Add(RendererPropertyBase property)
         {
@@ -67,6 +69,11 @@ namespace UnityEngine.RSUVBitPacker
         }
 
 #if UNITY_EDITOR
+        private void Reset()
+        {
+            _renderers = GetComponentsInChildren<Renderer>();
+        }
+
         internal void OnValidate()
         {
             Apply();
@@ -127,7 +134,7 @@ namespace UnityEngine.RSUVBitPacker
         {
             if (_isDirty)
             {
-                uint rsuv = _renderer.GetShaderUserValue();
+                uint rsuv = RendererUserValue;
                 int offset = 0;
                 foreach (RendererPropertyBase prop in rendererProperties)
                 {
@@ -140,19 +147,22 @@ namespace UnityEngine.RSUVBitPacker
                     }
                     offset += (int)prop.Length;
                 }
-                _renderer.SetShaderUserValue(rsuv);
+                RendererUserValue = rsuv;
+                foreach (var renderer in _renderers)
+                    renderer.SetShaderUserValue(RendererUserValue);
                 _isDirty = false;
             }
         }
 
         private void Apply()
         {
-            if (_renderer == null)
+            if (_renderers == null || _renderers.Length == 0)
                 return;
 
-            uint rsuv = GatherValues();
+            RendererUserValue = GatherValues();
 
-            _renderer.SetShaderUserValue(rsuv);
+            for (int i = 0; i < _renderers.Length; i++)
+                _renderers[i].SetShaderUserValue(RendererUserValue);
         }
 
         private uint GatherValues()
