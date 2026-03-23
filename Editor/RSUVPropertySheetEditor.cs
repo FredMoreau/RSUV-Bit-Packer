@@ -59,7 +59,7 @@ namespace UnityEditor.RSUVBitPacker
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
             var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
 
-            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), name, rendererProperties, splitFunctionsProp.boolValue);
+            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue);
 
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             ShaderInclude incl = AssetDatabase.LoadAssetAtPath<ShaderInclude>(assetPath);

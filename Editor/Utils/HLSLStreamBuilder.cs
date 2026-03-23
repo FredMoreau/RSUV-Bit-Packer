@@ -7,6 +7,7 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
+    // TODO namespace + path
     public static class HLSLStreamBuilder
     {
         const string sfrapiInclude = "#include \"ShaderApiReflectionSupport.hlsl\"";
@@ -82,6 +83,7 @@ namespace UnityEditor.RSUVBitPacker
             List<(string type, string name)> parameters = new();
             List<string> assignments = new();
             uint index = 0;
+            uint offset = 0;
             foreach (RendererPropertyBase property in properties)
             {
                 string paramName;
@@ -91,8 +93,9 @@ namespace UnityEditor.RSUVBitPacker
                     paramName = cultureTextInfo.ToTitleCase(property.Name).Replace(" ", "");
 
                 parameters.Add(new(property.hlslType, paramName));
-                assignments.Add(property.hlslDecoder(paramName, index));
+                assignments.Add(property.hlslDecoder(paramName, offset));
                 index++;
+                offset += property.Length;
             }
 
             using (streamWriter)
