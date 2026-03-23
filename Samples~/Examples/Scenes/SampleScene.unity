@@ -173,7 +173,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 0}
-  _renderer: {fileID: 160140526}
+  _renderers:
+  - {fileID: 160140526}
   rendererProperties:
   - rid: 1700099458204696825
   - rid: 1700099458204696826
@@ -453,7 +454,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 11400000, guid: 4a58a27097023594e91cbff9d2077f65, type: 2}
-  _renderer: {fileID: 497348887}
+  _renderers:
+  - {fileID: 497348887}
   rendererProperties:
   - rid: 1700099461491720312
   - rid: 1700099461491720313
@@ -625,7 +627,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 0}
-  _renderer: {fileID: 820289720}
+  _renderers:
+  - {fileID: 820289720}
   rendererProperties:
   - rid: 1700099458204696825
   - rid: 1700099458204696826
@@ -781,7 +784,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 0}
-  _renderer: {fileID: 1227809583}
+  _renderers:
+  - {fileID: 1227809583}
   rendererProperties:
   - rid: 1700099458204696821
   - rid: 1700099458204696823
@@ -996,7 +1000,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 0}
-  _renderer: {fileID: 1790965321}
+  _renderers:
+  - {fileID: 1790965321}
   rendererProperties:
   - rid: 1700099458204696821
   - rid: 1700099458204696823

@@ -444,7 +444,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
   _propertySheet: {fileID: 0}
-  _renderer: {fileID: 1790965321}
+  _renderers:
+  - {fileID: 1790965321}
   rendererProperties:
   - rid: 1700099458204696821
   - rid: 1700099458204696823

@@ -17,7 +17,7 @@ namespace UnityEditor.RSUVBitPacker
 
         private void OnEnable()
         {
-            rendererProp = serializedObject.FindProperty("_renderer");
+            rendererProp = serializedObject.FindProperty("_renderers");
             propertySheetProp = serializedObject.FindProperty("_propertySheet");
             rendererPropertiesProp = serializedObject.FindProperty("rendererProperties");
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);

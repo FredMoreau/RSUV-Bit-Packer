@@ -25,6 +25,8 @@ namespace UnityEngine.RSUVBitPacker
                 case TilemapRenderer tilemapRenderer:
                     tilemapRenderer.SetShaderUserValue(value);
                     break;
+                case null:
+                    throw new NullReferenceException();
                 default:
                     throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value");
             }
@@ -37,6 +39,7 @@ namespace UnityEngine.RSUVBitPacker
             SpriteRenderer spriteRenderer => spriteRenderer.GetShaderUserValue(),
             SpriteShapeRenderer spriteShapeRenderer => spriteShapeRenderer.GetShaderUserValue(),
             TilemapRenderer tilemapRenderer => tilemapRenderer.GetShaderUserValue(),
+            null => throw new NullReferenceException(),
             _ => throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value")
         };
     }
