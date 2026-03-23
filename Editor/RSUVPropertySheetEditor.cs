@@ -39,10 +39,16 @@ namespace UnityEditor.RSUVBitPacker
 
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(splitFunctionsProp, new GUIContent("Split Functions", "Shall Properties be split in individual functions."));
-            if (shaderIncludeProp.objectReferenceValue == null && GUILayout.Button(new GUIContent("NEW")))
-                CreateShaderInclude();
-            else if (GUILayout.Button(new GUIContent("Update")))
-                UpdateShaderInclude();
+            if (shaderIncludeProp.objectReferenceValue == null)
+            {
+                if (GUILayout.Button(new GUIContent("Create")))
+                    CreateShaderInclude();
+            }
+            else
+            {
+                if (GUILayout.Button(new GUIContent("Update")))
+                    UpdateShaderInclude();
+            }
             EditorGUILayout.EndHorizontal();
 
             serializedObject.ApplyModifiedProperties();
@@ -53,12 +59,8 @@ namespace UnityEditor.RSUVBitPacker
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
             var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
 
-            using (StreamWriter sw = File.CreateText(assetPath))
-            {
-                sw.NewLine = "\n";
-                string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctionsProp.boolValue);
-                sw.Write(include);
-            }
+            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), name, rendererProperties, splitFunctionsProp.boolValue);
+
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             ShaderInclude incl = AssetDatabase.LoadAssetAtPath<ShaderInclude>(assetPath);
             shaderIncludeProp.objectReferenceValue = incl;
@@ -74,12 +76,7 @@ namespace UnityEditor.RSUVBitPacker
 
                 var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
 
-                using (StreamWriter sw = new StreamWriter(path))
-                {
-                    sw.NewLine = "\n";
-                    string include = HLSLStreamBuilder.ShaderInclude(name, rendererProperties, splitFunctionsProp.boolValue);
-                    sw.Write(include);
-                }
+                HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue);
 
                 AssetDatabase.Refresh();
             }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using UnityEngine;
 using UnityEngine.RSUVBitPacker;
 
@@ -12,12 +14,12 @@ namespace UnityEditor.RSUVBitPacker
         const string rsuvUniformName = "unity_RendererUserValue";
         static TextInfo cultureTextInfo = CultureInfo.CurrentCulture.TextInfo;
 
-        static string ReflectionFunctionHint(string functionName)
+        static void ReflectionFunctionHint(StreamWriter streamWriter, string functionName)
         {
-            return @$"/// <funchints>
+            streamWriter.Write(@$"/// <funchints>
 ///     <sg:ProviderKey>{functionName}</sg:ProviderKey>
 /// </funchints>
-";
+");
         }
 
         static string Indent(int level)
@@ -33,51 +35,49 @@ namespace UnityEditor.RSUVBitPacker
             return $"{Indent(indent)}out {type} {name}";
         }
 
-        static string ParameterBlockDeclaration(List<(string type, string name)> parameters)
+        static void ParameterBlockDeclaration(StreamWriter streamWriter, List<(string type, string name)> parameters)
         {
-            string paramBlock = parameters.Count > 1 ? "(\n" : "(";
+            var blockOpening = parameters.Count > 1 ? streamWriter.NewLine : string.Empty;
+            streamWriter.Write($"({blockOpening}");
+
             for(int i = 0; i < parameters.Count; i++)
             {
-                paramBlock += $"{ParameterDeclaration(parameters[i].type, parameters[i].name, parameters.Count > 1 ? 1 : 0)}";
-                paramBlock += i < parameters.Count - 1 ? ",\n" : ")\n";
+                streamWriter.Write($"{ParameterDeclaration(parameters[i].type, parameters[i].name, parameters.Count > 1 ? 1 : 0)}");
+                streamWriter.Write(i < parameters.Count - 1 ? $",{streamWriter.NewLine}" : $"){streamWriter.NewLine}");
             }
-            return paramBlock;
         }
 
-        static string FunctionBody(List<string> assignments)
+        static void FunctionBody(StreamWriter streamWriter, List<string> assignments)
         {
-            string funcBody = $"{Indent(1)}uint rsuv = {rsuvUniformName};\n";
+            streamWriter.WriteLine("{");
+            streamWriter.WriteLine($"{Indent(1)}uint rsuv = {rsuvUniformName};");
             for (int i = 0; i < assignments.Count; i++)
             {
-                funcBody += $"{Indent(1)}{assignments[i]}";
-                funcBody += i < assignments.Count - 1 ? "\n" : "";
+                streamWriter.Write($"{Indent(1)}{assignments[i]}{streamWriter.NewLine}");
             }
-            return funcBody;
+            streamWriter.WriteLine("}");
+            streamWriter.WriteLine(string.Empty);
         }
 
-        static string FunctionBlock(string funcName, List<(string type, string name)> parameters, List<string> assignments)
+        static void FunctionBlock(StreamWriter streamWriter, string funcName, List<(string type, string name)> parameters, List<string> assignments)
         {
-            string functionBlock = string.Empty;
-            functionBlock += $"void {funcName}";
-            functionBlock += ParameterBlockDeclaration(parameters);
-            functionBlock += $"{{\n{FunctionBody(assignments)}\n}}\n\n";
-            return functionBlock;
+            streamWriter.Write($"void {funcName}");
+            ParameterBlockDeclaration(streamWriter, parameters);
+            FunctionBody(streamWriter, assignments);
         }
 
-        static string ShaderFunction(string funcName, List<(string type, string name)> parameters, List<string> assignments)
+        static void ShaderFunction(StreamWriter streamWriter, string funcName, List<(string type, string name)> parameters, List<string> assignments)
         {
-            string shaderFunction = string.Empty;
 #if UNITY_6000_5_OR_NEWER
-            shaderFunction += ReflectionFunctionHint(funcName);
-            shaderFunction += $"{sfrapiMacro}\n";
-            shaderFunction += FunctionBlock(funcName, parameters, assignments);
+            ReflectionFunctionHint(streamWriter, funcName);
+            streamWriter.WriteLine(sfrapiMacro);
+            FunctionBlock(streamWriter, funcName, parameters, assignments);
 #else
-            shaderFunction += FunctionBlock($"{funcName}_half", parameters, assignments);
+            FunctionBlock($"{funcName}_half", parameters, assignments);
 #endif
-            return shaderFunction;
         }
 
-        internal static string ShaderInclude(string name, List<RendererPropertyBase> properties, bool splitFunctions = false)
+        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<RendererPropertyBase> properties, bool splitFunctions = false)
         {
             List<(string type, string name)> parameters = new();
             List<string> assignments = new();
@@ -95,24 +95,26 @@ namespace UnityEditor.RSUVBitPacker
                 index++;
             }
 
-            string shaderInclude = string.Empty;
+            using (streamWriter)
+            {
+                streamWriter.NewLine = Environment.NewLine;
+
 #if UNITY_6000_5_OR_NEWER
-            shaderInclude += $"{sfrapiInclude}\n\n";
+                streamWriter.WriteLine($"{sfrapiInclude}{streamWriter.NewLine}");
 #endif
 
-            if (splitFunctions)
-            {
-                for(int i = 0; i < parameters.Count; i++)
+                if (splitFunctions)
                 {
-                    shaderInclude += ShaderFunction($"{name}_{parameters[i].name}", new() { parameters[i] }, new() { assignments[i] });
+                    for(int i = 0; i < parameters.Count; i++)
+                    {
+                        ShaderFunction(streamWriter, $"{name}_{parameters[i].name}", new() { parameters[i] }, new() { assignments[i] });
+                    }
+                }
+                else
+                {
+                    ShaderFunction(streamWriter, name, parameters, assignments);
                 }
             }
-            else
-            {
-                shaderInclude += ShaderFunction(name, parameters, assignments);
-            }
-
-            return shaderInclude;
         }
     }
 }
