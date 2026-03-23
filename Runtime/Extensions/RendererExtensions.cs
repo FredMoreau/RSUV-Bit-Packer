@@ -16,6 +16,7 @@ namespace UnityEngine.RSUVBitPacker
                 case SkinnedMeshRenderer skinnedMeshRenderer:
                     skinnedMeshRenderer.SetShaderUserValue(value);
                     break;
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
                 case SpriteRenderer spriteRenderer:
                     spriteRenderer.SetShaderUserValue(value);
                     break;
@@ -25,6 +26,7 @@ namespace UnityEngine.RSUVBitPacker
                 case TilemapRenderer tilemapRenderer:
                     tilemapRenderer.SetShaderUserValue(value);
                     break;
+#endif
                 case null:
                     throw new NullReferenceException();
                 default:
@@ -36,9 +38,11 @@ namespace UnityEngine.RSUVBitPacker
         {
             MeshRenderer meshRenderer => meshRenderer.GetShaderUserValue(),
             SkinnedMeshRenderer skinnedMeshRenderer => skinnedMeshRenderer.GetShaderUserValue(),
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
             SpriteRenderer spriteRenderer => spriteRenderer.GetShaderUserValue(),
             SpriteShapeRenderer spriteShapeRenderer => spriteShapeRenderer.GetShaderUserValue(),
             TilemapRenderer tilemapRenderer => tilemapRenderer.GetShaderUserValue(),
+#endif
             null => throw new NullReferenceException(),
             _ => throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value")
         };
