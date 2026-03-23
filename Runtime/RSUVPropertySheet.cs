@@ -19,17 +19,5 @@ namespace UnityEngine.RSUVBitPacker
         {
             rendererProperties.Add(property);
         }
-
-#if UNITY_EDITOR
-        internal void OnValidate()
-        {
-            var allPropertyPackers = Resources.FindObjectsOfTypeAll<RSUVPropertyPacker>();
-            foreach (var propertyPacker in allPropertyPackers)
-            {
-                if (propertyPacker._propertySheet == this && !propertyPacker.Match(this))
-                    propertyPacker.UpdadePropertyList();
-            }
-        }
-#endif
     }
 }

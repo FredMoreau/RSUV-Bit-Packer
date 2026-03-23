@@ -11,17 +11,16 @@ namespace UnityEditor.RSUVBitPacker
         SerializedProperty rendererPropertiesProp;
         RendererPropertyListView rendererPropertyListView;
 
+        RSUVPropertySheet ps => propertySheetProp.objectReferenceValue as RSUVPropertySheet;
+        RSUVPropertyPacker pp => target as RSUVPropertyPacker;
+        bool propertySheetMismatch => !pp.Match(ps);
+
         private void OnEnable()
         {
             rendererProp = serializedObject.FindProperty("_renderer");
             propertySheetProp = serializedObject.FindProperty("_propertySheet");
             rendererPropertiesProp = serializedObject.FindProperty("rendererProperties");
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
-
-            var ps = propertySheetProp.objectReferenceValue as RSUVPropertySheet;
-            var pp = target as RSUVPropertyPacker;
-            if (!pp.Match(ps) && EditorUtility.DisplayDialog("Renderer Property Sheet", "The list of Renderer Properties is out of sync.\nDo you want to update it?", "Yes", "No"))
-                pp.UpdadePropertyList();
         }
 
         bool showProp = true;
@@ -43,7 +42,22 @@ namespace UnityEditor.RSUVBitPacker
             }
             else
             {
+                if (propertySheetMismatch)
+                {
+                    EditorGUILayout.HelpBox("The list of Renderer Properties is out of sync.", MessageType.Warning, true);
+                    GUILayout.BeginHorizontal();
+                    GUILayout.FlexibleSpace();
+                    if (GUILayout.Button("Update", EditorStyles.miniButton, GUILayout.Width(60)))
+                    {
+                        Undo.RecordObject(target, "Update Renderer Properties.");
+                        pp.UpdadePropertyList();
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                    GUILayout.EndHorizontal();
+                }
+
                 showProp = EditorGUILayout.Foldout(showProp, new GUIContent("Renderer Properties", "Populated from Renderer Property Sheet"));
+
                 if (rendererPropertiesProp.arraySize > 0 && showProp)
                 {
                     EditorGUI.indentLevel = 1;

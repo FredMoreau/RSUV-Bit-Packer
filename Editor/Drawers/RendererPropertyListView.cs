@@ -112,14 +112,6 @@ namespace UnityEditor.RSUVBitPacker
                         var t = rendererValueTypes[index];
                         var o = Activator.CreateInstance(t) as RendererPropertyBase;
                         target.Add(o);
-
-                        // TODO : do it better!
-                        var ps = target as RSUVPropertySheet;
-                        if (ps != null)
-                            ps.OnValidate();
-                        var pp = target as RSUVPropertyPacker;
-                        if (pp != null)
-                            pp.OnValidate();
                     });
                 }
                 else

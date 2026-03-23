@@ -24,6 +24,7 @@ namespace UnityEngine.RSUVBitPacker
         void IRendererProperties.Add(RendererPropertyBase property)
         {
             rendererProperties.Add(property);
+            Apply();
         }
 
         bool _isDirty;
