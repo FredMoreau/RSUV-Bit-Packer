@@ -46,5 +46,18 @@ namespace UnityEngine.RSUVBitPacker
             null => throw new NullReferenceException(),
             _ => throw new NotImplementedException($"{renderer.GetType()} doesn't support Shader User Value")
         };
+
+        public static bool SupportsShaderUserValue(this Renderer renderer) => renderer switch
+        {
+            MeshRenderer meshRenderer => true,
+            SkinnedMeshRenderer skinnedMeshRenderer => true,
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
+            SpriteRenderer spriteRenderer => true,
+            SpriteShapeRenderer spriteShapeRenderer => true,
+            TilemapRenderer tilemapRenderer => true,
+#endif
+            null => throw new NullReferenceException(),
+            _ => false
+        };
     }
 }

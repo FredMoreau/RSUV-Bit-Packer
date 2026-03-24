@@ -119,6 +119,27 @@ namespace UnityEngine.RSUVBitPacker
         }
 #endif
 
+        private void Awake()
+        {
+            List<Renderer> unsupportedRenderers = new();
+            foreach (var renderer in _renderers)
+            {
+                if (!renderer.SupportsShaderUserValue())
+                    unsupportedRenderers.Add(renderer);
+            }
+            if (unsupportedRenderers.Count > 0)
+            {
+                List<Renderer> supportedRenderers = new();
+                foreach(var renderer in _renderers)
+                {
+                    if (!unsupportedRenderers.Contains(renderer))
+                        supportedRenderers.Add(renderer);
+                }
+                _renderers = supportedRenderers.ToArray();
+            }
+            enabled = _renderers.Length != 0;
+        }
+
         private void OnDidApplyAnimationProperties()
         {
             Apply();
