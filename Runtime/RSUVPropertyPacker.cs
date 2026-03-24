@@ -71,11 +71,36 @@ namespace UnityEngine.RSUVBitPacker
         private void Reset()
         {
             _renderers = GetComponentsInChildren<Renderer>();
+            CheckRenderersCompatibility();
         }
 
         internal void OnValidate()
         {
+            CheckRenderersCompatibility();
             Apply();
+        }
+
+        void CheckRenderersCompatibility()
+        {
+            List<Renderer> unsupportedRenderers = new();
+            foreach (var renderer in _renderers)
+            {
+                if (!renderer.SupportsShaderUserValue())
+                {
+                    Debug.LogWarning($"Renderer on {renderer.name} doesn't support RSUV.", renderer);
+                    unsupportedRenderers.Add(renderer);
+                }
+            }
+            if (unsupportedRenderers.Count > 0)
+            {
+                List<Renderer> supportedRenderers = new();
+                foreach (var renderer in _renderers)
+                {
+                    if (!unsupportedRenderers.Contains(renderer))
+                        supportedRenderers.Add(renderer);
+                }
+                _renderers = supportedRenderers.ToArray();
+            }
         }
 
         internal bool Match(RSUVPropertySheet propertySheet)
@@ -119,24 +144,8 @@ namespace UnityEngine.RSUVBitPacker
         }
 #endif
 
-        private void Awake()
+        private void Start()
         {
-            List<Renderer> unsupportedRenderers = new();
-            foreach (var renderer in _renderers)
-            {
-                if (!renderer.SupportsShaderUserValue())
-                    unsupportedRenderers.Add(renderer);
-            }
-            if (unsupportedRenderers.Count > 0)
-            {
-                List<Renderer> supportedRenderers = new();
-                foreach(var renderer in _renderers)
-                {
-                    if (!unsupportedRenderers.Contains(renderer))
-                        supportedRenderers.Add(renderer);
-                }
-                _renderers = supportedRenderers.ToArray();
-            }
             enabled = _renderers.Length != 0;
         }
 
