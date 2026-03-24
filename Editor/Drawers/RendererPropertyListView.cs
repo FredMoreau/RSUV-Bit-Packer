@@ -21,6 +21,8 @@ namespace UnityEditor.RSUVBitPacker
         public delegate void OnChangeDelegate();
         public OnChangeDelegate OnChangeCallback;
 
+        int? sum = null;
+
         static List<Type> rendererValueTypes = new();
         static List<string> dropDownLabels = new();
         static List<string> rendererValueTypeNames = new();
@@ -57,6 +59,8 @@ namespace UnityEditor.RSUVBitPacker
 
         public void DoLayoutList()
         {
+            if (sum != null)
+                EditorGUILayout.HelpBox($"{sum} / 32 bits.", MessageType.Info, true);
             list.DoLayoutList();
         }
 
@@ -69,6 +73,13 @@ namespace UnityEditor.RSUVBitPacker
             list.onCanAddCallback = CanAdd;
             list.onChangedCallback = OnChange;
             list.onAddDropdownCallback = AddDropdown;
+
+            UpdateSum();
+
+            Undo.undoRedoEvent += (in UndoRedoInfo info) =>
+            {
+                UpdateSum();
+            };
         }
 
         void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
@@ -95,7 +106,7 @@ namespace UnityEditor.RSUVBitPacker
             //    if (prop != null)
             //        sum += prop.Length;
             //}
-            var sum = target.RendererProperties.Sum(p => p.Length);
+            //var sum = target.RendererProperties.Sum(p => p.Length);
 
             var menu = new GenericMenu();
             for (int optionIndex = 0; optionIndex < dropDownLabels.Count; optionIndex++)
@@ -112,6 +123,7 @@ namespace UnityEditor.RSUVBitPacker
                         var t = rendererValueTypes[index];
                         var o = Activator.CreateInstance(t) as RendererPropertyBase;
                         target.Add(o);
+                        UpdateSum();
                     });
                 }
                 else
@@ -136,6 +148,12 @@ namespace UnityEditor.RSUVBitPacker
         {
             serializedObject.ApplyModifiedProperties();
             OnChangeCallback?.Invoke();
+            UpdateSum();
+        }
+
+        void UpdateSum()
+        {
+            sum = (int)target.RendererProperties.Sum(p => p.Length);
         }
     }
 }
