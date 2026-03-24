@@ -1,22 +1,22 @@
 using System;
 using UnityEngine;
-using UnityEngine.RSUVBitPacker
+using UnityEngine.RSUVBitPacker;
 
 #ROOTNAMESPACEBEGIN#
 // RendererValue Attributes are used by the PropertyList to limit the total number of bits assignable and populate the Add Dropdown Menu.
-[Serializable, RendererValueTypeName("#SCRIPTNAME#"), RendererValueTypeLength(8)]
+[Serializable, RendererValueTypeName("#SCRIPTNAME#"), RendererValueTypeLength(1)]
 public class #SCRIPTNAME# : RendererProperty<bool>
 {
     [SerializeField] public bool _value;
     #NOTRIM#
     // This must match the generic T type. It is used to copy data from a Property Sheet to a Property Setter, and to make properties accessible to other components.
-    public override float Value { get => _value; set => _value = value; }
+    public override bool Value { get => _value; set => _value = value; }
     #NOTRIM#
     // This is used to offset bitshift index.
     public override uint Length => 1;
     #NOTRIM#
     // This is expected to provide the data, as a uint, of only the first n bits are used.
-    public override uint Data => (uint)Math.Round(Math.Clamp(_value, 0f, 1f) * 255f);
+    public override uint Data => _value ? 1u : 0u;
     #NOTRIM#
     // The next two overrides are not mandatory. They are used by the HLSL generator.
     // If left unoverriden, the property value will not be featured in the generated Shader Include.
