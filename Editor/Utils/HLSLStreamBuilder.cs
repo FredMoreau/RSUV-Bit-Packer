@@ -74,7 +74,7 @@ namespace UnityEditor.RSUVBitPacker
             streamWriter.WriteLine(sfrapiMacro);
             FunctionBlock(streamWriter, funcName, parameters, assignments);
 #else
-            FunctionBlock($"{funcName}_half", parameters, assignments);
+            FunctionBlock(streamWriter, $"{funcName}_half", parameters, assignments);
 #endif
         }
 
