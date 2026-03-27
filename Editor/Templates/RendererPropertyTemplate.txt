@@ -3,30 +3,29 @@ using UnityEngine;
 using UnityEngine.RSUVBitPacker;
 
 #ROOTNAMESPACEBEGIN#
-// RendererValue Attributes are used by the PropertyList to limit the total number of bits assignable and populate the Add Dropdown Menu.
-[Serializable, RendererValueTypeName("#SCRIPTNAME#"), RendererValueTypeLength(1)]
-public class #SCRIPTNAME# : RendererProperty<bool>
+// RendererValue Attributes are used by the PropertyList.
+[Serializable]
+[RendererValueTypeName("#SCRIPTNAME#")] //The name of the 'Add' Dropdown MenuItem.
+//[RendererValueTypeLength(1)] // If used, the MenuItem will be grayed out if the length is greater than remaining bits available.
+[RendererValueTypeTooltip("A single bit storing a boolean value.")] // 
+public class #SCRIPTNAME# : RendererProperty<bool> // the type defines the serialized value type
 {
-    [SerializeField] public bool _value;
-    #NOTRIM#
-    // This must match the generic T type. It is used to copy data from a Property Sheet to a Property Setter, and to make properties accessible to other components.
-    public override bool Value { get => _value; set => _value = value; }
     #NOTRIM#
     // This is used to offset bitshift index.
-    public override uint Length => 1;
+    //public override uint Length => 1;
     #NOTRIM#
-    // This is expected to provide the data, as a uint, of only the first n bits are used.
-    public override uint Data => _value ? 1u : 0u;
+    // This is expected to provide the data, as a uint, of which only the first n bits are used.
+    public override uint Data => Value ? 1u : 0u;
     #NOTRIM#
     // The next two overrides are not mandatory. They are used by the HLSL generator.
     // If left unoverriden, the property value will not be featured in the generated Shader Include.
     // This is used to write the 'out' parameter.
-    //public override string hlslType => "bool";
+    //public override string HlslType => "bool";
     #NOTRIM#
     // This is used to write the parameter assignment in the shader function body.
     // rsuv is short for unity_RendererUserValue.
     // paramName is the name of the property as set by the user.
     // bitIndex is where the data storage begins in the rsuv uint.
-    //public override string hlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (rsuv & (1 << {bitIndex})) != 0;";
+    //public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (rsuv & (1 << {bitIndex})) != 0;";
 }
 #ROOTNAMESPACEEND#

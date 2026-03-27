@@ -27,6 +27,7 @@ namespace UnityEditor.RSUVBitPacker
         static List<string> dropDownLabels = new();
         static List<string> rendererValueTypeNames = new();
         static Dictionary<string, uint> rendererValueLengths = new();
+        static Dictionary<string, string> rendererValueTooltips = new(); // TODO: add a help icon to display tooltip if available
         [InitializeOnLoadMethod]
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
@@ -34,7 +35,7 @@ namespace UnityEditor.RSUVBitPacker
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes().Where(x => typeof(RendererPropertyBase).IsAssignableFrom(x))).ToList();
             foreach (var type in types)
             {
-                if (type == typeof(RendererPropertyBase) || type == typeof(RendererProperty<>))
+                if (type == typeof(RendererPropertyBase) || type == typeof(RendererProperty<>) || type == typeof(RendererProperty<,>))
                     continue;
 
                 rendererValueTypes.Add(type);
@@ -46,6 +47,10 @@ namespace UnityEditor.RSUVBitPacker
 
                 var sizeAttr = type.GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
                 rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 0);
+
+                var tooltipAttr = type.GetCustomAttributes(typeof(RendererValueTypeTooltipAttribute), false).FirstOrDefault() as RendererValueTypeTooltipAttribute;
+                if (tooltipAttr != null)
+                    rendererValueTooltips.Add(type.Name, tooltipAttr.Tooltip);
             }
         }
 
@@ -60,7 +65,7 @@ namespace UnityEditor.RSUVBitPacker
         public void DoLayoutList()
         {
             if (sum != null)
-                EditorGUILayout.HelpBox($"{sum} / 32 bits.", MessageType.Info, true);
+                EditorGUILayout.HelpBox($"{sum} / 32 bits.", sum.Value <= 32 ? MessageType.Info : MessageType.Warning, true);
             list.DoLayoutList();
         }
 
@@ -88,26 +93,38 @@ namespace UnityEditor.RSUVBitPacker
             EditorGUIUtility.labelWidth = labelWidth;
             var nameRect = new Rect(rect.x, rect.y, nameFieldWidth, rect.height);
             var valueRect = new Rect(nameRect.max.x + padding, rect.y, rect.width - nameFieldWidth - padding, rect.height);
+            
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
-            SerializedProperty name = element.FindPropertyRelative("name");
-            SerializedProperty value = element.FindPropertyRelative("_value");
+            SerializedProperty name = element.FindPropertyRelative(RendererPropertyBase.nameFieldName);
             EditorGUI.DelayedTextField(nameRect, name, new GUIContent(""));
-            EditorGUI.PropertyField(valueRect, value, new GUIContent(""/*"default value"*/));
+
+            SerializedProperty value = element.FindPropertyRelative(RendererProperty<bool>.valueFieldName);
+
+            SerializedProperty settings = element.FindPropertyRelative(RendererProperty<int, uint>.settingsFieldName);
+            if (settings == null)
+            {
+                EditorGUI.PropertyField(valueRect, value, new GUIContent(""));
+            }
+            else
+            {
+                EditorGUIUtility.labelWidth = 24;
+                var vRect = new Rect(valueRect.x, valueRect.y, valueRect.width * .5f, valueRect.height);
+                var sRect = new Rect(vRect.max.x, valueRect.y, valueRect.width * .5f, valueRect.height);
+                EditorGUI.PropertyField(vRect, value, new GUIContent("v"));
+                EditorGUI.BeginChangeCheck();
+                EditorGUI.PropertyField(sRect, settings, new GUIContent("s"));
+                if (EditorGUI.EndChangeCheck())
+                {
+                    serializedObject.ApplyModifiedProperties();
+                    UpdateSum();
+                }
+            }
+
             EditorGUIUtility.labelWidth = previousLabelWidth;
         }
 
         void AddDropdown(Rect buttonRect, ReorderableList list)
         {
-            // This is ugly!
-            //uint sum = 0;
-            //for (int i = 0; i < rendererPropertiesProp.arraySize; i++)
-            //{
-            //    var prop = serializedObject.FindProperty($"rendererProperties.Array.data[{i}]").managedReferenceValue as RendererPropertyBase;
-            //    if (prop != null)
-            //        sum += prop.Length;
-            //}
-            //var sum = target.RendererProperties.Sum(p => p.Length);
-
             var menu = new GenericMenu();
             for (int optionIndex = 0; optionIndex < dropDownLabels.Count; optionIndex++)
             {

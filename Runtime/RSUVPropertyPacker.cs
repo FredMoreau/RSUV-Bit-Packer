@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine.Serialization;
@@ -112,8 +113,7 @@ namespace UnityEngine.RSUVBitPacker
                 {
                     for (int i = 0; i < propertySheet.rendererProperties.Count; i++)
                     {
-                        if (this.rendererProperties[i].ValueType != propertySheet.rendererProperties[i].ValueType ||
-                            rendererProperties[i].Name != propertySheet.rendererProperties[i].Name)
+                        if (!this.rendererProperties[i].Equals(propertySheet.rendererProperties[i]))
                         {
                             match = false;
                             break;

@@ -5,16 +5,13 @@ namespace UnityEngine.RSUVBitPacker.Samples
     [Serializable, RendererValueTypeName("Color16 (HS)"), RendererValueTypeLength(16)]
     public class RendererFixedHSProperty : RendererProperty<Color>
     {
-        [SerializeField] public Color _value;
-
-        public override Color Value { get => _value; set => _value = value; }
         public override uint Length => 16;
 
         public override uint Data
         {
             get
             {
-                Color.RGBToHSV(_value, out float h, out float s, out float v);
+                Color.RGBToHSV(Value, out float h, out float s, out float v);
                 h = Math.Clamp(h, 0f, 1f);
                 s = Math.Clamp(s, 0f, 1f);
 
@@ -25,8 +22,8 @@ namespace UnityEngine.RSUVBitPacker.Samples
             }
         }
 
-        public override string hlslType => "half3";
-        public override string hlslDecoder(string paramName, uint bitIndex) => @$"half3 hsv = half3(
+        public override string HlslType => "half3";
+        public override string HlslDecoder(string paramName, uint bitIndex) => @$"half3 hsv = half3(
         (rsuv >> {bitIndex}) & 0xFF,
         (rsuv >> {bitIndex}+8) & 0xFF,
         255) / 255.0;

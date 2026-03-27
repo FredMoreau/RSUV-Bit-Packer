@@ -86,14 +86,17 @@ namespace UnityEditor.RSUVBitPacker
             uint offset = 0;
             foreach (RendererPropertyBase property in properties)
             {
+                if (string.IsNullOrEmpty(property.HlslType))
+                    continue;
+
                 string paramName;
                 if (string.IsNullOrWhiteSpace(property.Name))
                     paramName = $"NoName{index}";
                 else
                     paramName = cultureTextInfo.ToTitleCase(property.Name).Replace(" ", "");
 
-                parameters.Add(new(property.hlslType, paramName));
-                assignments.Add(property.hlslDecoder(paramName, offset));
+                parameters.Add(new(property.HlslType, paramName));
+                assignments.Add(property.HlslDecoder(paramName, offset));
                 index++;
                 offset += property.Length;
             }
