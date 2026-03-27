@@ -13,7 +13,7 @@ RSUV Bit Packer aims at providing a user friendly workflow to design packing sch
 ### RSUV Property Packer
 _RSUV Property Packer_ is a component that allows listing and setting 'Renderer Properties'.
 
-![alt text](./Documentation~/PropertyPacker.gif)
+![Adding properties to a Property Packer.](./Documentation~/PropertyPacker.png)
 
 Properties are packed and set on the renderer when modified and/or animated in the Editor and at Runtime.
 The API ```RSUVPropertyPacker.TrySetProperty<>()``` allows setting properties from C# at Runtime.
@@ -21,7 +21,14 @@ The list of Renderer Properties can be defined in the component, or inherited fr
 
 ### RSUV Property Sheet
 RSUV Property Sheet is an asset that allows defining a packing scheme and properties default values, to be reused with several RSUV Property Packers.
+
+![Adding properties to a Property Sheet.](./Documentation~/PropertySheet.png)
+
 It also allows generating a _Shader Include_ (HLSL) to access the properties in _Shader Graph_.
+
+Assigning a Property Sheet on a Property Packer will make it inherits the properties from the sheet.
+
+![Setting a Property Packer with a Property Sheet.](./Documentation~/PropertyPackerWithPropertySheet.png)
 
 #### Shader Includes
 In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Custom Function_ syntax.
@@ -32,4 +39,5 @@ RSUV being implemented only on some ```Renderer``` classes, such as ```MeshRende
 
 ### Writing Renderer Property Types
 The package is easily extensible to add new Renderer Property types by simply providing their data encoding (C#) and decoding (HLSL).
+
 
