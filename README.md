@@ -12,7 +12,9 @@ RSUV Bit Packer aims at providing a user friendly workflow to design packing sch
 
 ### RSUV Property Packer
 _RSUV Property Packer_ is a component that allows listing and setting 'Renderer Properties'.
-![alt text](Documentation~\Property Packer.gif)
+
+![alt text](./Documentation~/PropertyPacker.gif)
+
 Properties are packed and set on the renderer when modified and/or animated in the Editor and at Runtime.
 The API ```RSUVPropertyPacker.TrySetProperty<>()``` allows setting properties from C# at Runtime.
 The list of Renderer Properties can be defined in the component, or inherited from a _RSUV Property Sheet_.
