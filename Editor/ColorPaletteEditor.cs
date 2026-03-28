@@ -1,4 +1,5 @@
 using System.IO;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.RSUVBitPacker;
 
@@ -10,16 +11,33 @@ namespace UnityEditor.RSUVBitPacker
         SerializedProperty colorsProp;
         SerializedProperty shaderIncludeProp;
 
+        ReorderableList list;
+
         private void OnEnable()
         {
             colorsProp = serializedObject.FindProperty("colors");
             shaderIncludeProp = serializedObject.FindProperty("shaderInclude");
+
+            list = new ReorderableList(serializedObject, colorsProp, true, true, true, true);
+            list.drawElementCallback = DrawListItems;
+            list.drawHeaderCallback = DrawHeader;
+        }
+
+        void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
+            EditorGUI.PropertyField(rect, element, new GUIContent(""));
+        }
+
+        void DrawHeader(Rect rect)
+        {
+            EditorGUI.LabelField(rect, new GUIContent("Palette Colors", "Palette Colors."));
         }
 
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            EditorGUILayout.PropertyField(colorsProp, new GUIContent("Colors", "The Palette Colors."));
+            list.DoLayoutList();
             EditorGUILayout.PropertyField(shaderIncludeProp);
             if (shaderIncludeProp.objectReferenceValue == null)
             {
