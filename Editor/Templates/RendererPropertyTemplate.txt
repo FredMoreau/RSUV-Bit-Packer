@@ -12,7 +12,7 @@ public class #SCRIPTNAME# : RendererProperty<bool> // the type defines the seria
 {
     #NOTRIM#
     // This is used to offset bitshift index.
-    //public override uint Length => 1;
+    public override uint Length => 1;
     #NOTRIM#
     // This is expected to provide the data, as a uint, of which only the first n bits are used.
     public override uint Data => Value ? 1u : 0u;
