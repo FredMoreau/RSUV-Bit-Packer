@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Text;
 using UnityEngine;
 using UnityEngine.RSUVBitPacker;
 
@@ -31,19 +32,22 @@ namespace UnityEditor.RSUVBitPacker
             return indent;
         }
 
-        static string ParameterDeclaration(string type, string name, int indent = 1)
+        static string ParameterDeclaration(string type, string name, string modifier = "out", int indent = 1)
         {
-            return $"{Indent(indent)}out {type} {name}";
+            if (string.IsNullOrEmpty(modifier))
+                return $"{Indent(indent)}{type} {name}";
+            else
+                return $"{Indent(indent)}{modifier} {type} {name}";
         }
 
-        static void ParameterBlockDeclaration(StreamWriter streamWriter, List<(string type, string name)> parameters)
+        static void ParameterBlockDeclaration(StreamWriter streamWriter, List<(string type, string name, string modifier)> parameters)
         {
             var blockOpening = parameters.Count > 1 ? streamWriter.NewLine : string.Empty;
             streamWriter.Write($"({blockOpening}");
 
             for(int i = 0; i < parameters.Count; i++)
             {
-                streamWriter.Write($"{ParameterDeclaration(parameters[i].type, parameters[i].name, parameters.Count > 1 ? 1 : 0)}");
+                streamWriter.Write($"{ParameterDeclaration(parameters[i].type, parameters[i].name, modifier:parameters[i].modifier, indent:parameters.Count > 1 ? 1 : 0)}");
                 streamWriter.Write(i < parameters.Count - 1 ? $",{streamWriter.NewLine}" : $"){streamWriter.NewLine}");
             }
         }
@@ -51,7 +55,6 @@ namespace UnityEditor.RSUVBitPacker
         static void FunctionBody(StreamWriter streamWriter, List<string> assignments)
         {
             streamWriter.WriteLine("{");
-            streamWriter.WriteLine($"{Indent(1)}uint rsuv = {rsuvUniformName};");
             for (int i = 0; i < assignments.Count; i++)
             {
                 streamWriter.Write($"{Indent(1)}{assignments[i]}{streamWriter.NewLine}");
@@ -60,14 +63,14 @@ namespace UnityEditor.RSUVBitPacker
             streamWriter.WriteLine(string.Empty);
         }
 
-        static void FunctionBlock(StreamWriter streamWriter, string funcName, List<(string type, string name)> parameters, List<string> assignments)
+        static void FunctionBlock(StreamWriter streamWriter, string funcName, List<(string type, string name, string modifier)> parameters, List<string> assignments)
         {
             streamWriter.Write($"void {funcName}");
             ParameterBlockDeclaration(streamWriter, parameters);
             FunctionBody(streamWriter, assignments);
         }
 
-        static void ShaderFunction(StreamWriter streamWriter, string funcName, List<(string type, string name)> parameters, List<string> assignments)
+        static void ShaderFunction(StreamWriter streamWriter, string funcName, List<(string type, string name, string modifier)> parameters, List<string> assignments)
         {
 #if UNITY_6000_5_OR_NEWER
             ReflectionFunctionHint(streamWriter, funcName);
@@ -80,7 +83,7 @@ namespace UnityEditor.RSUVBitPacker
 
         internal static void ShaderInclude(StreamWriter streamWriter, string name, List<RendererPropertyBase> properties, bool splitFunctions = false)
         {
-            List<(string type, string name)> parameters = new();
+            List<(string type, string name, string modifier)> parameters = new();
             List<string> assignments = new();
             uint index = 0;
             uint offset = 0;
@@ -95,7 +98,7 @@ namespace UnityEditor.RSUVBitPacker
                 else
                     paramName = cultureTextInfo.ToTitleCase(property.Name).Replace(" ", "");
 
-                parameters.Add(new(property.HlslType, paramName));
+                parameters.Add(new(property.HlslType, paramName, "out"));
                 assignments.Add(property.HlslDecoder(paramName, offset));
                 index++;
                 offset += property.Length;
@@ -108,6 +111,11 @@ namespace UnityEditor.RSUVBitPacker
 #if UNITY_6000_5_OR_NEWER
                 streamWriter.WriteLine($"{sfrapiInclude}{streamWriter.NewLine}");
 #endif
+                streamWriter.Write(@$"#ifndef RSUV
+#define RSUV {rsuvUniformName}
+#endif
+
+");
 
                 if (splitFunctions)
                 {
@@ -120,6 +128,48 @@ namespace UnityEditor.RSUVBitPacker
                 {
                     ShaderFunction(streamWriter, name, parameters, assignments);
                 }
+            }
+        }
+
+        internal static void ShaderInclude(StreamWriter streamWriter, string name, ColorPalette colorPalette)
+        {
+            if (colorPalette == null)
+                return;
+
+            List<(string type, string name, string modifier)> parameters = new();
+            List<string> assignments = new();
+
+            parameters.Add(("uint", "Index", ""));
+            parameters.Add(("float4", "Color", "out"));
+
+            StringBuilder hlslBody = new StringBuilder();
+            hlslBody.AppendLine("[branch] switch(Index)");
+            hlslBody.AppendLine("    {");
+            for (int i = 0; i < colorPalette.Count; i++)
+            {
+                var c = colorPalette[i];
+                hlslBody.Append(@$"        case {i}:
+            Color = float4({c.r}, {c.g}, {c.b}, {c.a});
+            break;
+");
+            }
+            hlslBody.Append(@$"        default:
+            Color = float4(0,0,0,1);
+            break;
+");
+            hlslBody.Append("    }");
+
+            assignments.Add(hlslBody.ToString());
+
+            using (streamWriter)
+            {
+                streamWriter.NewLine = Environment.NewLine;
+
+#if UNITY_6000_5_OR_NEWER
+                streamWriter.WriteLine($"{sfrapiInclude}{streamWriter.NewLine}");
+#endif
+
+                ShaderFunction(streamWriter, name, parameters, assignments);
             }
         }
     }

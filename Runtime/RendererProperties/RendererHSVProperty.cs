@@ -73,17 +73,17 @@ namespace UnityEngine.RSUVBitPacker
             if (Settings.precision3.x == 0)
                 hlslBody.AppendLine("        0,");
             else
-                hlslBody.AppendLine($"        ((rsuv >> {bitIndex}) & ((1 << {Settings.precision3.x}) - 1)) / {Mathf.Pow(2, Settings.precision3.x) - 1}.0,");
+                hlslBody.AppendLine($"        (({rsuvDefineSymbol} >> {bitIndex}) & ((1 << {Settings.precision3.x}) - 1)) / {Mathf.Pow(2, Settings.precision3.x) - 1}.0,");
 
             if (Settings.precision3.y == 0)
                 hlslBody.AppendLine("        1,");
             else
-                hlslBody.AppendLine($"        ((rsuv >> {bitIndex + Settings.precision3.x}) & ((1 << {Settings.precision3.y}) - 1)) / {Mathf.Pow(2, Settings.precision3.y) - 1f}.0,");
+                hlslBody.AppendLine($"        (({rsuvDefineSymbol} >> {bitIndex + Settings.precision3.x}) & ((1 << {Settings.precision3.y}) - 1)) / {Mathf.Pow(2, Settings.precision3.y) - 1f}.0,");
 
             if (Settings.precision3.z == 0)
                 hlslBody.AppendLine("        1);");
             else
-                hlslBody.AppendLine($"        ((rsuv >> {bitIndex + Settings.precision3.x + Settings.precision3.y}) & ((1 << {Settings.precision3.z}) - 1)) / {Mathf.Pow(2, Settings.precision3.z) - 1f}.0);");
+                hlslBody.AppendLine($"        (({rsuvDefineSymbol} >> {bitIndex + Settings.precision3.x + Settings.precision3.y}) & ((1 << {Settings.precision3.z}) - 1)) / {Mathf.Pow(2, Settings.precision3.z) - 1f}.0);");
 
             hlslBody.Append($@"    float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     float3 P = abs(frac(hsv.xxx + K.xyz) * 6.0 - K.www);

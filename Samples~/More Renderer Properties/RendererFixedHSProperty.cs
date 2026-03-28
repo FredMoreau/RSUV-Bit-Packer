@@ -24,8 +24,8 @@ namespace UnityEngine.RSUVBitPacker.Samples
 
         public override string HlslType => "half3";
         public override string HlslDecoder(string paramName, uint bitIndex) => @$"half3 hsv = half3(
-        (rsuv >> {bitIndex}) & 0xFF,
-        (rsuv >> {bitIndex}+8) & 0xFF,
+        ({rsuvDefineSymbol} >> {bitIndex}) & 0xFF,
+        ({rsuvDefineSymbol} >> {bitIndex}+8) & 0xFF,
         255) / 255.0;
     float4 K = float4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
     float3 P = abs(frac(hsv.xxx + K.xyz) * 6.0 - K.www);

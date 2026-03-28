@@ -14,6 +14,6 @@ namespace UnityEngine.RSUVBitPacker
 
         public override string HlslType => "half";
 
-        public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = ((rsuv >> {bitIndex}) & 0xFF) / 255.0;";
+        public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (({rsuvDefineSymbol} >> {bitIndex}) & 0xFF) / 255.0;";
     }
 }

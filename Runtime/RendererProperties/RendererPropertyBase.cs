@@ -6,6 +6,7 @@ namespace UnityEngine.RSUVBitPacker
     public abstract class RendererPropertyBase
     {
         internal const string nameFieldName = nameof(name);
+        public const string rsuvDefineSymbol = "RSUV";
 
         [SerializeField] protected string name;
         public string Name => name;

@@ -30,10 +30,10 @@ namespace UnityEngine.RSUVBitPacker
 
         public override uint Length => Settings.length;
 
-        public override uint Data => (uint)Mathf.Clamp(Value, 0, Mathf.Pow(2, Length)) - 1;
+        public override uint Data => (uint)Mathf.Clamp(Value, 0, Mathf.Pow(2, Length));// - 1;
 
-        public override string HlslType => "half";
+        public override string HlslType => "int";
 
-        public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = ((rsuv >> {bitIndex}) & ((1 << {Length}) - 1));";
+        public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (({rsuvDefineSymbol} >> {bitIndex}) & ((1 << {Length}) - 1));";
     }
 }
