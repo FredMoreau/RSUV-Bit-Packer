@@ -20,7 +20,7 @@ namespace UnityEditor.RSUVBitPacker
     }
 
     [CustomPropertyDrawer(typeof(RendererGenericIntProperty.PropertySettings))]
-    public class RendererGenericIntPropertyPropertySettingsDrawer : PropertyDrawer
+    public class RendererGenericIntPropertySettingsDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
