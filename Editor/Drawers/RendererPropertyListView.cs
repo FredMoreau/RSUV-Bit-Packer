@@ -27,7 +27,7 @@ namespace UnityEditor.RSUVBitPacker
         static List<string> dropDownLabels = new();
         static List<string> rendererValueTypeNames = new();
         static Dictionary<string, uint> rendererValueLengths = new();
-        static Dictionary<string, string> rendererValueTooltips = new(); // TODO: add a help icon to display tooltip if available
+        static Dictionary<string, GUIContent> rendererValueTooltips = new(); // TODO: add a help icon to display tooltip if available
         [InitializeOnLoadMethod]
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
@@ -49,8 +49,7 @@ namespace UnityEditor.RSUVBitPacker
                 rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 0);
 
                 var tooltipAttr = type.GetCustomAttributes(typeof(RendererValueTypeTooltipAttribute), false).FirstOrDefault() as RendererValueTypeTooltipAttribute;
-                if (tooltipAttr != null)
-                    rendererValueTooltips.Add(type.Name, tooltipAttr.Tooltip);
+                rendererValueTooltips.Add(type.Name, new GUIContent(name, tooltipAttr?.Tooltip));
             }
         }
 
@@ -78,6 +77,7 @@ namespace UnityEditor.RSUVBitPacker
             list.onCanAddCallback = CanAdd;
             list.onChangedCallback = OnChange;
             list.onAddDropdownCallback = AddDropdown;
+            list.elementHeight = EditorGUIUtility.singleLineHeight * 2;
 
             UpdateSum();
 
@@ -91,8 +91,8 @@ namespace UnityEditor.RSUVBitPacker
         {
             var previousLabelWidth = EditorGUIUtility.labelWidth;
             EditorGUIUtility.labelWidth = labelWidth;
-            var nameRect = new Rect(rect.x, rect.y, nameFieldWidth, rect.height);
-            var valueRect = new Rect(nameRect.max.x + padding, rect.y, rect.width - nameFieldWidth - padding, rect.height);
+            var nameRect = new Rect(rect.x, rect.y, nameFieldWidth, rect.height * .5f);
+            var valueRect = new Rect(nameRect.max.x + padding, rect.y, rect.width - nameFieldWidth - padding, rect.height * .5f);
             
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
             SerializedProperty name = element.FindPropertyRelative(RendererPropertyBase.nameFieldName);
@@ -101,23 +101,21 @@ namespace UnityEditor.RSUVBitPacker
             SerializedProperty value = element.FindPropertyRelative(RendererProperty<bool>.valueFieldName);
 
             SerializedProperty settings = element.FindPropertyRelative(RendererProperty<int, uint>.settingsFieldName);
-            if (settings == null)
+            EditorGUI.PropertyField(valueRect, value, new GUIContent(""));
+            var sRect = new Rect(rect.x, valueRect.max.y, rect.width, rect.height * .5f);
+            if (settings != null)
             {
-                EditorGUI.PropertyField(valueRect, value, new GUIContent(""));
-            }
-            else
-            {
-                EditorGUIUtility.labelWidth = 24;
-                var vRect = new Rect(valueRect.x, valueRect.y, valueRect.width * .5f, valueRect.height);
-                var sRect = new Rect(vRect.max.x, valueRect.y, valueRect.width * .5f, valueRect.height);
-                EditorGUI.PropertyField(vRect, value, new GUIContent("v"));
                 EditorGUI.BeginChangeCheck();
-                EditorGUI.PropertyField(sRect, settings, new GUIContent("s"));
+                EditorGUI.PropertyField(sRect, settings, rendererValueTooltips[element.managedReferenceValue.GetType().Name]);
                 if (EditorGUI.EndChangeCheck())
                 {
                     serializedObject.ApplyModifiedProperties();
                     UpdateSum();
                 }
+            }
+            else
+            {
+                EditorGUI.LabelField(sRect, rendererValueTooltips[element.managedReferenceValue.GetType().Name]);
             }
 
             EditorGUIUtility.labelWidth = previousLabelWidth;

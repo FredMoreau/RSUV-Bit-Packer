@@ -33,7 +33,7 @@ namespace UnityEditor.RSUVBitPacker
             var r2 = new Rect(r1.max.x, position.y, position.width/3, position.height);
             var r3 = new Rect(r2.max.x, position.y, position.width/3, position.height);
 
-            EditorGUI.PropertyField(r1, lengthProp, new GUIContent(""));
+            EditorGUI.PropertyField(r1, lengthProp, label);
             EditorGUI.PropertyField(r2, minValueProp, new GUIContent(""));
             EditorGUI.PropertyField(r3, maxValueProp, new GUIContent(""));
         }

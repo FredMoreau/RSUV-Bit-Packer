@@ -10,7 +10,7 @@ namespace UnityEditor.RSUVBitPacker
         {
             var lengthProp = property.FindPropertyRelative("precision3");
 
-            EditorGUI.PropertyField(position, lengthProp, new GUIContent(""));
+            EditorGUI.PropertyField(position, lengthProp, label);
         }
     }
 }

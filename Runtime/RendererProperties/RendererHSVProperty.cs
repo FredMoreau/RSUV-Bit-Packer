@@ -6,7 +6,7 @@ namespace UnityEngine.RSUVBitPacker
 {
     [Serializable]
     [RendererValueTypeName("HSV")]
-    [RendererValueTypeTooltip("")]
+    [RendererValueTypeTooltip("The HSV Property allows setting a precision per HSV channel to store a color.")]
     public class RendererHSVProperty : RendererProperty<Color, RendererHSVProperty.PropertySettings>
     {
         [Serializable]

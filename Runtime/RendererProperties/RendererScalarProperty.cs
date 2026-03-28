@@ -5,7 +5,7 @@ namespace UnityEngine.RSUVBitPacker
 {
     [Serializable]
     [RendererValueTypeName("Scalar")]
-    [RendererValueTypeTooltip("")]
+    [RendererValueTypeTooltip("The Scalar Property allows setting a precision (1 to 32 bits), and a min and max value.")]
     public class RendererScalarProperty : RendererProperty<float, RendererScalarProperty.PropertySettings>
     {
         [Serializable]

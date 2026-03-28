@@ -26,7 +26,7 @@ namespace UnityEditor.RSUVBitPacker
         {
             var lengthProp = property.FindPropertyRelative("length");
 
-            EditorGUI.DelayedIntField(position, lengthProp, new GUIContent(""));
+            EditorGUI.DelayedIntField(position, lengthProp, label);
         }
     }
 }

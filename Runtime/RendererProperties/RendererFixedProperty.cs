@@ -2,7 +2,10 @@ using System;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [Serializable, RendererValueTypeName("Float8"), RendererValueTypeLength(8)]
+    [Serializable]
+    [RendererValueTypeName("Float8")]
+    [RendererValueTypeLength(8)]
+    [RendererValueTypeTooltip("The Float8 Property stores a normalized float (0-1) over 8 bits.")]
     public class RendererFixedProperty : RendererProperty<float>
     {
         public override uint Length => 8;
