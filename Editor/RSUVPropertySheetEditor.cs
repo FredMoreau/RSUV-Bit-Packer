@@ -35,8 +35,9 @@ namespace UnityEditor.RSUVBitPacker
             //    serializedObject.ApplyModifiedProperties();
             //    UpdateShaderInclude();
             //}
+            
+            EditorGUILayout.Space(EditorGUIUtility.singleLineHeight);
             EditorGUILayout.PropertyField(shaderIncludeProp);
-
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PropertyField(splitFunctionsProp, new GUIContent("Split Functions", "Shall Properties be split in individual functions."));
             if (shaderIncludeProp.objectReferenceValue == null)

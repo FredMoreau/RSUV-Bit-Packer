@@ -3,8 +3,8 @@ using System;
 namespace UnityEngine.RSUVBitPacker
 {
     [Serializable]
-    [RendererValueTypeName("Int")]
-    [RendererValueTypeTooltip("The Int Property allows setting a precision to store an int going from 0 to 2 ^ precision - 1.\ne.g.: 4 bits = 0 - 15")]
+    [RendererValueTypeName("Integer")]
+    [RendererValueTypeTooltip("The Integer Property allows setting a precision to store an int going from 0 to 2 ^ precision - 1.\ne.g.: 4 bits = 0 - 15")]
     public class RendererGenericIntProperty : RendererProperty<int, RendererGenericIntProperty.PropertySettings>
     {
         [Serializable]

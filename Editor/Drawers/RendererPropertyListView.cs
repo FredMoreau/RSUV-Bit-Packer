@@ -9,14 +9,16 @@ namespace UnityEditor.RSUVBitPacker
 {
     public class RendererPropertyListView
     {
-        ReorderableList list;
-        const float nameFieldWidth = 150f;
-        const float labelWidth = 90f;
-        const float padding = 16f;
+        private const string emptySelectionMessage = "Select a Renderer Property to edit its settings.";
+        static GUIContent headerLabel = new("Renderer Properties", "Add Renderer Properties up to 32 bits.");
+        static GUIContent propertyNameFieldLabel = new GUIContent("Name", "The property name, as displayed and used to query its index.");
+        static GUIContent propertySettingsFoldoutLabel = new("Property Settings", "");
 
+        ReorderableList list;
         IRendererProperties target;
         SerializedObject serializedObject;
         SerializedProperty rendererPropertiesProp;
+        SerializedProperty selectedProperty;
 
         public delegate void OnChangeDelegate();
         public OnChangeDelegate OnChangeCallback;
@@ -49,7 +51,7 @@ namespace UnityEditor.RSUVBitPacker
                 rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 0);
 
                 var tooltipAttr = type.GetCustomAttributes(typeof(RendererValueTypeTooltipAttribute), false).FirstOrDefault() as RendererValueTypeTooltipAttribute;
-                rendererValueTooltips.Add(type.Name, new GUIContent(name, tooltipAttr?.Tooltip));
+                rendererValueTooltips.Add(type.Name, new GUIContent($"{name} Settings:", tooltipAttr?.Tooltip));
             }
         }
 
@@ -66,6 +68,32 @@ namespace UnityEditor.RSUVBitPacker
             if (sum != null)
                 EditorGUILayout.HelpBox($"{sum} / 32 bits.", sum.Value <= 32 ? MessageType.Info : MessageType.Warning, true);
             list.DoLayoutList();
+            if (EditorGUILayout.Foldout(true, propertySettingsFoldoutLabel))
+            {
+                EditorGUI.indentLevel++;
+                if (selectedProperty != null)
+                {
+                    SerializedProperty name = selectedProperty.FindPropertyRelative(RendererPropertyBase.nameFieldName);
+                    SerializedProperty settings = selectedProperty.FindPropertyRelative(RendererProperty<int, uint>.settingsFieldName);
+                    EditorGUILayout.DelayedTextField(name, propertyNameFieldLabel);
+                    if (settings != null)
+                    {
+                        EditorGUI.BeginChangeCheck();
+                        EditorGUILayout.PropertyField(settings, rendererValueTooltips[selectedProperty.managedReferenceValue.GetType().Name]);
+                        if (EditorGUI.EndChangeCheck())
+                        {
+                            serializedObject.ApplyModifiedProperties();
+                            UpdateSum();
+                        }
+                    }
+                }
+                else
+                {
+                    EditorGUILayout.HelpBox(emptySelectionMessage, MessageType.Info, true);
+                }
+                EditorGUI.indentLevel--;
+            }
+            //EditorGUILayout.Space(EditorGUIUtility.singleLineHeight);
         }
 
         void CreateList()
@@ -77,7 +105,7 @@ namespace UnityEditor.RSUVBitPacker
             list.onCanAddCallback = CanAdd;
             list.onChangedCallback = OnChange;
             list.onAddDropdownCallback = AddDropdown;
-            list.elementHeight = EditorGUIUtility.singleLineHeight * 2;
+            list.onSelectCallback = SelectionChanged;
 
             UpdateSum();
 
@@ -87,38 +115,18 @@ namespace UnityEditor.RSUVBitPacker
             };
         }
 
+        void SelectionChanged(ReorderableList list)
+        {
+            selectedProperty = null;
+            if (list.count > 0)
+                selectedProperty = list.serializedProperty.GetArrayElementAtIndex(list.index);
+        }
+
         void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
         {
-            var previousLabelWidth = EditorGUIUtility.labelWidth;
-            EditorGUIUtility.labelWidth = labelWidth;
-            var nameRect = new Rect(rect.x, rect.y, nameFieldWidth, rect.height * .5f);
-            var valueRect = new Rect(nameRect.max.x + padding, rect.y, rect.width - nameFieldWidth - padding, rect.height * .5f);
-            
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
             SerializedProperty name = element.FindPropertyRelative(RendererPropertyBase.nameFieldName);
-            EditorGUI.DelayedTextField(nameRect, name, new GUIContent(""));
-
-            SerializedProperty value = element.FindPropertyRelative(RendererProperty<bool>.valueFieldName);
-
-            SerializedProperty settings = element.FindPropertyRelative(RendererProperty<int, uint>.settingsFieldName);
-            EditorGUI.PropertyField(valueRect, value, new GUIContent(""));
-            var sRect = new Rect(rect.x, valueRect.max.y, rect.width, rect.height * .5f);
-            if (settings != null)
-            {
-                EditorGUI.BeginChangeCheck();
-                EditorGUI.PropertyField(sRect, settings, rendererValueTooltips[element.managedReferenceValue.GetType().Name]);
-                if (EditorGUI.EndChangeCheck())
-                {
-                    serializedObject.ApplyModifiedProperties();
-                    UpdateSum();
-                }
-            }
-            else
-            {
-                EditorGUI.LabelField(sRect, rendererValueTooltips[element.managedReferenceValue.GetType().Name]);
-            }
-
-            EditorGUIUtility.labelWidth = previousLabelWidth;
+            EditorGUI.PropertyField(rect, element, new GUIContent(string.IsNullOrWhiteSpace(name.stringValue) ? "<no name>" : name.stringValue));
         }
 
         void AddDropdown(Rect buttonRect, ReorderableList list)
@@ -151,7 +159,7 @@ namespace UnityEditor.RSUVBitPacker
 
         void DrawHeader(Rect rect)
         {
-            EditorGUI.LabelField(rect, new GUIContent("Renderer Properties", "Add Renderer Properties up to 32 bits."));
+            EditorGUI.LabelField(rect, headerLabel);
         }
 
         bool CanAdd(ReorderableList list)
@@ -161,6 +169,7 @@ namespace UnityEditor.RSUVBitPacker
 
         void OnChange(ReorderableList list)
         {
+            SelectionChanged(list);
             serializedObject.ApplyModifiedProperties();
             OnChangeCallback?.Invoke();
             UpdateSum();

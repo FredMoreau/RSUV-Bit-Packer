@@ -12,21 +12,8 @@ namespace UnityEditor.RSUVBitPacker
             var valueProp = property.FindPropertyRelative(RendererGenericIntProperty.valueFieldName);
             var lengthProp = property.FindPropertyRelative($"{RendererGenericIntProperty.settingsFieldName}.length");
 
-            var labelStr = string.IsNullOrWhiteSpace(nameProp.stringValue) ? "<no name>" : nameProp.stringValue;
-
             var maxValue = (int)Mathf.Pow(2, Mathf.Clamp((int)lengthProp.uintValue, 1, 32)) - 1;
-            valueProp.intValue = EditorGUI.IntSlider(position, new GUIContent(labelStr), valueProp.intValue, 0, maxValue);
-        }
-    }
-
-    [CustomPropertyDrawer(typeof(RendererGenericIntProperty.PropertySettings))]
-    public class RendererGenericIntPropertySettingsDrawer : PropertyDrawer
-    {
-        public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
-        {
-            var lengthProp = property.FindPropertyRelative("length");
-
-            EditorGUI.DelayedIntField(position, lengthProp, label);
+            valueProp.intValue = EditorGUI.IntSlider(position, label, valueProp.intValue, 0, maxValue);
         }
     }
 }

@@ -40,6 +40,7 @@ namespace UnityEditor.RSUVBitPacker
             {
                 rendererPropertyListView.DoLayoutList();
                 GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Save as Property Sheet", EditorStyles.miniButton, GUILayout.Width(180)))
                 {
                     var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", pp.name, "asset", "Save Renderer Property Sheet");
@@ -59,8 +60,8 @@ namespace UnityEditor.RSUVBitPacker
                         serializedObject.ApplyModifiedProperties();
                     }
                 }
-                GUILayout.FlexibleSpace();
                 GUILayout.EndHorizontal();
+                EditorGUILayout.Space(EditorGUIUtility.singleLineHeight);
             }
             else
             {
@@ -86,7 +87,8 @@ namespace UnityEditor.RSUVBitPacker
                     for (int i = 0; i < rendererPropertiesProp.arraySize; i++)
                     {
                         var p = rendererPropertiesProp.GetArrayElementAtIndex(i);
-                        EditorGUILayout.PropertyField(p);
+                        SerializedProperty name = p.FindPropertyRelative(RendererPropertyBase.nameFieldName);
+                        EditorGUILayout.PropertyField(p, new GUIContent(string.IsNullOrWhiteSpace(name.stringValue) ? "<no name>" : name.stringValue));
                     }
                     EditorGUI.indentLevel = 0;
                 }

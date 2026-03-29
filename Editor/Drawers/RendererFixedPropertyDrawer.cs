@@ -11,9 +11,7 @@ namespace UnityEditor.RSUVBitPacker
             var nameProp = property.FindPropertyRelative(RendererPropertyBase.nameFieldName);
             var valueProp = property.FindPropertyRelative(RendererFixedProperty.valueFieldName);
 
-            var labelStr = string.IsNullOrWhiteSpace(nameProp.stringValue) ? "<no name>" : nameProp.stringValue;
-
-            valueProp.floatValue = EditorGUI.Slider(position, new GUIContent(labelStr), valueProp.floatValue, 0f, 1f);
+            valueProp.floatValue = EditorGUI.Slider(position, label, valueProp.floatValue, 0f, 1f);
         }
     }
 }
