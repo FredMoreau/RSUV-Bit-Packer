@@ -11,9 +11,6 @@ namespace UnityEngine.RSUVBitPacker
         [SerializeField] protected string name;
         public string Name => name;
 
-        internal abstract object GetSettings();
-        internal abstract void SetSettings(object settings);
-
         internal abstract Type ValueType { get; }
         internal abstract void SetValue(object value);
         internal abstract object GetValue();
@@ -56,10 +53,6 @@ namespace UnityEngine.RSUVBitPacker
             return Value;
         }
 
-        internal override void SetSettings(object settings) { }
-
-        internal override object GetSettings() => null;
-
         public override string HlslType { get => ""; }
         public override string HlslDecoder(string paramName, uint bitIndex) => "";
 
@@ -80,16 +73,6 @@ namespace UnityEngine.RSUVBitPacker
         private U _settings;
 
         protected virtual U Settings { get => _settings; set => _settings = value; }
-
-        internal override void SetSettings(object settings)
-        {
-            Settings = (U)settings;
-        }
-
-        internal override object GetSettings()
-        {
-            return Settings;
-        }
 
         internal override RendererPropertyBase Clone()
         {
