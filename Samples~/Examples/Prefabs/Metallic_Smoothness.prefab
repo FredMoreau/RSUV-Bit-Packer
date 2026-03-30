@@ -274,8 +274,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091439376895929239, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_text
-      value: A boolean property used to set Metalness and a Scalar propperty to set 
-        Smoothness.
+      value: A Boolean property used to set Metalness and a Scalar property set on
+        8 bits (going from 0 to 255) to set Smoothness.
       objectReference: {fileID: 0}
     - target: {fileID: 4359043393220286846, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_Name

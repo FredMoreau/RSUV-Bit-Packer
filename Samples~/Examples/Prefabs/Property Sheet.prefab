@@ -326,7 +326,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091439376895929239, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_text
-      value: Using a Property Sheet to bind Property Packers.
+      value: Using a Property Sheet to set Color and Texture indices, Metalness,
+        Smoothness and Emission.
       objectReference: {fileID: 0}
     - target: {fileID: 4359043393220286846, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_Name

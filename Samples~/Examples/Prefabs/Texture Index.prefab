@@ -46,7 +46,8 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091439376895929239, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_text
-      value: An integer property used to override Texture Array Index.
+      value: An Integer property, set on 3 bits (going from 0 to 7), used to override
+        Texture Array Index.
       objectReference: {fileID: 0}
     - target: {fileID: 4359043393220286846, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_Name

@@ -46,10 +46,10 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091439376895929239, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_text
-      value: 'A Color (HSV) Property to set random color on Start.
+      value: 'A Color (HSV) property to set random Color on Start.
 
         A Boolean
-        Property set to override Color when hovered.'
+        property set to override Color when hovered.'
       objectReference: {fileID: 0}
     - target: {fileID: 4359043393220286846, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_Name
