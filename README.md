@@ -1,13 +1,9 @@
 # RSUV Bit Packer
-Components and tools to facilitate the packing of RSUV (Renderer Shader User Value).
-
-## Problem Statement
 Using _**Renderer Shader User Value**_ (RSUV), introduced in **Unity 6.3**, allows setting unique properties per renderer, to be used in their material shaders, with no performance cost when using the _SRP Batcher_ (and _GPU Resident Drawer_).
 
 RSUV being a ```uint```, it requires packing data on the C# renderer side, and unpacking data on the HLSL shader side.
 While this is trivial, it requires defining packing schemes, and some data management on both ends.
 
-## Solution
 RSUV Bit Packer aims at providing a user friendly workflow to design packing scheme, set and get properties data, in the Editor and at Runtime from C# scripts and/or animation.
 
 ### RSUV Property Packer
@@ -31,8 +27,19 @@ Assigning a Property Sheet on a Property Packer will make it inherits the proper
 ![Setting a Property Packer with a Property Sheet.](./Documentation~/PropertyPackerWithPropertySheet.png)
 
 #### Shader Includes
+##### Unity 6.3 - 6.4
 In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Custom Function_ syntax.
-In Unity 6.5, Shader Includes are generated using the _Shader Function Reflection API_ syntax, which makes them automatically accessible in the Shader Graph without having to manually configure a _Custom Function Node_.
+##### Unity 6.5 and above
+In Unity 6.5, Shader Includes are generated using the _Shader Function Reflection API_ syntax, which makes them automatically accessible in Shader Graph without having to manually configure a _Custom Function Node_.
+
+### Color Palette
+A Color Palette is an asset that allows defining colors and generating an HLSL Shader Include.
+
+![Defining a Color Palette.](./Documentation~/ColorPalette.png)
+
+The generated HLSL allows getting a color from the palette in Shader Graph.
+
+![Getting color from Palette in Shader Graph.](./Documentation~/ColorPaletteNode.png)
 
 ### Extensions
 RSUV being implemented only on some ```Renderer``` classes, such as ```MeshRenderer``` and ```SkinnedMeshRenderer```, this package contains an Extension that makes it easy to set the ```ShaderUserValue``` on a ```Renderer```.
@@ -40,4 +47,30 @@ RSUV being implemented only on some ```Renderer``` classes, such as ```MeshRende
 ### Writing Renderer Property Types
 The package is easily extensible to add new Renderer Property types by simply providing their data encoding (C#) and decoding (HLSL).
 
+```
+using UnityEngine.RSUVBitPacker;
+// RendererValue Attributes are used by the PropertyList.
+[System.Serializable]
+[RendererValueTypeName("NewRendererProperty")] //The name of the 'Add' Dropdown MenuItem.
+//[RendererValueTypeLength(1)] // If used, the MenuItem will be grayed out if the length is greater than remaining bits available.
+[RendererValueTypeTooltip("A single bit storing a boolean value.")] // 
+public class NewRendererProperty : RendererProperty<bool> // the type defines the serialized value type
+{
+    // This is used to offset bitshift index.
+    public override uint Length => 1;
+    
+    // This is expected to provide the data, as a uint, of which only the first n bits are used.
+    public override uint Data => Value ? 1u : 0u;
 
+    // The next two overrides are not mandatory. They are used by the HLSL generator.
+    // If left unoverriden, the property value will not be featured in the generated Shader Include.
+    // This is used to write the 'out' parameter.
+    public override string HlslType => "bool";
+
+    // This is used to write the parameter assignment in the shader function body.
+    // rsuv is short for unity_RendererUserValue.
+    // paramName is the name of the property as set by the user.
+    // bitIndex is where the data storage begins in the rsuv uint.
+    public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (rsuv & (1 << {bitIndex})) != 0;";
+}
+```
