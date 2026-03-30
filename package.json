@@ -1,7 +1,7 @@
 {
     "name": "com.unity.rsuv-bit-packer",
     "displayName": "RSUV Bit Packer",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "unity": "6000.3",
     "description": "Components and tools to facilitate the packing of RSUV (Renderer Shader User Value).",
     "author": {
