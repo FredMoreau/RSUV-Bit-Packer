@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e33e2ef5da295469bdefa231cbf377, type: 3}
+  m_Name: PropertySheet
+  m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertySheet
+  rendererProperties:
+  - rid: 1700099649860796502
+  - rid: 1700099649860796501
+  - rid: 1700099649860796503
+  - rid: 1700099649860796504
+  - rid: 1700099649860796505
+  shaderInclude: {fileID: 10900000, guid: 3524b65d1996a4c40b6364b8415759f8, type: 3}
+  splitFunctions: 1
+  references:
+    version: 2
+    RefIds:
+    - rid: 1700099649860796501
+      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+      data:
+        name: Texture Index
+        _value: 0
+        _settings:
+          length: 3
+    - rid: 1700099649860796502
+      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+      data:
+        name: Color Index
+        _value: 0
+        _settings:
+          length: 2
+    - rid: 1700099649860796503
+      type: {class: BooleanProperty, ns: UnityEngine.RSUVBitPacker, asm: Unity.RSUVBitPacker}
+      data:
+        name: Is Metallic
+        _value: 0
+    - rid: 1700099649860796504
+      type: {class: ScalarProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+      data:
+        name: Smoothness
+        _value: 0
+        _settings:
+          precision: 8
+          minValue: 0
+          maxValue: 1
+    - rid: 1700099649860796505
+      type: {class: ScalarProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+      data:
+        name: Emission
+        _value: 0
+        _settings:
+          precision: 8
+          minValue: 0
+          maxValue: 1
