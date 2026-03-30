@@ -5,23 +5,28 @@ using UnityEngine.RSUVBitPacker;
 public class SetRendererProperty : MonoBehaviour
 {
     RSUVPropertyPacker propertyPacker;
-    int propertyId;
+    int overrideId, colorId;
 
     private void Awake()
     {
         propertyPacker = GetComponent<RSUVPropertyPacker>();
-        propertyId = propertyPacker.GetPropertyIndex("Override Color");
+        overrideId = propertyPacker.GetPropertyIndex("Override Color");
+        colorId = propertyPacker.GetPropertyIndex("Color");
+    }
+
+    private void Start()
+    {
+        Color randomColor = Color.HSVToRGB(Random.Range(0f, 1f), 1, 1);
+        propertyPacker.TrySetValue(colorId, randomColor);
     }
 
     private void OnMouseEnter()
     {
-        //propertyPacker.TrySetValue("Override Color", true);
-        propertyPacker.TrySetValue(propertyId, true);
+        propertyPacker.TrySetValue(overrideId, true);
     }
 
     private void OnMouseExit()
     {
-        //propertyPacker.TrySetValue("Override Color", false);
-        propertyPacker.TrySetValue(propertyId, false);
+        propertyPacker.TrySetValue(overrideId, false);
     }
 }
