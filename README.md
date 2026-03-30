@@ -74,3 +74,14 @@ public class NewRendererProperty : RendererProperty<bool> // the type defines th
     public override string HlslDecoder(string paramName, uint bitIndex) => $"{paramName} = (rsuv & (1 << {bitIndex})) != 0;";
 }
 ```
+
+### Known limitations and potential future improvements
+#### Property Names
+There is no check on property names other than whitespace removal.
+Don't give several properties the same name, and don't name properties with HLSL types or intrisic functions like "float" or "dot".
+
+#### IPropertyProvider
+Considered for future improvement to add an interface for MonoBehaviours to provide renderer properties.
+
+#### HLSL Namespacing
+The generated includes are not namespaced. Adding namespacing may avoid collisions with other functions.
