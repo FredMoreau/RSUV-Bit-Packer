@@ -10,7 +10,6 @@ using UnityEngine.RSUVBitPacker;
 [RendererValueTypeTooltip("A single bit storing a boolean value.")] // 
 public class #SCRIPTNAME# : RendererProperty<bool> // the type defines the serialized value type
 {
-    #NOTRIM#
     // This is used to offset bitshift index.
     public override uint Length => 1;
     #NOTRIM#
