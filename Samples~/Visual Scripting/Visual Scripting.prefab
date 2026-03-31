@@ -106,8 +106,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A Boolean Property set to override Color when hovered with another Color
-    (HSV) Property.
+  m_text: 'The Script Machine (Visual Scripting) gets the "Override Color" Property
+    Index upon Start, then sets it On when the mouse enters the Trigger Collider,
+    and Off when it exits.
+
+
+    Note, this uses OnMouseEnter and OnMouseExit messages,
+    which only work with the new Input System in Unity 6.4 and newer.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
