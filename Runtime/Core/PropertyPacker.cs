@@ -31,24 +31,6 @@ namespace UnityEngine.RSUVBitPacker
 
         bool _isDirty;
 
-        // For Visual Scripting only!
-        public void TrySetValue(int propertyIndex, object value)
-        {
-            var prop = rendererProperties[propertyIndex];
-            if (prop == null || !prop.ValueType.IsAssignableFrom(value.GetType()))
-                return;
-            prop.SetValue(value);
-            dirtyProperties.Add(prop);
-            _isDirty = true;
-        }
-
-        public void TrySetValue<T>(string propertyName, T value) where T : struct
-        {
-            int index = GetPropertyIndex(propertyName);
-            if (index >= 0)
-                TrySetValue(index, value);
-        }
-
         public int GetPropertyIndex(string propertyName)
         {
             var prop = rendererProperties.Find(x => x.Name == propertyName);
@@ -56,6 +38,60 @@ namespace UnityEngine.RSUVBitPacker
                 return -1;
             else
                 return rendererProperties.IndexOf(prop);
+        }
+
+        // For Visual Scripting only!
+        public void TrySetValue(string propertyName, object value)
+        {
+            int index = GetPropertyIndex(propertyName);
+            if (index >= 0)
+                TrySetValue(index, value);
+        }
+
+        public void TrySetValue(int propertyIndex, object value)
+        {
+            var prop = rendererProperties[propertyIndex];
+            if (prop == null)
+                return;
+
+            switch (value)
+            {
+                case bool bValue:
+                    TrySetValue(propertyIndex, bValue);
+                    break;
+                case float fValue:
+                    TrySetValue(propertyIndex, fValue);
+                    break;
+                case int iValue:
+                    TrySetValue(propertyIndex, iValue);
+                    break;
+                case Color color:
+                    TrySetValue(propertyIndex, color);
+                    break;
+                case Vector2 vector2:
+                    TrySetValue(propertyIndex, vector2);
+                    break;
+                case Vector3 vector3:
+                    TrySetValue(propertyIndex, vector3);
+                    break;
+                case Vector4 vector4:
+                    TrySetValue(propertyIndex, vector4);
+                    break;
+                default:
+                    if (!prop.ValueType.IsAssignableFrom(value.GetType()))
+                        return;
+                    prop.SetValue(value);
+                    dirtyProperties.Add(prop);
+                    _isDirty = true;
+                    break;
+            }
+        }
+
+        public void TrySetValue<T>(string propertyName, T value) where T : struct
+        {
+            int index = GetPropertyIndex(propertyName);
+            if (index >= 0)
+                TrySetValue(index, value);
         }
 
         public void TrySetValue<T>(int propertyIndex, T value) where T : struct
