@@ -3,16 +3,16 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
-    [CustomEditor(typeof(RSUVPropertyPacker))]
-    public class RSUVPropertyPackerEditor : Editor
+    [CustomEditor(typeof(PropertyPacker))]
+    public class PropertyPackerEditor : Editor
     {
         SerializedProperty rendererProp;
         SerializedProperty propertySheetProp;
         SerializedProperty rendererPropertiesProp;
         RendererPropertyListView rendererPropertyListView;
 
-        RSUVPropertySheet ps => propertySheetProp.objectReferenceValue as RSUVPropertySheet;
-        RSUVPropertyPacker pp => target as RSUVPropertyPacker;
+        PropertySheet ps => propertySheetProp.objectReferenceValue as PropertySheet;
+        PropertyPacker pp => target as PropertyPacker;
         bool propertySheetMismatch => !pp.Match(ps);
 
         private void OnEnable()
@@ -47,7 +47,7 @@ namespace UnityEditor.RSUVBitPacker
                     if (path != null)
                     {
                         pp.UpdadePropertyList();
-                        var propertySheet = CreateInstance<RSUVPropertySheet>();
+                        var propertySheet = CreateInstance<PropertySheet>();
                         propertySheet.rendererProperties.Clear();
                         foreach (RendererPropertyBase property in pp.rendererProperties)
                         {

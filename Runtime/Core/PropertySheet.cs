@@ -5,8 +5,8 @@ using UnityEditor;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [CreateAssetMenu(fileName = "RSUVPropertySheet", menuName = "Rendering/RSUVPropertySheet")]
-    public class RSUVPropertySheet : ScriptableObject, IRendererProperties
+    [CreateAssetMenu(fileName = "PropertySheet", menuName = "Rendering/RSUV Bit Packer/Property Sheet")]
+    public class PropertySheet : ScriptableObject, IRendererProperties
     {
         [SerializeReference]
         internal List<RendererPropertyBase> rendererProperties = new();

@@ -4,8 +4,8 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
-    [CustomEditor(typeof(RSUVPropertySheet))]
-    public class RSUVPropertySheetEditor : Editor
+    [CustomEditor(typeof(PropertySheet))]
+    public class PropertySheetEditor : Editor
     {
         RendererPropertyListView rendererPropertyListView;
 
@@ -58,7 +58,7 @@ namespace UnityEditor.RSUVBitPacker
         void CreateShaderInclude()
         {
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
-            var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
+            var rendererProperties = (target as PropertySheet).rendererProperties;
 
             HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue);
 
@@ -75,7 +75,7 @@ namespace UnityEditor.RSUVBitPacker
                 var path = AssetDatabase.GetAssetPath(shaderInclude);
                 var name = shaderInclude.name;
 
-                var rendererProperties = (target as RSUVPropertySheet).rendererProperties;
+                var rendererProperties = (target as PropertySheet).rendererProperties;
 
                 HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue);
 

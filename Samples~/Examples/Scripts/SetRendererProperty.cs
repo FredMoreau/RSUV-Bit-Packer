@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.RSUVBitPacker;
 
-[RequireComponent(typeof(RSUVPropertyPacker))]
+[RequireComponent(typeof(PropertyPacker))]
 public class SetRendererProperty : MonoBehaviour
 {
-    RSUVPropertyPacker propertyPacker;
+    PropertyPacker propertyPacker;
     int overrideId, colorId;
 
     private void Awake()
     {
-        propertyPacker = GetComponent<RSUVPropertyPacker>();
+        propertyPacker = GetComponent<PropertyPacker>();
         overrideId = propertyPacker.GetPropertyIndex("Override Color");
         colorId = propertyPacker.GetPropertyIndex("Color");
     }

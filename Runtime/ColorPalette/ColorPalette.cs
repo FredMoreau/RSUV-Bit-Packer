@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [CreateAssetMenu(fileName = "ColorPalette", menuName = "Rendering/ColorPalette")]
+    [CreateAssetMenu(fileName = "ColorPalette", menuName = "Rendering/RSUV Bit Packer/ColorPalette")]
     public class ColorPalette : ScriptableObject
     {
         [SerializeField]

@@ -5,12 +5,12 @@ using UnityEngine.Serialization;
 
 namespace UnityEngine.RSUVBitPacker
 {
-    [AddComponentMenu("Rendering/RSUV Property Packer")]
+    [AddComponentMenu("Rendering/RSUV Bit Packer/Property Packer")]
     [ExecuteAlways]
-    public class RSUVPropertyPacker : MonoBehaviour, IRendererProperties
+    public class PropertyPacker : MonoBehaviour, IRendererProperties
     {
         [SerializeField]
-        internal RSUVPropertySheet _propertySheet;
+        internal PropertySheet _propertySheet;
 
         [SerializeField, FormerlySerializedAs("_renderer")]
         Renderer[] _renderers;
@@ -104,7 +104,7 @@ namespace UnityEngine.RSUVBitPacker
             }
         }
 
-        internal bool Match(RSUVPropertySheet propertySheet)
+        internal bool Match(PropertySheet propertySheet)
         {
             bool match = true;
             if (propertySheet != null)
