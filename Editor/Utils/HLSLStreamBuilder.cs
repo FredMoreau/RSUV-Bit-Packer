@@ -89,6 +89,9 @@ namespace UnityEditor.RSUVBitPacker
             uint offset = 0;
             foreach (RendererPropertyBase property in properties)
             {
+                if (offset + property.Length > 32)
+                    break;
+
                 if (string.IsNullOrEmpty(property.HlslType))
                     continue;
 
