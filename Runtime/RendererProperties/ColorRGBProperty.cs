@@ -14,7 +14,7 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     [Serializable]
     [RendererValueTypeName("Color24 (RGB)")]
     [RendererValueTypeLength(24)]
-    [RendererValueTypeTooltip("The Color24 Property stores a Color over 24 bits. (8bits per channel).")]
+    [RendererValueTypeTooltip("The Color24 (RGB) Property stores a Color over 24 bits. (8bits per channel).")]
     public class ColorRGBProperty : RendererProperty<Color>
     {
         /// <summary>

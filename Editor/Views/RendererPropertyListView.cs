@@ -46,7 +46,7 @@ namespace UnityEditor.RSUVBitPacker
 
                 var nameAttr = type.GetCustomAttributes(typeof(RendererValueTypeNameAttribute), false).FirstOrDefault() as RendererValueTypeNameAttribute;
                 var name = nameAttr != null ? nameAttr.Name : type.Name;
-                dropDownLabels.Add($"Add {name}");
+                dropDownLabels.Add(name);
 
                 var sizeAttr = type.GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
                 rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 1);

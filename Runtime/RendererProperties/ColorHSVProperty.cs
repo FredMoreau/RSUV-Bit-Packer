@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using UnityEngine;
 
 namespace UnityEngine.RSUVBitPacker.RendererProperties
 {
@@ -15,8 +14,8 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     /// <c>RendererProperty&lt;T,U&gt;</c> for concrete implementations.
     /// </remarks>
     [Serializable]
-    [RendererValueTypeName("HSV")]
-    [RendererValueTypeTooltip("The HSV Property allows setting a precision per HSV channel to store a color.")]
+    [RendererValueTypeName("Color (HSV)")]
+    [RendererValueTypeTooltip("The Color (HSV) Property allows setting a precision per HSV channel to store a color.")]
     public class ColorHSVProperty : RendererProperty<Color, ColorHSVProperty.PropertySettings>
     {
         [Serializable]
