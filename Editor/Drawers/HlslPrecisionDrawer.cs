@@ -12,15 +12,6 @@ namespace UnityEditor.RSUVBitPacker
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            EditorGUI.BeginProperty(position, label, property);
-
-            if (property.propertyType != SerializedPropertyType.Enum)
-            {
-                EditorGUI.LabelField(position, label, "Use HlslPrecision with enum");
-                EditorGUI.EndProperty();
-                return;
-            }
-
             // Only show Half and Float options in the popup
             GUIContent[] options = new GUIContent[] { new GUIContent(HlslPrecision.Half.ToString()), new GUIContent(HlslPrecision.Float.ToString()) };
 
@@ -28,17 +19,13 @@ namespace UnityEditor.RSUVBitPacker
             int currentEnumIndex = property.enumValueIndex;
             int currentIndex = (currentEnumIndex == (int)HlslPrecision.Float) ? 1 : 0;
 
+            EditorGUI.BeginChangeCheck();
             int newIndex = EditorGUI.Popup(position, label, currentIndex, options);
-
-            HlslPrecision newValue = (newIndex == 1) ? HlslPrecision.Float : HlslPrecision.Half;
-            property.enumValueIndex = (int)newValue;
-
-            EditorGUI.EndProperty();
-        }
-
-        public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
-        {
-            return EditorGUIUtility.singleLineHeight;
+            if (EditorGUI.EndChangeCheck())
+            {
+                HlslPrecision newValue = (newIndex == 1) ? HlslPrecision.Float : HlslPrecision.Half;
+                property.enumValueIndex = (int)newValue;
+            }
         }
     }
 }
