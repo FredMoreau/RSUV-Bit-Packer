@@ -13,6 +13,7 @@ namespace UnityEditor.RSUVBitPacker
         static GUIContent headerLabel = new("Renderer Properties", "Add Renderer Properties up to 32 bits.");
         static GUIContent propertyNameFieldLabel = new GUIContent("Name", "The property name, as displayed and used to query its index.");
         static GUIContent propertySettingsFoldoutLabel = new("Property Settings", "");
+        public readonly GUIStyle elementBackground = "RL Element";
 
         ReorderableList list;
         IRendererProperties target;
@@ -24,12 +25,13 @@ namespace UnityEditor.RSUVBitPacker
         public OnChangeDelegate OnChangeCallback;
 
         int? sum = null;
+        int lastItemFittingIndex = -1;
 
         static List<Type> rendererValueTypes = new();
         static List<string> dropDownLabels = new();
         static List<string> rendererValueTypeNames = new();
         static Dictionary<string, uint> rendererValueLengths = new();
-        static Dictionary<string, GUIContent> rendererValueTooltips = new(); // TODO: add a help icon to display tooltip if available
+        static Dictionary<string, GUIContent> rendererValueTooltips = new();
         [InitializeOnLoadMethod]
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
@@ -48,7 +50,7 @@ namespace UnityEditor.RSUVBitPacker
                 dropDownLabels.Add($"Add {name}");
 
                 var sizeAttr = type.GetCustomAttributes(typeof(RendererValueTypeLengthAttribute), false).FirstOrDefault() as RendererValueTypeLengthAttribute;
-                rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 0);
+                rendererValueLengths.Add(type.Name, sizeAttr != null ? sizeAttr.Length : 1);
 
                 var tooltipAttr = type.GetCustomAttributes(typeof(RendererValueTypeTooltipAttribute), false).FirstOrDefault() as RendererValueTypeTooltipAttribute;
                 rendererValueTooltips.Add(type.Name, new GUIContent($"{name} Settings:", tooltipAttr?.Tooltip));
@@ -86,6 +88,10 @@ namespace UnityEditor.RSUVBitPacker
                             UpdateSum();
                         }
                     }
+                    else
+                    {
+                        EditorGUILayout.HelpBox(rendererValueTooltips[selectedProperty.managedReferenceValue.GetType().Name].tooltip, MessageType.None);
+                    }
                 }
                 else
                 {
@@ -93,19 +99,19 @@ namespace UnityEditor.RSUVBitPacker
                 }
                 EditorGUI.indentLevel--;
             }
-            //EditorGUILayout.Space(EditorGUIUtility.singleLineHeight);
         }
 
         void CreateList()
         {
             list = new ReorderableList(serializedObject, rendererPropertiesProp, true, true, true, true);
 
-            list.drawElementCallback = DrawListItems;
             list.drawHeaderCallback = DrawHeader;
+            list.drawElementCallback = DrawListItems;
+            list.drawElementBackgroundCallback = DrawListItemsBackground;
             list.onCanAddCallback = CanAdd;
-            list.onChangedCallback = OnChange;
             list.onAddDropdownCallback = AddDropdown;
             list.onSelectCallback = SelectionChanged;
+            list.onChangedCallback = OnChange;
 
             UpdateSum();
 
@@ -120,6 +126,18 @@ namespace UnityEditor.RSUVBitPacker
             selectedProperty = null;
             if (list.count > 0)
                 selectedProperty = list.serializedProperty.GetArrayElementAtIndex(list.index);
+        }
+
+        void DrawListItemsBackground(Rect rect, int index, bool isActive, bool isFocused)
+        {
+            if (Event.current.type == EventType.Repaint)
+            {
+                var previousColor = GUI.color;
+                if (index > lastItemFittingIndex)
+                    GUI.color = Color.red;
+                elementBackground.Draw(rect, isHover: false, isActive, true, isFocused);
+                GUI.color = previousColor;
+            }
         }
 
         void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
@@ -177,7 +195,14 @@ namespace UnityEditor.RSUVBitPacker
 
         void UpdateSum()
         {
-            sum = (int)target.RendererProperties.Sum(p => p.Length);
+            sum = 0;
+            lastItemFittingIndex = -1;
+            foreach (var prop in target.RendererProperties)
+            {
+                sum += (int)prop.Length;
+                if (sum <= 32)
+                    lastItemFittingIndex++;
+            }
         }
     }
 }
