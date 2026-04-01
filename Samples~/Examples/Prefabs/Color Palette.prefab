@@ -131,17 +131,21 @@ MonoBehaviour:
   _renderers:
   - {fileID: 732687658731120734}
   rendererProperties:
-  - rid: 1700099635896647874
+  - rid: 6653273534464000172
   references:
     version: 2
     RefIds:
-    - rid: 1700099635896647874
-      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+    - rid: 6653273534464000172
+      type: {class: EnumProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
       data:
-        name: Color Index
+        name: Color
         _value: 1
         _settings:
-          length: 2
+          labels:
+          - Blue
+          - Purple
+          - Orange
+          - Red
 --- !u!1001 &5997505889721744190
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -227,17 +231,21 @@ MonoBehaviour:
   _renderers:
   - {fileID: 7766755904780471675}
   rendererProperties:
-  - rid: 1700099635896647874
+  - rid: 6653273534464000173
   references:
     version: 2
     RefIds:
-    - rid: 1700099635896647874
-      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+    - rid: 6653273534464000173
+      type: {class: EnumProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
       data:
-        name: Color Index
+        name: Color
         _value: 2
         _settings:
-          length: 2
+          labels:
+          - Blue
+          - Purple
+          - Orange
+          - Red
 --- !u!4 &3301874912959087295 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9145111451879225729, guid: 065b361235e18d04e863a4b875ccf011, type: 3}
@@ -258,7 +266,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1091439376895929239, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_text
-      value: An Integer property used to set Color Index from a Color Palette.
+      value: An Enum property used to set Color Index from a Color Palette.
       objectReference: {fileID: 0}
     - target: {fileID: 4359043393220286846, guid: 81256327e280ee24eb2f3f40925d3715, type: 3}
       propertyPath: m_Name
@@ -404,17 +412,21 @@ MonoBehaviour:
   _renderers:
   - {fileID: 6597497452506009240}
   rendererProperties:
-  - rid: 1700099635896647874
+  - rid: 6653273534464000171
   references:
     version: 2
     RefIds:
-    - rid: 1700099635896647874
-      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+    - rid: 6653273534464000171
+      type: {class: EnumProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
       data:
-        name: Color Index
+        name: Color
         _value: 0
         _settings:
-          length: 2
+          labels:
+          - Blue
+          - Purple
+          - Orange
+          - Red
 --- !u!23 &6597497452506009240 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4103452767085327941, guid: 065b361235e18d04e863a4b875ccf011, type: 3}
@@ -510,17 +522,21 @@ MonoBehaviour:
   _renderers:
   - {fileID: 6838599533806203677}
   rendererProperties:
-  - rid: 1700099635896647874
+  - rid: 6653273534464000174
   references:
     version: 2
     RefIds:
-    - rid: 1700099635896647874
-      type: {class: IntegerProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
+    - rid: 6653273534464000174
+      type: {class: EnumProperty, ns: UnityEngine.RSUVBitPacker.RendererProperties, asm: Unity.RSUVBitPacker}
       data:
-        name: Color Index
+        name: Color
         _value: 3
         _settings:
-          length: 2
+          labels:
+          - Blue
+          - Purple
+          - Orange
+          - Red
 --- !u!23 &6838599533806203677 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 4103452767085327941, guid: 065b361235e18d04e863a4b875ccf011, type: 3}
