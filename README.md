@@ -1,12 +1,14 @@
 # RSUV Bit Packer
 Using _**Renderer Shader User Value**_ (RSUV), introduced in **Unity 6.3**, allows setting unique properties per renderer, to be used in their material shaders, with no performance cost when using the _SRP Batcher_ (and _GPU Resident Drawer_).
 
-RSUV being a ```uint```, it requires packing data on the C# renderer side, and unpacking data on the HLSL shader side.
-While this is trivial, it requires defining packing schemes, and some data management on both ends.
+The RSUV is a ```uint```, which requires packing data on the C# renderer side, and unpacking data on the HLSL shader side.
+While packing data in a 32 bit unsigned integer with C# and unpacking the data with HLSL is trivial, the RSUV Bit Packer (package) aims at providing a user friendly workflow to design packing scheme.
 
-RSUV Bit Packer aims at providing a user friendly workflow to design packing scheme, set and get properties data, in the Editor and at Runtime from C# scripts and/or animation.
+The package allows you to define a packing scheme by adding renderer properties, easily changing precision to fit in the 32 bits.
+The Property Sheet asset can generate a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
+The Property Packer component sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
 
-### RSUV Property Packer
+### Property Packer
 _RSUV Property Packer_ is a component that allows listing and setting 'Renderer Properties'.
 
 ![Adding properties to a Property Packer.](./Documentation~/PropertyPacker.png)
@@ -15,7 +17,7 @@ Properties are packed and set on the renderer when modified and/or animated in t
 The API ```RSUVPropertyPacker.TrySetProperty<>()``` allows setting properties from C# at Runtime.
 The list of Renderer Properties can be defined in the component, or inherited from a _RSUV Property Sheet_.
 
-### RSUV Property Sheet
+### Property Sheet
 RSUV Property Sheet is an asset that allows defining a packing scheme and properties default values, to be reused with several RSUV Property Packers.
 
 ![Adding properties to a Property Sheet.](./Documentation~/PropertySheet.png)
@@ -32,6 +34,20 @@ In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Cust
 ##### Unity 6.5 and above
 In Unity 6.5, Shader Includes are generated using the _Shader Function Reflection API_ syntax, which makes them automatically accessible in Shader Graph without having to manually configure a _Custom Function Node_.
 
+### Capacity
+Some UX to help you stay within the 32 bits limit.
+
+A counter at the top tells you how many bits are used, and the Add Menu grays out the fixed size properties that cannot fit.
+
+![Cannot add more properties.](./Documentation~/PropertySheet_Limited_Add.png)
+
+![Max Capacity.](./Documentation~/PropertySheet_MaxCapacity.png)
+
+The size of most properties can be adjusted to fit.
+If the properties exceed the capacity, the Helpbox turns into a warning, and any property that doesn't fit turns red.
+
+![Over Capacity.](./Documentation~/PropertySheet_OverCapacity.png)
+
 ### Color Palette
 A Color Palette is an asset that allows defining colors and generating an HLSL Shader Include.
 
@@ -40,6 +56,11 @@ A Color Palette is an asset that allows defining colors and generating an HLSL S
 The generated HLSL allows getting a color from the palette in Shader Graph.
 
 ![Getting color from Palette in Shader Graph.](./Documentation~/ColorPaletteNode.png)
+
+### Samples
+#### Examples
+#### More Renderer Properties
+#### Visual Scripting
 
 ### Extensions
 RSUV being implemented only on some ```Renderer``` classes, such as ```MeshRenderer``` and ```SkinnedMeshRenderer```, this package contains an Extension that makes it easy to set the ```ShaderUserValue``` on a ```Renderer```.
