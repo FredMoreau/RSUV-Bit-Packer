@@ -19,7 +19,7 @@ public class #SCRIPTNAME# : RendererProperty<bool> // the type defines the seria
     // The next two overrides are not mandatory. They are used by the HLSL generator.
     // If left unoverriden, the property value will not be featured in the generated Shader Include.
     // This is used to write the 'out' parameter.
-    //public override string HlslType => "bool";
+    //public override string HlslType => HlslPrecision.Bool.ToHlslString();
     #NOTRIM#
     // This is used to write the parameter assignment in the shader function body.
     // rsuv is short for unity_RendererUserValue.

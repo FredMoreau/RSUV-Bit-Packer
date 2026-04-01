@@ -5,6 +5,20 @@ using UnityEngine.Serialization;
 
 namespace UnityEngine.RSUVBitPacker
 {
+    /// <summary>
+    /// Packs a list of renderer properties into a single 32-bit renderer user value and applies it to one or more <see cref="Renderer"/> components.
+    /// </summary>
+    /// <remarks>
+    /// PropertyPacker stores a collection of <see cref="RendererPropertyBase"/> instances that describe individual properties (boolean, integer, float, vectors, colors, or custom types).
+    /// Each property's bit-sized representation is concatenated into a single uint which is written to the renderer's shader user value via <c>renderer.SetShaderUserValue</c>.
+    ///
+    /// Use this component to efficiently transmit compact property state to shaders that read the packed user value.
+    /// - At runtime, call the provided <c>TrySetValue</c> overloads to update property values. Updated properties are marked dirty and written to renderers in <c>LateUpdate</c>.
+    /// - In the Editor, the component validates renderer compatibility, synchronizes with a <c>PropertySheet</c>, and applies values immediately where appropriate.
+    ///
+    /// Notes:
+    /// - The packing assumes the total bit length of all configured properties fits into 32 bits.
+    /// </remarks>
     [AddComponentMenu("Rendering/RSUV Bit Packer/Property Packer")]
     [ExecuteAlways]
     public class PropertyPacker : MonoBehaviour, IRendererProperties
@@ -31,6 +45,13 @@ namespace UnityEngine.RSUVBitPacker
 
         bool _isDirty;
 
+        /// <summary>
+        /// Returns the index of a renderer property by its name.
+        /// </summary>
+        /// <param name="propertyName">The name of the renderer property to look up.</param>
+        /// <returns>
+        /// The zero-based index of the property in <see cref="rendererProperties"/> if found; otherwise -1.
+        /// </returns>
         public int GetPropertyIndex(string propertyName)
         {
             var prop = rendererProperties.Find(x => x.Name == propertyName);
@@ -40,7 +61,12 @@ namespace UnityEngine.RSUVBitPacker
                 return rendererProperties.IndexOf(prop);
         }
 
-        // For Visual Scripting only!
+        /// <summary>
+        /// Attempts to set the value of a renderer property by name using a boxed <see cref="object"/>.
+        /// This method resolves the property index and delegates to the indexed overload.
+        /// </summary>
+        /// <param name="propertyName">The name of the property to set.</param>
+        /// <param name="value">The new value boxed as <see cref="object"/>. Supported runtime types: bool, float, int, Color, Vector2, Vector3, Vector4, or a type assignable to the property's <see cref="RendererPropertyBase.ValueType"/>.</param>
         public void TrySetValue(string propertyName, object value)
         {
             int index = GetPropertyIndex(propertyName);
@@ -48,6 +74,13 @@ namespace UnityEngine.RSUVBitPacker
                 TrySetValue(index, value);
         }
 
+        /// <summary>
+        /// Attempts to set the value of a renderer property by index using a boxed <see cref="object"/>.
+        /// Supports the built-in primitive/vector/color types as well as any value compatible with the property's declared <see cref="RendererPropertyBase.ValueType"/>.
+        /// If the provided <paramref name="value"/> does not match a supported type or is not assignable to the property's value type, no change is made.
+        /// </summary>
+        /// <param name="propertyIndex">The zero-based index of the property in <see cref="rendererProperties"/>.</param>
+        /// <param name="value">The new value boxed as <see cref="object"/>.</param>
         public void TrySetValue(int propertyIndex, object value)
         {
             var prop = rendererProperties[propertyIndex];
@@ -87,6 +120,13 @@ namespace UnityEngine.RSUVBitPacker
             }
         }
 
+        /// <summary>
+        /// Attempts to set the value of a renderer property by name using a strongly-typed value.
+        /// This is a generic convenience overload primarily intended for Visual Scripting or external callers that know the value type.
+        /// </summary>
+        /// <typeparam name="T">The value type. Must be a value type (<c>struct</c>).</typeparam>
+        /// <param name="propertyName">The name of the property to set.</param>
+        /// <param name="value">The new value.</param>
         public void TrySetValue<T>(string propertyName, T value) where T : struct
         {
             int index = GetPropertyIndex(propertyName);
@@ -94,6 +134,14 @@ namespace UnityEngine.RSUVBitPacker
                 TrySetValue(index, value);
         }
 
+        /// <summary>
+        /// Attempts to set the value of a renderer property by index using a strongly-typed value.
+        /// The value will only be applied if the property's declared type exactly matches <typeparamref name="T"/>.
+        /// When applied, the property is marked dirty so that it will be packed into the renderer user value on the next update.
+        /// </summary>
+        /// <typeparam name="T">The value type. Must be a value type (<c>struct</c>).</typeparam>
+        /// <param name="propertyIndex">The zero-based index of the property in <see cref="rendererProperties"/>.</param>
+        /// <param name="value">The new value to assign to the property.</param>
         public void TrySetValue<T>(int propertyIndex, T value) where T : struct
         {
             var prop = rendererProperties[propertyIndex];

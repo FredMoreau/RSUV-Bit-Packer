@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.RSUVBitPacker;
 using UnityEngine.RSUVBitPacker.RendererProperties;
 
 namespace UnityEditor.RSUVBitPacker.RendererProperties
@@ -9,7 +8,6 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            var nameProp = property.FindPropertyRelative(RendererPropertyBase.nameFieldName);
             var valueProp = property.FindPropertyRelative(IntegerProperty.valueFieldName);
             var lengthProp = property.FindPropertyRelative($"{IntegerProperty.settingsFieldName}.length");
 

@@ -5,6 +5,19 @@ using UnityEditor;
 
 namespace UnityEngine.RSUVBitPacker
 {
+    /// <summary>
+    /// A reusable collection of renderer properties that can be saved as an asset and shared between components.
+    /// </summary>
+    /// <remarks>
+    /// `PropertySheet` is a `ScriptableObject` used to store a serializable list of `RendererPropertyBase` instances.
+    /// Create instances via the Unity menu (Assets ? Create ? Rendering ? RSUV Bit Packer ? Property Sheet).
+    ///
+    /// Consumers such as `PropertyPacker` read the stored `rendererProperties` by implementing `IRendererProperties` (explicit interface).
+    /// Editor-only fields (for example `shaderInclude` and `splitFunctions`) provide additional data used by tooling and generation workflows.
+    ///
+    /// Notes:
+    /// - The `rendererProperties` list is serialized with `SerializeReference` to preserve concrete derived types of `RendererPropertyBase`.
+    /// </remarks>
     [CreateAssetMenu(fileName = "PropertySheet", menuName = "Rendering/RSUV Bit Packer/Property Sheet")]
     public class PropertySheet : ScriptableObject, IRendererProperties
     {
