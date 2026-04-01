@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36e33e2ef5da295469bdefa231cbf377, type: 3}
+  m_Name: EnumColor
+  m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertySheet
+  rendererProperties:
+  - rid: 6653273539733618770
+  shaderInclude: {fileID: 10900000, guid: 049a4047909f4bf4d9232201281a7717, type: 3}
+  splitFunctions: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6653273539733618770
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+      data:
+        name: Color
+        _value: 0
+        _settings:
+          colors:
+          - {r: 1, g: 0, b: 0, a: 1}
+          - {r: 0, g: 1, b: 0, a: 1}
+          - {r: 0, g: 0, b: 1, a: 1}
+          hlslPrecision: 4
