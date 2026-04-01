@@ -13,7 +13,6 @@ namespace UnityEditor.RSUVBitPacker
         static GUIContent headerLabel = new("Renderer Properties", "Add Renderer Properties up to 32 bits.");
         static GUIContent propertyNameFieldLabel = new GUIContent("Name", "The property name, as displayed and used to query its index.");
         static GUIContent propertySettingsFoldoutLabel = new("Property Settings", "");
-        private readonly GUIStyle elementBackground = "RL Element";
 
         ReorderableList list;
         IRendererProperties target;
@@ -135,7 +134,7 @@ namespace UnityEditor.RSUVBitPacker
                 var previousColor = GUI.color;
                 if (index > lastItemFittingIndex)
                     GUI.color = Color.red;
-                elementBackground.Draw(rect, isHover: false, isActive, true, isFocused);
+                ReorderableList.defaultBehaviours.elementBackground.Draw(rect, isHover: false, isActive, true, isFocused);
                 GUI.color = previousColor;
             }
         }
