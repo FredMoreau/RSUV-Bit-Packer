@@ -7,13 +7,13 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
-    public class RendererPropertyListView
+    internal class RendererPropertyListView
     {
         private const string emptySelectionMessage = "Select a Renderer Property to edit its settings.";
         static GUIContent headerLabel = new("Renderer Properties", "Add Renderer Properties up to 32 bits.");
         static GUIContent propertyNameFieldLabel = new GUIContent("Name", "The property name, as displayed and used to query its index.");
         static GUIContent propertySettingsFoldoutLabel = new("Property Settings", "");
-        public readonly GUIStyle elementBackground = "RL Element";
+        private readonly GUIStyle elementBackground = "RL Element";
 
         ReorderableList list;
         IRendererProperties target;
@@ -21,8 +21,8 @@ namespace UnityEditor.RSUVBitPacker
         SerializedProperty rendererPropertiesProp;
         SerializedProperty selectedProperty;
 
-        public delegate void OnChangeDelegate();
-        public OnChangeDelegate OnChangeCallback;
+        internal delegate void OnChangeDelegate();
+        internal OnChangeDelegate OnChangeCallback;
 
         int? sum = null;
         int lastItemFittingIndex = -1;
@@ -57,7 +57,7 @@ namespace UnityEditor.RSUVBitPacker
             }
         }
 
-        public RendererPropertyListView(SerializedObject serializedObject, UnityEngine.Object target)
+        internal RendererPropertyListView(SerializedObject serializedObject, UnityEngine.Object target)
         {
             this.serializedObject = serializedObject;
             this.target = target as IRendererProperties;
@@ -65,7 +65,7 @@ namespace UnityEditor.RSUVBitPacker
             CreateList();
         }
 
-        public void DoLayoutList()
+        internal void DoLayoutList()
         {
             if (sum != null)
                 EditorGUILayout.HelpBox($"{sum} / 32 bits.", sum.Value <= 32 ? MessageType.Info : MessageType.Warning, true);
