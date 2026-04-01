@@ -15,10 +15,11 @@ namespace UnityEditor.RSUVBitPacker
         private void OnEnable()
         {
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
-            rendererPropertyListView.OnChangeCallback += () =>
-            {
-                UpdateShaderInclude();
-            };
+            // disabling live update for now, until we have a reliable way to get the updated object.
+            //rendererPropertyListView.OnChangeCallback += () =>
+            //{
+            //    UpdateShaderInclude();
+            //};
             shaderIncludeProp = serializedObject.FindProperty("shaderInclude");
             splitFunctionsProp = serializedObject.FindProperty("splitFunctions");
         }
