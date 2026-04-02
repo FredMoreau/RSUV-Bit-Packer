@@ -22,8 +22,8 @@ namespace UnityEngine.RSUVBitPacker
     public class PropertySheet : ScriptableObject, IRendererProperties
     {
         [SerializeReference]
-        internal List<RendererPropertyBase> rendererProperties = new();
-        List<RendererPropertyBase> IRendererProperties.RendererProperties => rendererProperties;
+        internal List<IRendererProperty> rendererProperties = new();
+        List<IRendererProperty> IRendererProperties.RendererProperties => rendererProperties;
 
 #if UNITY_EDITOR
         [SerializeField]
@@ -32,7 +32,7 @@ namespace UnityEngine.RSUVBitPacker
         bool splitFunctions;
 #endif
 
-        void IRendererProperties.Add(RendererPropertyBase property)
+        void IRendererProperties.Add(IRendererProperty property)
         {
             rendererProperties.Add(property);
         }
