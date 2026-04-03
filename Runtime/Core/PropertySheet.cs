@@ -19,7 +19,7 @@ namespace UnityEngine.RSUVBitPacker
     /// - The `rendererProperties` list is serialized with `SerializeReference` to preserve concrete derived types of `RendererPropertyBase`.
     /// </remarks>
     [CreateAssetMenu(fileName = "PropertySheet", menuName = "Rendering/RSUV Bit Packer/Property Sheet")]
-    public class PropertySheet : ScriptableObject, IRendererProperties
+    public sealed class PropertySheet : ScriptableObject, IRendererProperties
     {
         [SerializeReference]
         internal List<IRendererProperty> rendererProperties = new();

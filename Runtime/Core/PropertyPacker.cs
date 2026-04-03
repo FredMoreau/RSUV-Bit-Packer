@@ -21,7 +21,7 @@ namespace UnityEngine.RSUVBitPacker
     /// </remarks>
     [AddComponentMenu("Rendering/RSUV Bit Packer/Property Packer")]
     [ExecuteAlways]
-    public class PropertyPacker : MonoBehaviour, IRendererProperties
+    public sealed class PropertyPacker : MonoBehaviour, IRendererProperties
     {
         [SerializeField]
         internal PropertySheet _propertySheet;
@@ -230,7 +230,10 @@ namespace UnityEngine.RSUVBitPacker
 
         private void Start()
         {
+#if !UNITY_EDITOR
             enabled = _renderers.Length != 0;
+#endif
+            Apply();
         }
 
         private void OnDidApplyAnimationProperties()
