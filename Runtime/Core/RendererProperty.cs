@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 namespace UnityEngine.RSUVBitPacker
 {
@@ -104,7 +105,7 @@ namespace UnityEngine.RSUVBitPacker
         /// </remarks>
         internal protected virtual RendererProperty<T> Clone()
         {
-            var clone = (RendererProperty<T>)Activator.CreateInstance(typeof(RendererProperty<T>));
+            var clone = (RendererProperty<T>)Activator.CreateInstance(this.GetType());
             clone.name = name;
             clone._value = _value;
             return clone;

@@ -9,9 +9,11 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
     {
         private bool initialized = false;
         ReorderableList list;
+        SerializedProperty property;
 
         void Init(SerializedProperty property)
         {
+            this.property = property;
             list = new ReorderableList(property.serializedObject, property, true, true, true, true);
             list.drawHeaderCallback = (Rect rect) =>
             {
@@ -35,7 +37,7 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
-            if (!initialized)
+            if (!initialized || this.property != property)
                 Init(property.FindPropertyRelative("labels"));
             list.DoLayoutList();
         }
