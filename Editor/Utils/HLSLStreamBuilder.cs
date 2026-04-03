@@ -81,13 +81,13 @@ namespace UnityEditor.RSUVBitPacker
 #endif
         }
 
-        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<RendererPropertyBase> properties, bool splitFunctions = false)
+        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<IRendererProperty> properties, bool splitFunctions = false)
         {
             List<(string type, string name, string modifier)> parameters = new();
             List<string> assignments = new();
             uint index = 0;
             uint offset = 0;
-            foreach (RendererPropertyBase property in properties)
+            foreach (IRendererProperty property in properties)
             {
                 if (offset + property.Length > 32)
                     break;

@@ -9,7 +9,7 @@ namespace UnityEngine.RSUVBitPacker
     /// Packs a list of renderer properties into a single 32-bit renderer user value and applies it to one or more <see cref="Renderer"/> components.
     /// </summary>
     /// <remarks>
-    /// PropertyPacker stores a collection of <see cref="RendererPropertyBase"/> instances that describe individual properties (boolean, integer, float, vectors, colors, or custom types).
+    /// PropertyPacker stores a collection of <see cref="IRendererProperty"/> instances that describe individual properties (boolean, integer, float, vectors, colors, or custom types).
     /// Each property's bit-sized representation is concatenated into a single uint which is written to the renderer's shader user value via <c>renderer.SetShaderUserValue</c>.
     ///
     /// Use this component to efficiently transmit compact property state to shaders that read the packed user value.
@@ -21,7 +21,7 @@ namespace UnityEngine.RSUVBitPacker
     /// </remarks>
     [AddComponentMenu("Rendering/RSUV Bit Packer/Property Packer")]
     [ExecuteAlways]
-    public class PropertyPacker : MonoBehaviour, IRendererProperties
+    public sealed class PropertyPacker : MonoBehaviour, IRendererProperties
     {
         [SerializeField]
         internal PropertySheet _propertySheet;
@@ -30,14 +30,14 @@ namespace UnityEngine.RSUVBitPacker
         Renderer[] _renderers;
 
         [SerializeReference]
-        internal List<RendererPropertyBase> rendererProperties = new();
+        internal List<IRendererProperty> rendererProperties = new();
 
-        List<RendererPropertyBase> IRendererProperties.RendererProperties => rendererProperties;
+        List<IRendererProperty> IRendererProperties.RendererProperties => rendererProperties;
 
-        List<RendererPropertyBase> dirtyProperties = new();
+        List<IRendererProperty> dirtyProperties = new();
         uint RendererUserValue {  get; set; }
 
-        void IRendererProperties.Add(RendererPropertyBase property)
+        void IRendererProperties.Add(IRendererProperty property)
         {
             rendererProperties.Add(property);
             Apply();
@@ -66,7 +66,7 @@ namespace UnityEngine.RSUVBitPacker
         /// This method resolves the property index and delegates to the indexed overload.
         /// </summary>
         /// <param name="propertyName">The name of the property to set.</param>
-        /// <param name="value">The new value boxed as <see cref="object"/>. Supported runtime types: bool, float, int, Color, Vector2, Vector3, Vector4, or a type assignable to the property's <see cref="RendererPropertyBase.ValueType"/>.</param>
+        /// <param name="value">The new value boxed as <see cref="object"/>. Supported runtime types: bool, float, int, Color, Vector2, Vector3, Vector4, or a type assignable to the property's <see cref="IRendererProperty.ValueType"/>.</param>
         public void TrySetValue(string propertyName, object value)
         {
             int index = GetPropertyIndex(propertyName);
@@ -76,7 +76,7 @@ namespace UnityEngine.RSUVBitPacker
 
         /// <summary>
         /// Attempts to set the value of a renderer property by index using a boxed <see cref="object"/>.
-        /// Supports the built-in primitive/vector/color types as well as any value compatible with the property's declared <see cref="RendererPropertyBase.ValueType"/>.
+        /// Supports the built-in primitive/vector/color types as well as any value compatible with the property's declared <see cref="IRendererProperty.ValueType"/>.
         /// If the provided <paramref name="value"/> does not match a supported type or is not assignable to the property's value type, no change is made.
         /// </summary>
         /// <param name="propertyIndex">The zero-based index of the property in <see cref="rendererProperties"/>.</param>
@@ -218,7 +218,7 @@ namespace UnityEngine.RSUVBitPacker
             {
                 Undo.RecordObject(this, "Update Renderer Properties");
                 rendererProperties.Clear();
-                foreach (RendererPropertyBase property in _propertySheet.rendererProperties)
+                foreach (IRendererProperty property in _propertySheet.rendererProperties)
                 {
                     var clone = property.Clone();
                     rendererProperties.Add(clone);
@@ -230,7 +230,10 @@ namespace UnityEngine.RSUVBitPacker
 
         private void Start()
         {
+#if !UNITY_EDITOR
             enabled = _renderers.Length != 0;
+#endif
+            Apply();
         }
 
         private void OnDidApplyAnimationProperties()
@@ -249,7 +252,7 @@ namespace UnityEngine.RSUVBitPacker
             {
                 uint rsuv = RendererUserValue;
                 int offset = 0;
-                foreach (RendererPropertyBase prop in rendererProperties)
+                foreach (IRendererProperty prop in rendererProperties)
                 {
                     if (dirtyProperties.Contains(prop))
                     {
@@ -282,7 +285,7 @@ namespace UnityEngine.RSUVBitPacker
         {
             uint result = 0;
             int offset = 0;
-            foreach (RendererPropertyBase prop in rendererProperties)
+            foreach (IRendererProperty prop in rendererProperties)
             {
                 result |= prop.Data << offset;
                 offset += (int)prop.Length;

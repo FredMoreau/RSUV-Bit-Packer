@@ -49,7 +49,7 @@ namespace UnityEditor.RSUVBitPacker
                         pp.UpdadePropertyList();
                         var propertySheet = CreateInstance<PropertySheet>();
                         propertySheet.rendererProperties.Clear();
-                        foreach (RendererPropertyBase property in pp.rendererProperties)
+                        foreach (IRendererProperty property in pp.rendererProperties)
                         {
                             var clone = property.Clone();
                             propertySheet.rendererProperties.Add(clone);
@@ -87,7 +87,7 @@ namespace UnityEditor.RSUVBitPacker
                     for (int i = 0; i < rendererPropertiesProp.arraySize; i++)
                     {
                         var p = rendererPropertiesProp.GetArrayElementAtIndex(i);
-                        SerializedProperty name = p.FindPropertyRelative(RendererPropertyBase.nameFieldName);
+                        SerializedProperty name = p.FindPropertyRelative(RendererProperty<bool>.nameFieldName);
                         EditorGUILayout.PropertyField(p, new GUIContent(string.IsNullOrWhiteSpace(name.stringValue) ? "<no name>" : name.stringValue));
                     }
                     EditorGUI.indentLevel = 0;
