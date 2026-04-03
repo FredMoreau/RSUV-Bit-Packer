@@ -12,7 +12,9 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
             var lengthProp = property.FindPropertyRelative($"{IntegerProperty.settingsFieldName}.length");
 
             var maxValue = (int)Mathf.Pow(2, Mathf.Clamp((int)lengthProp.uintValue, 1, 32)) - 1;
+            EditorGUI.BeginProperty(position, label, property);
             valueProp.intValue = EditorGUI.IntSlider(position, label, valueProp.intValue, 0, maxValue);
+            EditorGUI.EndProperty();
         }
     }
 }

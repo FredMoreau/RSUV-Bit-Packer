@@ -19,7 +19,9 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
                 labels[i] = labelProp.stringValue;
             }
 
+            EditorGUI.BeginProperty(position, label, property);
             valueProp.intValue = EditorGUI.Popup(position, label.text, valueProp.intValue, labels);
+            EditorGUI.EndProperty();
         }
     }
 }

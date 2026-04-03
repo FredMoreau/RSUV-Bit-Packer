@@ -13,7 +13,9 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
             var minValueProp = property.FindPropertyRelative($"{IntegerProperty.settingsFieldName}.minValue");
             var maxValueProp = property.FindPropertyRelative($"{IntegerProperty.settingsFieldName}.maxValue");
 
+            EditorGUI.BeginProperty(position, label, property);
             valueProp.floatValue = EditorGUI.Slider(position, label, valueProp.floatValue, minValueProp.floatValue, maxValueProp.floatValue);
+            EditorGUI.EndProperty();
         }
     }
 }
