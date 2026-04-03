@@ -71,7 +71,7 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
         /// Clone the property instance performing a deep copy of the settings' labels array so cloned
         /// instances do not share the same reference.
         /// </summary>
-        internal protected override RendererPropertyBase Clone()
+        internal protected override RendererProperty<int> Clone()
         {
             var clone = base.Clone() as EnumProperty;
             var labelsCopy = Settings.labels != null ? (string[])Settings.labels.Clone() : null;

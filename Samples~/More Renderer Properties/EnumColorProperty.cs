@@ -44,7 +44,7 @@ namespace RSUVBitPacker.Samples
             Settings = new PropertySettings(new Color[] { Color.red, Color.green, Color.blue });
         }
 
-        protected override RendererPropertyBase Clone()
+        protected override RendererProperty<int> Clone()
         {
             var clone = base.Clone() as EnumColorProperty;
             var colorsCopy = Settings.colors != null ? (Color[])Settings.colors.Clone() : null;

@@ -35,10 +35,10 @@ namespace UnityEditor.RSUVBitPacker
         static void ReflectRendererPropertyTypesAndStoreMenuItems()
         {
             dropDownLabels.Clear();
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes().Where(x => typeof(RendererPropertyBase).IsAssignableFrom(x))).ToList();
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes().Where(x => typeof(IRendererProperty).IsAssignableFrom(x))).ToList();
             foreach (var type in types)
             {
-                if (type == typeof(RendererPropertyBase) || type == typeof(RendererProperty<>) || type == typeof(RendererProperty<,>))
+                if (type == typeof(IRendererProperty) || type == typeof(RendererProperty<>) || type == typeof(RendererProperty<,>))
                     continue;
 
                 rendererValueTypes.Add(type);
@@ -74,7 +74,7 @@ namespace UnityEditor.RSUVBitPacker
                 EditorGUI.indentLevel++;
                 if (selectedProperty != null)
                 {
-                    SerializedProperty name = selectedProperty.FindPropertyRelative(RendererPropertyBase.nameFieldName);
+                    SerializedProperty name = selectedProperty.FindPropertyRelative(RendererProperty<bool>.nameFieldName);
                     SerializedProperty settings = selectedProperty.FindPropertyRelative(RendererProperty<int, uint>.settingsFieldName);
                     EditorGUILayout.DelayedTextField(name, propertyNameFieldLabel);
                     if (settings != null)
@@ -142,7 +142,7 @@ namespace UnityEditor.RSUVBitPacker
         void DrawListItems(Rect rect, int index, bool isActive, bool isFocused)
         {
             SerializedProperty element = list.serializedProperty.GetArrayElementAtIndex(index);
-            SerializedProperty name = element.FindPropertyRelative(RendererPropertyBase.nameFieldName);
+            SerializedProperty name = element.FindPropertyRelative(RendererProperty<bool>.nameFieldName);
             EditorGUI.PropertyField(rect, element, new GUIContent(string.IsNullOrWhiteSpace(name.stringValue) ? "<no name>" : name.stringValue));
         }
 
@@ -161,7 +161,7 @@ namespace UnityEditor.RSUVBitPacker
                     {
                         Undo.RecordObject(target as UnityEngine.Object, optionText);
                         var t = rendererValueTypes[index];
-                        var o = Activator.CreateInstance(t) as RendererPropertyBase;
+                        var o = Activator.CreateInstance(t) as IRendererProperty;
                         target.Add(o);
                         UpdateSum();
                     });
