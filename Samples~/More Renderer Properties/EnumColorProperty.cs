@@ -61,8 +61,8 @@ namespace RSUVBitPacker.Samples
         public override string HlslDecoder(string paramName, uint bitIndex)
         {
             StringBuilder hlslBody = new StringBuilder();
-            hlslBody.AppendLine($"int Index = (({rsuvDefineSymbol} >> {bitIndex}) & ((1 << {Length}) - 1));");
-            hlslBody.AppendLine("    [branch] switch(Index)");
+            hlslBody.AppendLine($"int Index_{bitIndex} = (({rsuvDefineSymbol} >> {bitIndex}) & ((1 << {Length}) - 1));");
+            hlslBody.AppendLine($"    [branch] switch(Index_{bitIndex})");
             hlslBody.AppendLine("    {");
             for (int i = 0; i < Settings.colors.Length; i++)
             {
