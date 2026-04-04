@@ -31,9 +31,11 @@ If the properties exceed the capacity, the Help Box turns into a warning, and an
 
 ### Shader Includes
 The _**Property Sheet**_ also allows generating a _Shader Include_ (HLSL) to access the properties in _Shader Graph_.
+
 ![Using Generated Nodes in Shader Graph.](./Documentation~/SGNodes.png)
 
 If the "Split Functions" option is enabled, it'll generate one function per property, otherwise it'll generate one function for all properties.
+
 ![Meta Node in Shader Graph.](./Documentation~/SGNode_unsplit.png)
 
 #### Unity 6.3 - 6.4
