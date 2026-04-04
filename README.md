@@ -106,11 +106,17 @@ To install samples, go to the Package Manager, select the package in the list an
 ### Examples
 This contains several examples of the different Renderer Properties.
 
+![Samples - Examples.](./Documentation~/Samples_Examples.png)
+
 ### More Renderer Properties
 This contains a custom "Enum Color" Renderer Property, storing an index to a Color Array.
 
+![Samples - EnumColor.](./Documentation~/Samples_EnumColor.png)
+
 ### Visual Scripting
 This contains an example of setting a Renderer Property on a Property Packer from Visual Scripting.
+
+![Samples - VisualScripting.](./Documentation~/Samples_VisualScripting.png)
 
 ## Extensions
 RSUV being implemented only on some `Renderer` classes, such as `MeshRenderer` and `SkinnedMeshRenderer`, this package contains an Extension that makes it easy to set the `ShaderUserValue` on a `Renderer`.
