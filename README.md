@@ -6,8 +6,8 @@ While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package)
 
 # Workflow
 The package allows you to define a packing scheme by adding "_**Renderer Properties**_", easily changing precision to fit in the 32 bits, then pack those properties and assign them to Renderers's RSUV and eventually fetch the properties' values in _Shader Graph_, using:
-- a _**[Property Sheet](https://github.com/FredMoreau/RSUV-Bit-Packer#property-sheet)**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
-- a _**[Property Packer](https://github.com/FredMoreau/RSUV-Bit-Packer#property-packer)**_ (component) that sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
+- a _**[Property Sheet](#property-sheet)**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
+- a _**[Property Packer](#property-packer)**_ (component) that sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
 
 ## Property Sheet
 Create a new _**Property Sheet**_ using `Assets/Create/Rendering/RSUV Bit Packer/Property Sheet`.
