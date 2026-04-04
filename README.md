@@ -5,7 +5,7 @@ The RSUV is a ```uint``` (32 bit unsigned integer), which requires packing data 
 While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package) aims at providing a user friendly workflow to design packing scheme and set Renderer Properties in the Editor or from a C# script.
 
 # Workflow
-The package allows you to define a packing scheme by adding "_**Renderer Properties**_", easily changing precision to fit in the 32 bits, and eventually pack those properties and assign them to Renderers's RSUV using:
+The package allows you to define a packing scheme by adding "_**Renderer Properties**_", easily changing precision to fit in the 32 bits, then pack those properties and assign them to Renderers's RSUV and eventually fetch the properties' values in _Shader Graph_, using:
 - a _**Property Sheet**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
 - a _**Property Packer**_ (component) that sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
 
