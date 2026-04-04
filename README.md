@@ -47,10 +47,13 @@ In Unity 6.5, Shader Includes are generated using the _Shader Function Reflectio
 ## Property Packer
 Add a _Property Packer_ to a GameObject using `Component/Rendering/RSUV Bit Packer/Property Packer`, and assign the Renderers it shall set the RSUV to.
 
+For quick prototyping, the list of Renderer Properties can be defined in the component itself, and some generic shader functions are provided to fetch them in Shader Graph, providing the bit offset.
+
 ![Adding properties to a Property Packer.](./Documentation~/PropertyPacker.png)
 
-The list of Renderer Properties can be defined in the component, or inherited from a _Property Sheet_.
-Assigning a Property Sheet on a Property Packer will make it inherits the properties from the sheet.
+Assigning a _Property Sheet_ on a _Property Packer_ will make it inherit the properties from the sheet.
+Which allows using the same _Property Sheet_ with several _Property Packers_ for consistency.
+If the property sheet is further edited, the Packers will display a warning and a button to update their properties.
 
 ![Setting a Property Packer with a Property Sheet.](./Documentation~/PropertyPackerWithPropertySheet.png)
 
