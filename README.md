@@ -6,8 +6,8 @@ While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package)
 
 # Workflow
 The package allows you to define a packing scheme by adding "_**Renderer Properties**_", easily changing precision to fit in the 32 bits, then pack those properties and assign them to Renderers's RSUV and eventually fetch the properties' values in _Shader Graph_, using:
-- a _**Property Sheet**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
-- a _**Property Packer**_ (component) that sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
+- a _**[Property Sheet](https://github.com/FredMoreau/RSUV-Bit-Packer/edit/main/README.md#property-sheet)**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
+- a _**[Property Packer](https://github.com/FredMoreau/RSUV-Bit-Packer/edit/main/README.md#property-packer)**_ (component) that sets the value on renderers and exposes properties to Animation, C# and even Visual Scripting.
 
 ## Property Sheet
 Create a new _**Property Sheet**_ using `Assets/Create/Rendering/RSUV Bit Packer/Property Sheet`.
@@ -45,7 +45,7 @@ In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Cust
 In Unity 6.5, Shader Includes are generated using the _Shader Function Reflection API_ syntax, which makes them automatically accessible in _Shader Graph_ without having to manually configure a _Custom Function Node_.
 
 ## Property Packer
-_Property Packer_ is a component that allows listing and setting 'Renderer Properties'.
+Add a _Property Packer_ to a GameObject using `Component/Rendering/RSUV Bit Packer/Property Packer`, and assign the Renderers it shall set the RSUV to.
 
 ![Adding properties to a Property Packer.](./Documentation~/PropertyPacker.png)
 
