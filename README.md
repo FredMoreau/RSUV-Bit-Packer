@@ -1,4 +1,4 @@
-# RSUV Bit Packer
+# RSUV Bit Packer - Overview
 Using _**Renderer Shader User Value**_ ([RSUV](https://docs.unity3d.com/Manual/renderer-shader-user-value-intro.html)), introduced in **Unity 6.3**, allows setting unique properties per renderer, to be used in their material shaders, with no performance cost when using the _SRP Batcher_ (and _GPU Resident Drawer_).
 
 The RSUV is a ```uint``` (32 bit unsigned integer), which requires packing data on the C# renderer side, and unpacking data on the HLSL shader side.
@@ -31,6 +31,10 @@ If the properties exceed the capacity, the Help Box turns into a warning, and an
 
 ### Shader Includes
 The _**Property Sheet**_ also allows generating a _Shader Include_ (HLSL) to access the properties in _Shader Graph_.
+![Using Generated Nodes in Shader Graph.](./Documentation~/SGNodes.png)
+
+If the "Split Functions" option is enabled, it'll generate one function per property, otherwise it'll generate one function for all properties.
+![Meta Node in Shader Graph.](./Documentation~/SGNode_unsplit.png)
 
 #### Unity 6.3 - 6.4
 In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Custom Function_ syntax for them to be used with _Custom Function Nodes_.
