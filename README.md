@@ -7,7 +7,7 @@ While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package)
 ### Getting Started
 
 - Open the Package Manager, click on the + Icon, select "Add Package from Git Url".
-Enter the package url: `git@github.com:FredMoreau/RSUV-Bit-Packer/.git`
+Enter the package url: `git@github.com:FredMoreau/RSUV-Bit-Packer.git`
 - Or clone the repo, select "Add Package from disk" and select the `package.json` file.
 - Or download as a zip, and unzip it in your project's Packages folder.
 
