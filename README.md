@@ -57,10 +57,14 @@ Assigning a Property Sheet on a Property Packer will make it inherits the proper
 ### Animation and Scripting
 
 Properties are packed and set on the renderer when modified and/or animated in the Editor and at Runtime.
+
 The API `PropertyPacker.TrySetProperty()` allows setting properties from C# at Runtime.
+
 Note, it is good practice to store a property index using `PropertyPacker.GetPropertyIndex(string propertyName)` and use `PropertyPacker.TrySetProperty(int index, value)`.
+
 It is also preferred to use the generic method `PropertyPacker.TrySetProperty<T>(int index, T value)`.
-The purpose of `PropertyPacker.TrySetProperty(int index, object value)` is Visual Scripting support.
+
+The main purpose of the non generic `PropertyPacker.TrySetProperty(int index, object value)` is for Visual Scripting support.
 
 ## Property Types
 ### Boolean
