@@ -4,6 +4,13 @@ Using _**Renderer Shader User Value**_ ([RSUV](https://docs.unity3d.com/Manual/r
 The RSUV is a ```uint``` (32 bit unsigned integer), which requires packing data on the C# renderer side, and unpacking data on the HLSL shader side.
 While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package) aims at providing a user friendly workflow to design packing scheme and set Renderer Properties in the Editor or from a C# script.
 
+### Getting Started
+
+Open the Package Manager, click on the + Icon, select "Add Package from Git Url".
+Enter the package url: `git@github.com:FredMoreau/RSUV-Bit-Packer/.git`
+
+Then install the [Samples](#Samples).
+
 # Workflow
 The package allows you to define a packing scheme by adding "_**Renderer Properties**_", easily changing precision to fit in the 32 bits, then pack those properties and assign them to Renderers's RSUV and eventually fetch the properties' values in _Shader Graph_, using:
 - a _**[Property Sheet](#property-sheet)**_ (asset) that eventually generates a _**Shader Include**_ using the new _**Shader Function Reflection API**_ to fetch the data in _**Shader Graph**_.
