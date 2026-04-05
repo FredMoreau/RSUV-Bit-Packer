@@ -1,5 +1,4 @@
 using System;
-using System.Runtime.CompilerServices;
 
 namespace UnityEngine.RSUVBitPacker
 {
@@ -119,14 +118,14 @@ namespace UnityEngine.RSUVBitPacker
         /// <summary>
         /// Value-based comparison helper for derived classes to implement equality semantics.
         /// </summary>
-        internal protected virtual bool Equals(RendererProperty<T> other)
-        {
-            return this.Name == other.Name && this.ValueType == other.ValueType;
-        }
+        internal protected virtual bool Equals(RendererProperty<T> other) => true;
 
         bool IRendererProperty.Equals(IRendererProperty other)
         {
-            return this.Equals(other as RendererProperty<T>);
+            return other != null &&
+                this.Name == other.Name &&
+                this.ValueType == other.ValueType &&
+                this.Equals(other as RendererProperty<T>);
         }
     }
 

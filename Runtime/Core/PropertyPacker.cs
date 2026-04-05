@@ -188,28 +188,19 @@ namespace UnityEngine.RSUVBitPacker
             }
         }
 
-        internal bool Match(PropertySheet propertySheet)
+        internal bool Match(IRendererProperties other)
         {
-            bool match = true;
-            if (propertySheet != null)
+            if (rendererProperties.Count != other.RendererProperties.Count)
             {
-                if (rendererProperties.Count == propertySheet.rendererProperties.Count)
-                {
-                    for (int i = 0; i < propertySheet.rendererProperties.Count; i++)
-                    {
-                        if (!this.rendererProperties[i].Equals(propertySheet.rendererProperties[i]))
-                        {
-                            match = false;
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    match = false;
-                }
+                return false;
             }
-            return match;
+            else
+            {
+                for (int i = 0; i < other.RendererProperties.Count; i++)
+                    if (!this.rendererProperties[i].Equals(other.RendererProperties[i]))
+                        return false;
+            }
+            return true;
         }
 
         internal void UpdadePropertyList()
@@ -217,12 +208,19 @@ namespace UnityEngine.RSUVBitPacker
             if (_propertySheet != null)
             {
                 Undo.RecordObject(this, "Update Renderer Properties");
-                rendererProperties.Clear();
+                List<IRendererProperty> newProperties = new();
                 foreach (IRendererProperty property in _propertySheet.rendererProperties)
                 {
                     var clone = property.Clone();
-                    rendererProperties.Add(clone);
+                    var existingProp = rendererProperties.Find(p => p.Name == clone.Name && p.ValueType == clone.ValueType);
+                    if (existingProp != null)
+                    {
+                        clone.SetValue(existingProp.GetValue());
+                    }
+                    newProperties.Add(clone);
                 }
+                rendererProperties.Clear();
+                rendererProperties.AddRange(newProperties);
                 Apply();
             }
         }
@@ -259,13 +257,15 @@ namespace UnityEngine.RSUVBitPacker
                         uint mask = ((1u << (int)prop.Length) - 1u) << offset;
                         rsuv &= ~mask;
                         rsuv |= prop.Data << offset;
-                        dirtyProperties.Remove(prop);
                     }
                     offset += (int)prop.Length;
                 }
                 RendererUserValue = rsuv;
+
                 foreach (var renderer in _renderers)
                     renderer.SetShaderUserValue(RendererUserValue);
+
+                dirtyProperties.Clear();
                 _isDirty = false;
             }
         }

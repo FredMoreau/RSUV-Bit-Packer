@@ -13,7 +13,14 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
 
             var maxValue = (int)Mathf.Pow(2, Mathf.Clamp((int)lengthProp.uintValue, 1, 32)) - 1;
             EditorGUI.BeginProperty(position, label, property);
-            valueProp.intValue = EditorGUI.IntSlider(position, label, valueProp.intValue, 0, maxValue);
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = valueProp.hasMultipleDifferentValues;
+            var intValue = EditorGUI.IntSlider(position, label, valueProp.intValue, 0, maxValue);
+            EditorGUI.showMixedValue = false;
+            if (EditorGUI.EndChangeCheck())
+            {
+                valueProp.intValue = intValue;
+            }
             EditorGUI.EndProperty();
         }
     }

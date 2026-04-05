@@ -20,7 +20,14 @@ namespace UnityEditor.RSUVBitPacker.RendererProperties
             }
 
             EditorGUI.BeginProperty(position, label, property);
-            valueProp.intValue = EditorGUI.Popup(position, label.text, valueProp.intValue, labels);
+            EditorGUI.BeginChangeCheck();
+            EditorGUI.showMixedValue = valueProp.hasMultipleDifferentValues;
+            var intValue = EditorGUI.Popup(position, label.text, valueProp.intValue, labels);
+            EditorGUI.showMixedValue = false;
+            if (EditorGUI.EndChangeCheck())
+            {
+                valueProp.intValue = intValue;
+            }
             EditorGUI.EndProperty();
         }
     }

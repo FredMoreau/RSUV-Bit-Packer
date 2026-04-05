@@ -3,7 +3,7 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
-    [CustomEditor(typeof(PropertyPacker))]
+    [CustomEditor(typeof(PropertyPacker)), CanEditMultipleObjects]
     public class PropertyPackerEditor : Editor
     {
         SerializedProperty rendererProp;
@@ -11,9 +11,35 @@ namespace UnityEditor.RSUVBitPacker
         SerializedProperty rendererPropertiesProp;
         RendererPropertyListView rendererPropertyListView;
 
-        PropertySheet ps => propertySheetProp.objectReferenceValue as PropertySheet;
-        PropertyPacker pp => target as PropertyPacker;
-        bool propertySheetMismatch => !pp.Match(ps);
+        bool propertySheetMismatch
+        {
+            get
+            {
+                foreach (PropertyPacker pp in targets)
+                {
+                    if (pp._propertySheet == null)
+                        continue;
+                    if (!pp.Match(pp._propertySheet))
+                        return true;
+                }
+                return false;
+            }
+        }
+
+        bool propertyListMismatch
+        {
+            get
+            {
+                if (targets.Length <= 1)
+                    return false;
+                for (int i = 1; i < targets.Length; i++)
+                {
+                    if (!(targets[i] as PropertyPacker).Match(targets[0] as PropertyPacker))
+                        return true;
+                }
+                return false;
+            }
+        }
 
         private void OnEnable()
         {
@@ -33,50 +59,60 @@ namespace UnityEditor.RSUVBitPacker
             {
                 serializedObject.ApplyModifiedProperties();
                 if (propertySheetProp.objectReferenceValue != null)
-                    pp.UpdadePropertyList();
+                    foreach (PropertyPacker pp in targets)
+                        pp.UpdadePropertyList();
             }
 
-            if (propertySheetProp.objectReferenceValue == null)
+            if (propertySheetProp.objectReferenceValue == null) // No Property Sheet assigned
             {
-                rendererPropertyListView.DoLayoutList();
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                if (GUILayout.Button("Save as Property Sheet", EditorStyles.miniButton, GUILayout.Width(180)))
+                if (targets.Length == 1) // single object, allow editing the list of Renderer Properties and saving it as a Property Sheet
                 {
-                    var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", pp.name, "asset", "Save Renderer Property Sheet");
-                    if (path != null)
-                    {
-                        pp.UpdadePropertyList();
-                        var propertySheet = CreateInstance<PropertySheet>();
-                        propertySheet.rendererProperties.Clear();
-                        foreach (IRendererProperty property in pp.rendererProperties)
-                        {
-                            var clone = property.Clone();
-                            propertySheet.rendererProperties.Add(clone);
-                        }
-                        AssetDatabase.CreateAsset(propertySheet, path);
-                        Undo.RecordObject(target, "Set Property Sheet.");
-                        propertySheetProp.objectReferenceValue = propertySheet;
-                        serializedObject.ApplyModifiedProperties();
-                    }
+                    rendererPropertyListView.DoLayoutList();
+                    SaveAsPropertySheetButton();
                 }
-                GUILayout.EndHorizontal();
+                else // multiple objects, only show the list of Renderer Properties if they match between the selected objects, otherwise show a warning
+                {
+                    DrawNonReorderablePropertyList();
+                }
+
                 EditorGUILayout.Space(EditorGUIUtility.singleLineHeight);
             }
-            else
+            else // Property Sheet assigned, show the list of Renderer Properties only if it matches the Property Sheet, otherwise show a warning
             {
                 if (propertySheetMismatch)
+                    UpdatePropertyListButton();
+
+                DrawNonReorderablePropertyList();
+            }
+
+            EditorGUILayout.PropertyField(rendererProp);
+            serializedObject.ApplyModifiedProperties();
+
+            void UpdatePropertyListButton()
+            {
+                if (targets.Length > 1)
+                    EditorGUILayout.HelpBox("Some Objects Renderer Properties do not match their Property Sheet.", MessageType.Warning, true);
+                else
+                    EditorGUILayout.HelpBox("The current list of Renderer Properties does not match the Property Sheet.", MessageType.Warning, true);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Update", EditorStyles.miniButton, GUILayout.Width(60)))
                 {
-                    EditorGUILayout.HelpBox("The list of Renderer Properties is out of sync.", MessageType.Warning, true);
-                    GUILayout.BeginHorizontal();
-                    GUILayout.FlexibleSpace();
-                    if (GUILayout.Button("Update", EditorStyles.miniButton, GUILayout.Width(60)))
-                    {
-                        Undo.RecordObject(target, "Update Renderer Properties.");
+                    Undo.RecordObjects(targets, "Update Renderer Properties.");
+                    foreach (PropertyPacker pp in targets)
                         pp.UpdadePropertyList();
-                        serializedObject.ApplyModifiedProperties();
-                    }
-                    GUILayout.EndHorizontal();
+                    serializedObject.ApplyModifiedProperties();
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            void DrawNonReorderablePropertyList()
+            {
+                if (propertyListMismatch)
+                {
+                    EditorGUILayout.HelpBox("The list of Renderer Properties do not match between the selected objects.", MessageType.Warning, true);
+                    return;
                 }
 
                 showProp = EditorGUILayout.Foldout(showProp, new GUIContent("Renderer Properties", "Populated from Renderer Property Sheet"));
@@ -94,8 +130,31 @@ namespace UnityEditor.RSUVBitPacker
                 }
             }
 
-            EditorGUILayout.PropertyField(rendererProp);
-            serializedObject.ApplyModifiedProperties();
+            void SaveAsPropertySheetButton()
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button("Save as Property Sheet", EditorStyles.miniButton, GUILayout.Width(180)))
+                {
+                    var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", (targets[0] as PropertyPacker).name, "asset", "Save Renderer Property Sheet");
+                    if (path != null)
+                    {
+                        (targets[0] as PropertyPacker).UpdadePropertyList();
+                        var propertySheet = CreateInstance<PropertySheet>();
+                        propertySheet.rendererProperties.Clear();
+                        foreach (IRendererProperty property in (targets[0] as PropertyPacker).rendererProperties)
+                        {
+                            var clone = property.Clone();
+                            propertySheet.rendererProperties.Add(clone);
+                        }
+                        AssetDatabase.CreateAsset(propertySheet, path);
+                        Undo.RecordObject(target, "Set Property Sheet.");
+                        propertySheetProp.objectReferenceValue = propertySheet;
+                        serializedObject.ApplyModifiedProperties();
+                    }
+                }
+                GUILayout.EndHorizontal();
+            }
         }
     }
 }
