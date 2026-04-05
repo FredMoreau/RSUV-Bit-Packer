@@ -175,5 +175,3 @@ Don't give several properties the same name, and don't name properties with HLSL
 ### IPropertyProvider
 Considered for future improvement to add an interface for MonoBehaviours to provide renderer properties.
 
-#### HLSL Namespacing
-The generated includes are not namespaced. Adding namespacing may avoid collisions with other functions.
