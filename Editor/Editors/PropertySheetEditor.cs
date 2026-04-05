@@ -61,7 +61,8 @@ namespace UnityEditor.RSUVBitPacker
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
             var rendererProperties = (target as PropertySheet).rendererProperties;
 
-            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue);
+            var projectNamespace = GetNamespace(assetPath);
+            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace);
 
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             ShaderInclude incl = AssetDatabase.LoadAssetAtPath<ShaderInclude>(assetPath);
@@ -78,10 +79,48 @@ namespace UnityEditor.RSUVBitPacker
 
                 var rendererProperties = (target as PropertySheet).rendererProperties;
 
-                HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue);
+                var projectNamespace = GetNamespace(path);
+                HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace);
 
                 AssetDatabase.Refresh();
             }
+        }
+
+        struct AsmdefData
+        {
+            public string name;
+            public string rootNamespace;
+        }
+
+        public static string GetNamespace(string assetPath)
+        {
+            var asmdefPath = GetAsmdefPath(assetPath);
+            if (asmdefPath != null)
+            {
+                var json = File.ReadAllText(asmdefPath);
+                var data = JsonUtility.FromJson<AsmdefData>(json);
+                if (!string.IsNullOrEmpty(data.rootNamespace))
+                    return data.rootNamespace;
+            }
+            return EditorSettings.projectGenerationRootNamespace;
+        }
+
+        public static string GetAsmdefPath(string assetPath)
+        {
+            var fullPath = Path.GetFullPath(assetPath);
+            var directory = Path.GetDirectoryName(fullPath);
+
+            while (!string.IsNullOrEmpty(directory))
+            {
+                var asmdefs = Directory.GetFiles(directory, "*.asmdef", SearchOption.TopDirectoryOnly);
+
+                if (asmdefs.Length > 0)
+                    return asmdefs[0];
+
+                directory = Directory.GetParent(directory)?.FullName;
+            }
+
+            return null;
         }
     }
 }

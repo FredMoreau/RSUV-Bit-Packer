@@ -8,7 +8,6 @@ using UnityEngine.RSUVBitPacker;
 
 namespace UnityEditor.RSUVBitPacker
 {
-    // TODO namespace + path
     public static class HLSLStreamBuilder
     {
         const string sfrapiInclude = "#include \"ShaderApiReflectionSupport.hlsl\"";
@@ -16,10 +15,19 @@ namespace UnityEditor.RSUVBitPacker
         const string rsuvUniformName = "unity_RendererUserValue";
         static TextInfo cultureTextInfo = CultureInfo.CurrentCulture.TextInfo;
 
-        static void ReflectionFunctionHint(StreamWriter streamWriter, string functionName)
+        static void ReflectionFunctionHint(StreamWriter streamWriter, string functionName, string nameSpace = null)
         {
+            var nameSpacePrefix = string.IsNullOrEmpty(nameSpace) ? string.Empty : $"{nameSpace}.";
+            var name = functionName.Split('_');
+            var nodeName = name.Length > 1 ? name[1] : name[0];
+            var nodePath = name.Length > 1 ? $"/{name[0]}" : string.Empty;
+
             streamWriter.Write(@$"/// <funchints>
-///     <sg:ProviderKey>{functionName}</sg:ProviderKey>
+///     <sg:ProviderKey>{nameSpacePrefix}{functionName.Replace('_', '.')}</sg:ProviderKey>
+///     <sg:DisplayName>{nodeName}</sg:DisplayName>
+///     <sg:SearchCategory>Input/Property Sheets{nodePath}</sg:SearchCategory>
+///     <sg:SearchName>{nodeName}</sg:SearchName>
+///     <sg:SearchTerms>RSUV, {functionName.Replace("_", ", ")}</sg:SearchTerms>
 /// </funchints>
 ");
         }
@@ -70,10 +78,10 @@ namespace UnityEditor.RSUVBitPacker
             FunctionBody(streamWriter, assignments);
         }
 
-        static void ShaderFunction(StreamWriter streamWriter, string funcName, List<(string type, string name, string modifier)> parameters, List<string> assignments)
+        static void ShaderFunction(StreamWriter streamWriter, string funcName, List<(string type, string name, string modifier)> parameters, List<string> assignments, string nameSpace = null)
         {
 #if UNITY_6000_5_OR_NEWER
-            ReflectionFunctionHint(streamWriter, funcName);
+            ReflectionFunctionHint(streamWriter, funcName, nameSpace);
             streamWriter.WriteLine(sfrapiMacro);
             FunctionBlock(streamWriter, funcName, parameters, assignments);
 #else
@@ -81,7 +89,7 @@ namespace UnityEditor.RSUVBitPacker
 #endif
         }
 
-        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<IRendererProperty> properties, bool splitFunctions = false)
+        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<IRendererProperty> properties, bool splitFunctions = false, string nameSpace = null)
         {
             List<(string type, string name, string modifier)> parameters = new();
             List<string> assignments = new();
@@ -120,17 +128,37 @@ namespace UnityEditor.RSUVBitPacker
 
 ");
 
-                if (splitFunctions)
+#if UNITY_6000_5_OR_NEWER // HLSL namespaces are not supported in Custom Function Nodes
+                if (!string.IsNullOrEmpty(nameSpace))
                 {
-                    for(int i = 0; i < parameters.Count; i++)
-                    {
-                        ShaderFunction(streamWriter, $"{name}_{parameters[i].name}", new() { parameters[i] }, new() { assignments[i] });
-                    }
+                    streamWriter.WriteLine($"namespace {nameSpace.Replace('.', '_')}"); // HLSL namespaces don't support dots, replace with underscores
+                    streamWriter.WriteLine("{");
+                }
+#endif
+
+                if (parameters.Count == 0)
+                {
+                    streamWriter.WriteLine($"// No valid properties found for {name}");
                 }
                 else
                 {
-                    ShaderFunction(streamWriter, name, parameters, assignments);
+                    if (splitFunctions)
+                    {
+                        for(int i = 0; i < parameters.Count; i++)
+                        {
+                            ShaderFunction(streamWriter, $"{name}_{parameters[i].name}", new() { parameters[i] }, new() { assignments[i] }, nameSpace);
+                        }
+                    }
+                    else
+                    {
+                        ShaderFunction(streamWriter, name, parameters, assignments, nameSpace);
+                    }
                 }
+
+#if UNITY_6000_5_OR_NEWER
+                if (!string.IsNullOrEmpty(nameSpace))
+                    streamWriter.WriteLine("}");
+#endif
             }
         }
 
