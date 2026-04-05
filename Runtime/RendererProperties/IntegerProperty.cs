@@ -8,8 +8,6 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     /// <remarks>
     /// The number of bits used to store the integer is defined by <see cref="PropertySettings.length"/>.
     /// The stored value is clamped to the representable range [0, 2^length - 1].
-    /// Note: Do not derive directly from <c>RendererPropertyBase</c>. Use <c>RendererProperty&lt;T&gt;</c> or
-    /// <c>RendererProperty&lt;T,U&gt;</c> for concrete implementations.
     /// </remarks>
     [Serializable]
     [RendererValueTypeName("Integer")]

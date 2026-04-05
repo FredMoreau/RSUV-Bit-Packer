@@ -8,8 +8,6 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     /// <remarks>
     /// The color's R, G, and B channels are stored as 8-bit unsigned values in the packed user value.
     /// The property decodes to <c>float3</c> in HLSL and normalizes the components to [0,1].
-    /// Note: Do not derive directly from <c>RendererPropertyBase</c>. Use <c>RendererProperty&lt;T&gt;</c> or
-    /// <c>RendererProperty&lt;T,U&gt;</c> for concrete implementations.
     /// </remarks>
     [Serializable]
     [RendererValueTypeName("Color24 (RGB)")]

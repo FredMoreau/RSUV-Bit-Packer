@@ -10,8 +10,6 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     /// Each HSV channel is quantized according to the corresponding precision in <see cref="PropertySettings"/>.
     /// The packed data concatenates the quantized H, S and V bits into a single unsigned integer.
     /// The class also produces HLSL helper code to decode and convert HSV back to RGB in shaders.
-    /// Note: Do not derive directly from <c>RendererPropertyBase</c>. Use <c>RendererProperty&lt;T&gt;</c> or
-    /// <c>RendererProperty&lt;T,U&gt;</c> for concrete implementations.
     /// </remarks>
     [Serializable]
     [RendererValueTypeName("Color (HSV)")]

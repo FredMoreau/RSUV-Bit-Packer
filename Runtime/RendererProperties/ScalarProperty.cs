@@ -9,8 +9,6 @@ namespace UnityEngine.RSUVBitPacker.RendererProperties
     /// <remarks>
     /// The property stores a float value by quantizing it into <see cref="PropertySettings.precision"/> bits
     /// and remapping the value from the configured [minValue, maxValue] range into the unsigned integer range.
-    /// Note: Do not derive directly from <c>RendererPropertyBase</c>. Use <c>RendererProperty&lt;T&gt;</c> or
-    /// <c>RendererProperty&lt;T,U&gt;</c> for concrete implementations.
     /// </remarks>
     [Serializable]
     [RendererValueTypeName("Scalar")]
