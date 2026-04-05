@@ -53,6 +53,8 @@ In Unity 6.3 and 6.4, Shader Includes are generated using the _Shader Graph Cust
 #### Unity 6.5 and above
 In Unity 6.5, Shader Includes are generated using the _Shader Function Reflection API_ syntax, which makes them automatically accessible in _Shader Graph_ without having to manually configure a _Custom Function Node_.
 
+**Note:** in Unity 6.5, to avoid potential collision with other HLSL functions, generated Shader Includes are namespaced, using the Assembly Definition namepace the hlsl file belongs to, if any, or the Project's root namespace.
+
 ## Property Packer
 Add a _Property Packer_ to a GameObject using `Component/Rendering/RSUV Bit Packer/Property Packer`, and assign the Renderers it shall set the RSUV to.
 
