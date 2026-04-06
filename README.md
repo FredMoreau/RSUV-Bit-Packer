@@ -45,6 +45,7 @@ The _**Property Sheet**_ also allows generating a _Shader Include_ (HLSL) to acc
 
 If the "Split Functions" option is enabled, it'll generate one function per property, otherwise it'll generate one function for all properties.
 
+![Split Nodes in Shader Graph.](./Documentation~/SGNode_split.png)
 ![Meta Node in Shader Graph.](./Documentation~/SGNode_unsplit.png)
 
 #### Unity 6.3 - 6.4
@@ -123,7 +124,9 @@ This contains several examples of the different Renderer Properties.
 ![Samples - Examples.](./Documentation~/Samples_Examples.png)
 
 ### More Renderer Properties
-This contains a custom "Enum Color" Renderer Property, storing an index to a Color Array.
+This contains:
+- a custom "Enum Color" Renderer Property, storing an index to a Color Array.
+- a custom "Power Scalar" Renderer Property, applying a power on the packed data to bias precision toward low range values.
 
 ![Samples - EnumColor.](./Documentation~/Samples_EnumColor.png)
 
