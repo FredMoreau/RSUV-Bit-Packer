@@ -276,22 +276,10 @@ namespace UnityEngine.RSUVBitPacker
             if (_renderers == null || _renderers.Length == 0)
                 return;
 
-            RendererUserValue = GatherValues();
+            RendererUserValue = ((IRendererProperties)this).GetRendererUserValue();
 
             for (int i = 0; i < _renderers.Length; i++)
                 _renderers[i].SetShaderUserValue(RendererUserValue);
-        }
-
-        private uint GatherValues()
-        {
-            uint result = 0;
-            int offset = 0;
-            foreach (IRendererProperty prop in rendererProperties)
-            {
-                result |= prop.Data << offset;
-                offset += (int)prop.Length;
-            }
-            return result;
         }
     }
 }

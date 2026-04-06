@@ -14,7 +14,7 @@ namespace UnityEditor.RSUVBitPacker
 
         private void OnEnable()
         {
-            (target as IRendererProperties).SanitizeProperties();
+            ((IRendererProperties)target).SanitizeProperties();
 
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
             // disabling live update for now, until we have a reliable way to get the updated object.
@@ -58,13 +58,15 @@ namespace UnityEditor.RSUVBitPacker
             serializedObject.ApplyModifiedProperties();
         }
 
+        uint ShaderGraphPreviewValue => ((IRendererProperties)target).GetRendererUserValue();
+
         void CreateShaderInclude()
         {
             var assetPath = AssetDatabase.GetAssetPath(target).Replace(".asset", ".hlsl");
-            var rendererProperties = (target as PropertySheet).rendererProperties;
+            var rendererProperties = ((PropertySheet)target).rendererProperties;
 
             var projectNamespace = GetNamespace(assetPath);
-            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace);
+            HLSLStreamBuilder.ShaderInclude(File.CreateText(assetPath), target.name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace, ShaderGraphPreviewValue);
 
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             ShaderInclude incl = AssetDatabase.LoadAssetAtPath<ShaderInclude>(assetPath);
@@ -79,10 +81,10 @@ namespace UnityEditor.RSUVBitPacker
                 var path = AssetDatabase.GetAssetPath(shaderInclude);
                 var name = shaderInclude.name;
 
-                var rendererProperties = (target as PropertySheet).rendererProperties;
+                var rendererProperties = ((PropertySheet)target).rendererProperties;
 
                 var projectNamespace = GetNamespace(path);
-                HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace);
+                HLSLStreamBuilder.ShaderInclude(new StreamWriter(path), name, rendererProperties, splitFunctionsProp.boolValue, projectNamespace, ShaderGraphPreviewValue);
 
                 AssetDatabase.Refresh();
             }

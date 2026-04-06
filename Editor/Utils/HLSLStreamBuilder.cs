@@ -89,7 +89,7 @@ namespace UnityEditor.RSUVBitPacker
 #endif
         }
 
-        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<IRendererProperty> properties, bool splitFunctions = false, string nameSpace = null)
+        internal static void ShaderInclude(StreamWriter streamWriter, string name, List<IRendererProperty> properties, bool splitFunctions = false, string nameSpace = null, uint shaderGraphPreviewValue = 0)
         {
             List<(string type, string name, string modifier)> parameters = new();
             List<string> assignments = new();
@@ -123,7 +123,11 @@ namespace UnityEditor.RSUVBitPacker
                 streamWriter.WriteLine($"{sfrapiInclude}{streamWriter.NewLine}");
 #endif
                 streamWriter.Write(@$"#ifndef RSUV
+#if defined (SHADERGRAPH_PREVIEW) || defined (SHADERGRAPH_PREVIEW_MAIN)
+#define RSUV {shaderGraphPreviewValue}
+#else
 #define RSUV {rsuvUniformName}
+#endif
 #endif
 
 ");

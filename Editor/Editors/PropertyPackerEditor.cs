@@ -34,7 +34,7 @@ namespace UnityEditor.RSUVBitPacker
                     return false;
                 for (int i = 1; i < targets.Length; i++)
                 {
-                    if (!(targets[i] as PropertyPacker).Match(targets[0] as PropertyPacker))
+                    if (!((PropertyPacker)targets[i]).Match((PropertyPacker)targets[0]))
                         return true;
                 }
                 return false;
@@ -44,7 +44,7 @@ namespace UnityEditor.RSUVBitPacker
         private void OnEnable()
         {
             foreach (PropertyPacker pp in targets)
-                (pp as IRendererProperties).SanitizeProperties();
+                ((IRendererProperties)pp).SanitizeProperties();
 
             rendererProp = serializedObject.FindProperty("_renderers");
             propertySheetProp = serializedObject.FindProperty("_propertySheet");
@@ -139,13 +139,13 @@ namespace UnityEditor.RSUVBitPacker
                 GUILayout.FlexibleSpace();
                 if (GUILayout.Button("Save as Property Sheet", EditorStyles.miniButton, GUILayout.Width(180)))
                 {
-                    var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", (targets[0] as PropertyPacker).name, "asset", "Save Renderer Property Sheet");
+                    var path = EditorUtility.SaveFilePanelInProject("Save Renderer Property Sheet", ((PropertyPacker)targets[0]).name, "asset", "Save Renderer Property Sheet");
                     if (path != null)
                     {
-                        (targets[0] as PropertyPacker).UpdadePropertyList();
+                        ((PropertyPacker)targets[0]).UpdadePropertyList();
                         var propertySheet = CreateInstance<PropertySheet>();
                         propertySheet.rendererProperties.Clear();
-                        foreach (IRendererProperty property in (targets[0] as PropertyPacker).rendererProperties)
+                        foreach (IRendererProperty property in ((PropertyPacker)targets[0]).rendererProperties)
                         {
                             var clone = property.Clone();
                             propertySheet.rendererProperties.Add(clone);

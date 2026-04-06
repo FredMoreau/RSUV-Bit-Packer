@@ -25,5 +25,17 @@ namespace UnityEngine.RSUVBitPacker
             if (nullCount > 0)
                 Debug.LogWarning($"Removed {nullCount} null properties from {this}");
         }
+
+        uint GetRendererUserValue()
+        {
+            uint result = 0;
+            int offset = 0;
+            foreach (IRendererProperty prop in RendererProperties)
+            {
+                result |= prop.Data << offset;
+                offset += (int)prop.Length;
+            }
+            return result;
+        }
     }
 }
