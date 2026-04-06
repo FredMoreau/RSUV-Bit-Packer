@@ -43,6 +43,9 @@ namespace UnityEditor.RSUVBitPacker
 
         private void OnEnable()
         {
+            foreach (PropertyPacker pp in targets)
+                (pp as IRendererProperties).SanitizeProperties();
+
             rendererProp = serializedObject.FindProperty("_renderers");
             propertySheetProp = serializedObject.FindProperty("_propertySheet");
             rendererPropertiesProp = serializedObject.FindProperty("rendererProperties");

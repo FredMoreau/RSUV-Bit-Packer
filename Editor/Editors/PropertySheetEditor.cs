@@ -14,6 +14,8 @@ namespace UnityEditor.RSUVBitPacker
 
         private void OnEnable()
         {
+            (target as IRendererProperties).SanitizeProperties();
+
             rendererPropertyListView = new RendererPropertyListView(serializedObject, target);
             // disabling live update for now, until we have a reliable way to get the updated object.
             //rendererPropertyListView.OnChangeCallback += () =>

@@ -10,5 +10,20 @@ namespace UnityEngine.RSUVBitPacker
         // Could use a Remove and Indexer?
         //void Remove(RendererPropertyBase property);
         //RendererPropertyBase this[int i] { get; set; }
+
+        void SanitizeProperties()
+        {
+            int nullCount = 0;
+            for (int i = RendererProperties.Count - 1; i >= 0; i--)
+            {
+                if (RendererProperties[i] == null)
+                {
+                    RendererProperties.RemoveAt(i);
+                    nullCount++;
+                }
+            }
+            if (nullCount > 0)
+                Debug.LogWarning($"Removed {nullCount} null properties from {this}");
+        }
     }
 }
