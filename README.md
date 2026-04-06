@@ -45,6 +45,7 @@ The _**Property Sheet**_ also allows generating a _Shader Include_ (HLSL) to acc
 
 If the "Split Functions" option is enabled, it'll generate one function per property, otherwise it'll generate one function for all properties.
 
+![Split Nodes in Shader Graph.](./Documentation~/SGNode_split.png)
 ![Meta Node in Shader Graph.](./Documentation~/SGNode_unsplit.png)
 
 #### Unity 6.3 - 6.4
