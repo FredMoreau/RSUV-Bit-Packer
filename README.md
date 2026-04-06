@@ -124,7 +124,9 @@ This contains several examples of the different Renderer Properties.
 ![Samples - Examples.](./Documentation~/Samples_Examples.png)
 
 ### More Renderer Properties
-This contains a custom "Enum Color" Renderer Property, storing an index to a Color Array.
+This contains:
+- a custom "Enum Color" Renderer Property, storing an index to a Color Array.
+- a custom "Power Scalar" Renderer Property, applying a power on the packed data to bias precision toward low range values.
 
 ![Samples - EnumColor.](./Documentation~/Samples_EnumColor.png)
 
