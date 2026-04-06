@@ -100,7 +100,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2229996887448052818}
   - component: {fileID: 6843740624726918161}
-  - component: {fileID: 3308152212759685362}
   m_Layer: 0
   m_Name: Color Override
   m_TagString: Untagged
@@ -146,37 +145,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 2}
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3308152212759685362
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2493658767609197580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a807fcb7c29b4dd468a5c751e604bccc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.RSUVPropertyPacker
-  _propertySheet: {fileID: 11400000, guid: 7323804bfde76234aac1a088fe6296ca, type: 2}
-  _renderers:
-  - {fileID: 8791987005405927867}
-  rendererProperties:
-  - rid: 6653273539733618776
-  references:
-    version: 2
-    RefIds:
-    - rid: 6653273539733618776
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
-      data:
-        name: Color
-        _value: 0
-        _settings:
-          colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
-          hlslPrecision: 4
 --- !u!1 &2921271288107401264
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,7 +155,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3970045795275388640}
   m_Layer: 0
-  m_Name: EnumColor
+  m_Name: SamplePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +244,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 62ed17eb33806e744b389f9931bb8b69, type: 3}
+  - {fileID: 2100000, guid: 1f6e2721fd8bc91418b15b14aeaf8d89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -497,8 +465,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: This uses the EnumColor Custom Property that passes an index through RSUV
-    to restore a color from a custom built switch in the Shader Include.
+  m_text: Description of Custom Renderer Property.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

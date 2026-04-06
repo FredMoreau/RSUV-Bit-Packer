@@ -39,7 +39,7 @@
             "m_Id": "f9ebb2c903f44632af2bee2b49a9510e"
         },
         {
-            "m_Id": "c5bb3adc643346469f1bf53411a9ee68"
+            "m_Id": "fa5bfc98dadf4b78840c01b45f3c8458"
         }
     ],
     "m_GroupDatas": [],
@@ -48,7 +48,7 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
-                    "m_Id": "c5bb3adc643346469f1bf53411a9ee68"
+                    "m_Id": "fa5bfc98dadf4b78840c01b45f3c8458"
                 },
                 "m_SlotId": 1
             },
@@ -204,32 +204,6 @@
         "b": 0.5,
         "a": 1.0
     }
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "30cc37e243134465840563e959a8bc69",
-    "m_Id": 1,
-    "m_DisplayName": "Color",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_HideConnector": false,
-    "m_ShaderOutputName": "Color",
-    "m_StageCapability": 3,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_Labels": []
 }
 
 {
@@ -605,6 +579,32 @@
 }
 
 {
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
+    "m_ObjectId": "a11d6e34b5d542a9a723bfcb6851a6fe",
+    "m_Id": 1,
+    "m_DisplayName": "Color",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_HideConnector": false,
+    "m_ShaderOutputName": "Color",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_Labels": []
+}
+
+{
     "m_SGVersion": 2,
     "m_Type": "UnityEditor.Rendering.Universal.ShaderGraph.UniversalLitSubTarget",
     "m_ObjectId": "a3ad1a739b424ff4ab4804b219160303",
@@ -612,61 +612,6 @@
     "m_NormalDropOffSpace": 0,
     "m_ClearCoat": false,
     "m_BlendModePreserveSpecular": true
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.ProviderSystem.ProviderNode",
-    "m_ObjectId": "c5bb3adc643346469f1bf53411a9ee68",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "EnumColor",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": -510.0,
-            "y": 200.0,
-            "width": 108.0,
-            "height": 103.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "30cc37e243134465840563e959a8bc69"
-        }
-    ],
-    "synonyms": [
-        "EnumColor"
-    ],
-    "m_Precision": 0,
-    "m_PreviewExpanded": false,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_provider": {
-        "rid": 1000
-    },
-    "references": {
-        "version": 2,
-        "RefIds": [
-            {
-                "rid": 1000,
-                "type": {
-                    "class": "ReflectedFunctionProvider",
-                    "ns": "UnityEditor.ShaderGraph.ProviderSystem",
-                    "asm": "Unity.ShaderGraph.Editor"
-                },
-                "data": {
-                    "m_providerKey": "EnumColor",
-                    "m_sourceAssetId": "049a4047909f4bf4d9232201281a7717"
-                }
-            }
-        ]
-    }
 }
 
 {
@@ -766,5 +711,61 @@
         "m_SerializableColors": []
     },
     "m_SerializedDescriptor": "SurfaceDescription.Occlusion"
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.ProviderSystem.ProviderNode",
+    "m_ObjectId": "fa5bfc98dadf4b78840c01b45f3c8458",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "EnumColor",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -392.0,
+            "y": 200.0,
+            "width": 108.0,
+            "height": 103.0
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "a11d6e34b5d542a9a723bfcb6851a6fe"
+        }
+    ],
+    "synonyms": [
+        "RSUV",
+        "EnumColor"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": false,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_provider": {
+        "rid": 1000
+    },
+    "references": {
+        "version": 2,
+        "RefIds": [
+            {
+                "rid": 1000,
+                "type": {
+                    "class": "ReflectedFunctionProvider",
+                    "ns": "UnityEditor.ShaderGraph.ProviderSystem",
+                    "asm": "Unity.ShaderGraph.Editor"
+                },
+                "data": {
+                    "m_providerKey": "RSUVBitPacker.Samples.EnumColor",
+                    "m_sourceAssetId": "049a4047909f4bf4d9232201281a7717"
+                }
+            }
+        ]
+    }
 }
 
