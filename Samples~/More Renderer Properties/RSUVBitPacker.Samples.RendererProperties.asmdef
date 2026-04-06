@@ -1,7 +1,9 @@
 {
     "name": "RSUVBitPacker.Samples.RendererProperties",
     "rootNamespace": "RSUVBitPacker.Samples",
-    "references": [],
+    "references": [
+        "GUID:47d456ccf4e979b43a14e7fee69702fe"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
