@@ -20,6 +20,7 @@ namespace UnityEngine.RSUVBitPacker
     /// - The packing assumes the total bit length of all configured properties fits into 32 bits.
     /// </remarks>
     [AddComponentMenu("Rendering/RSUV Bit Packer/Property Packer")]
+    [HelpURL("https://github.com/FredMoreau/RSUV-Bit-Packer/#property-packer")]
     [ExecuteAlways]
     public sealed class PropertyPacker : MonoBehaviour, IRendererProperties
     {
