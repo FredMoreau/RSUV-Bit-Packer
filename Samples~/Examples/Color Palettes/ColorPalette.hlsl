@@ -1,10 +1,4 @@
-#include "ShaderApiReflectionSupport.hlsl"
-
-/// <funchints>
-///     <sg:ProviderKey>ColorPalette</sg:ProviderKey>
-/// </funchints>
-UNITY_EXPORT_REFLECTION
-void ColorPalette(
+void ColorPalette_half(
     uint Index,
     out float4 Color)
 {

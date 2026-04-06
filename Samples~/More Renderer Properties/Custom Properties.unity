@@ -260,20 +260,25 @@ MonoBehaviour:
   _renderers:
   - {fileID: 978046892}
   rendererProperties:
-  - rid: 6653273646349942865
+  - rid: 6653273650896830548
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942865
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830548
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Color
-        _value: 2
+        _value: 4
         _settings:
           colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
+          - {r: 0.43921572, g: 0.68235296, b: 0.6627451, a: 1}
+          - {r: 0.7411765, g: 0.86666673, b: 0.86274517, a: 1}
+          - {r: 0.9960785, g: 0.9294118, b: 0.8196079, a: 1}
+          - {r: 0.9843138, g: 0.75294125, b: 0.69803923, a: 1}
+          - {r: 0.9921569, g: 0.5647059, b: 0.47450984, a: 1}
+          - {r: 0.8117648, g: 0.7254902, b: 0.49411768, a: 1}
+          - {r: 0.20000002, g: 0.35686275, b: 0.33333334, a: 1}
+          - {r: 0.019607844, g: 0.20000002, b: 0.16078432, a: 1}
           hlslPrecision: 4
 --- !u!65 &133552829
 BoxCollider:
@@ -1184,20 +1189,25 @@ MonoBehaviour:
   _renderers:
   - {fileID: 613507561}
   rendererProperties:
-  - rid: 6653273646349942865
+  - rid: 6653273650896830549
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942865
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830549
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Color
-        _value: 3
+        _value: 6
         _settings:
           colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
+          - {r: 0.43921572, g: 0.68235296, b: 0.6627451, a: 1}
+          - {r: 0.7411765, g: 0.86666673, b: 0.86274517, a: 1}
+          - {r: 0.9960785, g: 0.9294118, b: 0.8196079, a: 1}
+          - {r: 0.9843138, g: 0.75294125, b: 0.69803923, a: 1}
+          - {r: 0.9921569, g: 0.5647059, b: 0.47450984, a: 1}
+          - {r: 0.8117648, g: 0.7254902, b: 0.49411768, a: 1}
+          - {r: 0.20000002, g: 0.35686275, b: 0.33333334, a: 1}
+          - {r: 0.019607844, g: 0.20000002, b: 0.16078432, a: 1}
           hlslPrecision: 4
 --- !u!65 &360319678
 BoxCollider:
@@ -1271,17 +1281,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 952523269}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830538
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830538
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.9
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -1480,17 +1490,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1038479458}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830539
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830539
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.2
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -1567,17 +1577,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 472319876}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830540
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830540
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.8
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -1654,20 +1664,25 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1663529843}
   rendererProperties:
-  - rid: 6653273646349942865
+  - rid: 6653273650896830550
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942865
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830550
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Color
-        _value: 1
+        _value: 2
         _settings:
           colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
+          - {r: 0.43921572, g: 0.68235296, b: 0.6627451, a: 1}
+          - {r: 0.7411765, g: 0.86666673, b: 0.86274517, a: 1}
+          - {r: 0.9960785, g: 0.9294118, b: 0.8196079, a: 1}
+          - {r: 0.9843138, g: 0.75294125, b: 0.69803923, a: 1}
+          - {r: 0.9921569, g: 0.5647059, b: 0.47450984, a: 1}
+          - {r: 0.8117648, g: 0.7254902, b: 0.49411768, a: 1}
+          - {r: 0.20000002, g: 0.35686275, b: 0.33333334, a: 1}
+          - {r: 0.019607844, g: 0.20000002, b: 0.16078432, a: 1}
           hlslPrecision: 4
 --- !u!65 &562643815
 BoxCollider:
@@ -1741,20 +1756,25 @@ MonoBehaviour:
   _renderers:
   - {fileID: 2036285050}
   rendererProperties:
-  - rid: 6653273646349942865
+  - rid: 6653273650896830551
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942865
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830551
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Color
-        _value: 4
+        _value: 7
         _settings:
           colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
+          - {r: 0.43921572, g: 0.68235296, b: 0.6627451, a: 1}
+          - {r: 0.7411765, g: 0.86666673, b: 0.86274517, a: 1}
+          - {r: 0.9960785, g: 0.9294118, b: 0.8196079, a: 1}
+          - {r: 0.9843138, g: 0.75294125, b: 0.69803923, a: 1}
+          - {r: 0.9921569, g: 0.5647059, b: 0.47450984, a: 1}
+          - {r: 0.8117648, g: 0.7254902, b: 0.49411768, a: 1}
+          - {r: 0.20000002, g: 0.35686275, b: 0.33333334, a: 1}
+          - {r: 0.019607844, g: 0.20000002, b: 0.16078432, a: 1}
           hlslPrecision: 4
 --- !u!65 &607991785
 BoxCollider:
@@ -2554,17 +2574,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1368874236}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830541
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830541
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.4
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -3178,10 +3198,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6610395829144855160, guid: 1fe3254925087564a998ec9ad7ad7b27, type: 3}
       propertyPath: m_text
-      value: 'This uses the PowerScalar Custom Property, which applies a power on the value before packing, and reverts it after unpacking, so as to bias precision towards low or high value range.
+      value: 'This uses the PowerScalar Custom Property, which applies a power on
+        the value before packing, and reverts it after unpacking, so as to bias precision
+        towards low or high value range.
 
 
-        Here it controls the material color, with a Power of 3, this provides much more precision between 0 and 0.5, than between 0.5 and 1.'
+        Here it controls the material
+        color, with a Power of 3, this provides much more precision between 0 and
+        0.5, than between 0.5 and 1.'
       objectReference: {fileID: 0}
     - target: {fileID: 8791987005405927867, guid: 1fe3254925087564a998ec9ad7ad7b27, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -3256,17 +3280,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1425654486}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830542
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830542
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -3534,17 +3558,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1411776573}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830543
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830543
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.3
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -3621,17 +3645,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 273900779}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830544
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830544
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.5
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -3830,17 +3854,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1003534906}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830545
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830545
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.7
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -3917,17 +3941,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 238416246}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830546
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830546
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.1
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -4004,17 +4028,17 @@ MonoBehaviour:
   _renderers:
   - {fileID: 1421217967}
   rendererProperties:
-  - rid: 6653273646349942867
+  - rid: 6653273650896830547
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942867
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830547
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0.6
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
@@ -4275,7 +4299,7 @@ Light:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2059249551}
   m_Enabled: 1
-  serializedVersion: 13
+  serializedVersion: 12
   m_Type: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 1
@@ -4327,7 +4351,7 @@ Light:
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ForceVisible: 0
-  m_ShapeRadius: 0.025
+  m_ShadowRadius: 0
   m_ShadowAngle: 0
   m_LightUnit: 1
   m_LuxAtDistance: 1
@@ -4515,7 +4539,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6610395829144855160, guid: 1fe3254925087564a998ec9ad7ad7b27, type: 3}
       propertyPath: m_text
-      value: 'This uses the EnumColor Custom Property that passes an index through RSUV to restore a color from a custom built switch in the Shader Include.
+      value: 'This uses the EnumColor Custom Property that passes an index through
+        RSUV to restore a color from a custom built switch in the Shader Include.
 
 '
       objectReference: {fileID: 0}
@@ -4577,20 +4602,25 @@ MonoBehaviour:
   _renderers:
   - {fileID: 107881462840171869}
   rendererProperties:
-  - rid: 6653273646349942865
+  - rid: 6653273650896830552
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942865
-      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830552
+      type: {class: EnumColorProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Color
         _value: 0
         _settings:
           colors:
-          - {r: 1, g: 0, b: 0, a: 1}
-          - {r: 0, g: 1, b: 0, a: 1}
-          - {r: 0, g: 0, b: 1, a: 1}
+          - {r: 0.43921572, g: 0.68235296, b: 0.6627451, a: 1}
+          - {r: 0.7411765, g: 0.86666673, b: 0.86274517, a: 1}
+          - {r: 0.9960785, g: 0.9294118, b: 0.8196079, a: 1}
+          - {r: 0.9843138, g: 0.75294125, b: 0.69803923, a: 1}
+          - {r: 0.9921569, g: 0.5647059, b: 0.47450984, a: 1}
+          - {r: 0.8117648, g: 0.7254902, b: 0.49411768, a: 1}
+          - {r: 0.20000002, g: 0.35686275, b: 0.33333334, a: 1}
+          - {r: 0.019607844, g: 0.20000002, b: 0.16078432, a: 1}
           hlslPrecision: 4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

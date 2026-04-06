@@ -13,19 +13,19 @@ MonoBehaviour:
   m_Name: PowerScalar
   m_EditorClassIdentifier: Unity.RSUVBitPacker::UnityEngine.RSUVBitPacker.PropertySheet
   rendererProperties:
-  - rid: 6653273646349942864
+  - rid: 6653273650896830529
   shaderInclude: {fileID: 10900000, guid: 7e493ac02883138468a32b52f8eeeeb7, type: 3}
   splitFunctions: 0
   references:
     version: 2
     RefIds:
-    - rid: 6653273646349942864
-      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: Assembly-CSharp}
+    - rid: 6653273650896830529
+      type: {class: PowerScalarProperty, ns: RSUVBitPacker.Samples, asm: RSUVBitPacker.Samples.RendererProperties}
       data:
         name: Intensity
         _value: 0
         _settings:
-          precision: 4
+          precision: 8
           minValue: 0
           maxValue: 1
           power: 3
