@@ -20,7 +20,9 @@ The package allows you to define a packing scheme by adding "_**Renderer Propert
 
 ## Property Sheet
 Create a new _**Property Sheet**_ using `Assets/Create/Rendering/RSUV Bit Packer/Property Sheet`.
-This asset allows defining a packing scheme and properties default values, to be reused with several _**Property Packers**_ later.
+This asset allows defining a packing scheme to be reused with several _**Property Packers**_ later.
+
+Properties values serve as default values when assigning the sheet to a Packer component, and as preview values in Shader Graph.
 
 ![Adding properties to a Property Sheet.](./Documentation~/PropertySheet.png)
 
@@ -176,7 +178,7 @@ There is no check on property names other than whitespace removal and default na
 Don't give several properties the same name, and don't name properties with HLSL types or intrisic functions like "float" or "dot".
 
 ### Shader Graph Preview
-Previews in Shader Graph assume a default value of 0 for properties.
+Previews in Shader Graph use the default values set in the Property Sheet.
 Future improvement may add a Preview Value to the Nodes' settings.
 
 ### IPropertyProvider
