@@ -169,8 +169,12 @@ public class NewRendererProperty : RendererProperty<bool> // the type defines th
 
 ## Known limitations and potential future improvements
 ### Property Names
-There is no check on property names other than whitespace removal.
+There is no check on property names other than whitespace removal and default naming if left empty.
 Don't give several properties the same name, and don't name properties with HLSL types or intrisic functions like "float" or "dot".
+
+### Shader Graph Preview
+Previews in Shader Graph assume a default value of 0 for properties.
+Future improvement may add a Preview Value to the Nodes' settings.
 
 ### IPropertyProvider
 Considered for future improvement to add an interface for MonoBehaviours to provide renderer properties.
