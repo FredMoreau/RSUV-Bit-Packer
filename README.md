@@ -125,6 +125,7 @@ The generated HLSL allows getting a color from the palette in Shader Graph.
 ## Samples
 To install samples, go to the Package Manager, select the package in the list and go to the Samples tab.
 The Samples use TextMeshPro. If no text appear in the scenes, go to `Window/TextMeshPro/Import TMP Essential Resources`.
+Some examples use `OnMouseEnter()` and `OnMouseExit()`, which only work with the (new) Input System in Unity 6.4 and above.
 
 ### Examples
 This contains several examples of the different Renderer Properties.
@@ -143,8 +144,9 @@ This contains an example of setting a Renderer Property on a Property Packer fro
 
 ![Samples - VisualScripting.](./Documentation~/Samples_VisualScripting.png)
 
-## Extensions
+## Supported Renderer Types
 RSUV being implemented only on some `Renderer` classes, such as `MeshRenderer` and `SkinnedMeshRenderer`, this package contains an Extension that makes it easy to set the `ShaderUserValue` on a `Renderer`.
+2D Renderers (Sprite, SpriteShape and Tilemap) are supported in Unity 6.5 and above, as well as in 6.3.13, but not yet in 6.4.
 
 ## Writing Renderer Property Types
 The package is easily extensible to add new Renderer Property types by simply providing their data encoding (C#) and decoding (HLSL).
