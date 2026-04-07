@@ -85,6 +85,9 @@ It is also preferred to use the generic method `PropertyPacker.TrySetProperty<T>
 
 The main purpose of the non generic `PropertyPacker.TrySetProperty(int index, object value)` is for Visual Scripting support.
 
+#### Visual Scripting
+For the PropertyPacker component's methods to appear in Visual Scripting, `Unity.RSUVBitPacker` must be added to the Node Library in `Project Settings/Visual Scripting`.
+
 ## Property Types
 ### Boolean
 A boolean value stored on one bit.
@@ -121,6 +124,7 @@ The generated HLSL allows getting a color from the palette in Shader Graph.
 
 ## Samples
 To install samples, go to the Package Manager, select the package in the list and go to the Samples tab.
+The Samples use TextMeshPro. If no text appear in the scenes, go to `Window/TextMeshPro/Import TMP Essential Resources`.
 
 ### Examples
 This contains several examples of the different Renderer Properties.
