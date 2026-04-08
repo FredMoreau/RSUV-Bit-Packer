@@ -7,7 +7,9 @@ While packing and unpacking data is trivial, the _**RSUV Bit Packer**_ (package)
 ### Getting Started
 
 - Open the Package Manager, click on the + Icon, select "Add Package from Git Url".
-Enter the package url: `git@github.com:FredMoreau/RSUV-Bit-Packer.git`
+  - Enter the package url:
+    - `git@github.com:FredMoreau/RSUV-Bit-Packer.git`, or
+    - `https://github.com/FredMoreau/RSUV-Bit-Packer.git`
 - Or clone the repo, select "Add Package from disk" and select the `package.json` file.
 - Or download as a zip, and unzip it in your project's Packages folder.
 
@@ -20,7 +22,9 @@ The package allows you to define a packing scheme by adding "_**Renderer Propert
 
 ## Property Sheet
 Create a new _**Property Sheet**_ using `Assets/Create/Rendering/RSUV Bit Packer/Property Sheet`.
-This asset allows defining a packing scheme and properties default values, to be reused with several _**Property Packers**_ later.
+This asset allows defining a packing scheme to be reused with several _**Property Packers**_ later.
+
+Properties values serve as default values when assigning the sheet to a Packer component, and as preview values in Shader Graph.
 
 ![Adding properties to a Property Sheet.](./Documentation~/PropertySheet.png)
 
@@ -81,6 +85,9 @@ It is also preferred to use the generic method `PropertyPacker.TrySetProperty<T>
 
 The main purpose of the non generic `PropertyPacker.TrySetProperty(int index, object value)` is for Visual Scripting support.
 
+#### Visual Scripting
+For the PropertyPacker component's methods to appear in Visual Scripting, `Unity.RSUVBitPacker` must be added to the Node Library in `Project Settings/Visual Scripting`.
+
 ## Property Types
 ### Boolean
 A boolean value stored on one bit.
@@ -117,6 +124,8 @@ The generated HLSL allows getting a color from the palette in Shader Graph.
 
 ## Samples
 To install samples, go to the Package Manager, select the package in the list and go to the Samples tab.
+The Samples use TextMeshPro. If no text appear in the scenes, go to `Window/TextMeshPro/Import TMP Essential Resources`.
+Some examples use `OnMouseEnter()` and `OnMouseExit()`, which only work with the (new) Input System in Unity 6.4 and above.
 
 ### Examples
 This contains several examples of the different Renderer Properties.
@@ -135,8 +144,9 @@ This contains an example of setting a Renderer Property on a Property Packer fro
 
 ![Samples - VisualScripting.](./Documentation~/Samples_VisualScripting.png)
 
-## Extensions
+## Supported Renderer Types
 RSUV being implemented only on some `Renderer` classes, such as `MeshRenderer` and `SkinnedMeshRenderer`, this package contains an Extension that makes it easy to set the `ShaderUserValue` on a `Renderer`.
+2D Renderers (Sprite, SpriteShape and Tilemap) are supported in Unity 6.5 and above, as well as in 6.3.13, but not yet in 6.4.
 
 ## Writing Renderer Property Types
 The package is easily extensible to add new Renderer Property types by simply providing their data encoding (C#) and decoding (HLSL).
@@ -176,7 +186,7 @@ There is no check on property names other than whitespace removal and default na
 Don't give several properties the same name, and don't name properties with HLSL types or intrisic functions like "float" or "dot".
 
 ### Shader Graph Preview
-Previews in Shader Graph assume a default value of 0 for properties.
+Previews in Shader Graph use the default values set in the Property Sheet.
 Future improvement may add a Preview Value to the Nodes' settings.
 
 ### IPropertyProvider
