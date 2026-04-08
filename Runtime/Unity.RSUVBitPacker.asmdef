@@ -14,6 +14,11 @@
             "name": "Unity",
             "expression": "[6000.3.13f1,6000.4.0)",
             "define": "UNITY_6000_3_13_OR_NEWER"
+        },
+        {
+            "name": "Unity",
+            "expression": "[6000.4.4f1,6000.5.0)",
+            "define": "UNITY_6000_4_4_OR_NEWER"
         }
     ],
     "noEngineReferences": false

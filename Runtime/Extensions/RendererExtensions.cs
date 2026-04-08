@@ -16,7 +16,7 @@ namespace UnityEngine.RSUVBitPacker
                 case SkinnedMeshRenderer skinnedMeshRenderer:
                     skinnedMeshRenderer.SetShaderUserValue(value);
                     break;
-#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_4_4_OR_NEWER || UNITY_6000_5_OR_NEWER
                 case SpriteRenderer spriteRenderer:
                     spriteRenderer.SetShaderUserValue(value);
                     break;
@@ -38,7 +38,7 @@ namespace UnityEngine.RSUVBitPacker
         {
             MeshRenderer meshRenderer => meshRenderer.GetShaderUserValue(),
             SkinnedMeshRenderer skinnedMeshRenderer => skinnedMeshRenderer.GetShaderUserValue(),
-#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_4_4_OR_NEWER || UNITY_6000_5_OR_NEWER
             SpriteRenderer spriteRenderer => spriteRenderer.GetShaderUserValue(),
             SpriteShapeRenderer spriteShapeRenderer => spriteShapeRenderer.GetShaderUserValue(),
             TilemapRenderer tilemapRenderer => tilemapRenderer.GetShaderUserValue(),
@@ -51,7 +51,7 @@ namespace UnityEngine.RSUVBitPacker
         {
             MeshRenderer meshRenderer => true,
             SkinnedMeshRenderer skinnedMeshRenderer => true,
-#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_5_OR_NEWER
+#if UNITY_6000_3_13_OR_NEWER || UNITY_6000_4_4_OR_NEWER || UNITY_6000_5_OR_NEWER
             SpriteRenderer spriteRenderer => true,
             SpriteShapeRenderer spriteShapeRenderer => true,
             TilemapRenderer tilemapRenderer => true,
