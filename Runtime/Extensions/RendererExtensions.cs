@@ -18,7 +18,7 @@ namespace UnityEngine.RSUVBitPacker
                     break;
 #if UNITY_6000_3_13_OR_NEWER || UNITY_6000_4_4_OR_NEWER || UNITY_6000_5_OR_NEWER
                 case SpriteRenderer spriteRenderer:
-                    spriteRenderer.SetShaderUserValue(value);
+                    SpriteRendererDataAccessExtensions.SetShaderUserValue(spriteRenderer, value);
                     break;
                 case SpriteShapeRenderer spriteShapeRenderer:
                     spriteShapeRenderer.SetShaderUserValue(value);
@@ -39,7 +39,7 @@ namespace UnityEngine.RSUVBitPacker
             MeshRenderer meshRenderer => meshRenderer.GetShaderUserValue(),
             SkinnedMeshRenderer skinnedMeshRenderer => skinnedMeshRenderer.GetShaderUserValue(),
 #if UNITY_6000_3_13_OR_NEWER || UNITY_6000_4_4_OR_NEWER || UNITY_6000_5_OR_NEWER
-            SpriteRenderer spriteRenderer => spriteRenderer.GetShaderUserValue(),
+            SpriteRenderer spriteRenderer => SpriteRendererDataAccessExtensions.GetShaderUserValue(spriteRenderer),
             SpriteShapeRenderer spriteShapeRenderer => spriteShapeRenderer.GetShaderUserValue(),
             TilemapRenderer tilemapRenderer => tilemapRenderer.GetShaderUserValue(),
 #endif
